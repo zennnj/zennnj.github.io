@@ -10,16 +10,21 @@
     <meta name="copyright" content="">
         <meta name="keywords" content="hexo,hexo-theme,hexo-blog">
     <meta name="description" content="">
-    <meta property="og:type" content="website">
-<meta property="og:title" content="Hexo">
-<meta property="og:url" content="http://example.com/categories/chat/index.html">
+    <meta name="description" content="windows subsystem for linux （WSL） ls list  ls -l 列出每个文件的属性 d&#x2F;-目录或普通文件rwxread&amp;write&amp;执行r--&#96;&#96;r-xgroup用户权限r-x其他人权限  ls -a .开头的文件是隐藏文件 ls -la&#x3D;ll以详细的方式列出来 cdcd ..进入上一层目录cd .进入当前目录（啥用cd ..&#x2F;..上层">
+<meta property="og:type" content="article">
+<meta property="og:title" content="linux">
+<meta property="og:url" content="http://example.com/2024/09/10/linux/index.html">
 <meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="windows subsystem for linux （WSL） ls list  ls -l 列出每个文件的属性 d&#x2F;-目录或普通文件rwxread&amp;write&amp;执行r--&#96;&#96;r-xgroup用户权限r-x其他人权限  ls -a .开头的文件是隐藏文件 ls -la&#x3D;ll以详细的方式列出来 cdcd ..进入上一层目录cd .进入当前目录（啥用cd ..&#x2F;..上层">
 <meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2024-09-10T11:03:02.000Z">
+<meta property="article:modified_time" content="2024-09-10T11:49:07.327Z">
+<meta property="article:tag" content="learn">
 <meta name="twitter:card" content="summary">
     <meta http-equiv="Cache-control" content="no-cache">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <link rel="icon" href="/assets/my.ico">
-    <title>Terminal 4</title>
+    <title>linux · Terminal 4</title>
     <!-- /*! loadCSS. [c]2017 Filament Group, Inc. MIT License */
 /* This file is meant as a standalone workflow for
 - testing support for link[rel=preload]
@@ -207,6 +212,7 @@
             document.write('<script src="/lib/jquery.min.js" />')
         }
     </script>
+        <body class="post-body">
         <!-- header -->
         <header class="header header-mobile">
     <!-- top read progress line -->
@@ -236,7 +242,7 @@
             <a href="/">Terminal 4.</a>
         </div>
         <div class="post-title header-element">
-            <a href="#" class="post-name"></a>
+            <a href="#" class="post-name">linux</a>
         </div>
     </div>
 </header>
@@ -244,6 +250,31 @@
         <!-- fixed footer -->
         <footer class="footer-fixed">
     <!-- donate button -->
+    <div class="donate-popup donate-popup--hidden">
+    <div class="donate-popup__title">Buy Me A Coffee</div>
+    <div class="donate-popup__content">
+        <div class="donate-popup__content-description">If this post helped you, please consider buying the author a cup of sugar-free coffee ☕️.</div>
+        <img
+            class="donate-popup__content-qrCode"
+            title="Wechat"
+            alt="Wechat"
+            src="/assets/donate-wechat.png"
+        ></img>
+        <img
+            class="donate-popup__content-qrCode"
+            title="Alipay"
+            alt="Alipay"
+            src="/assets/donate-alipay.png"
+        ></img>
+    </div>
+</div>
+
+    <div
+        title="Donate to the author"
+        class="footer-fixed-btn footer-fixed-btn--hidden donate-btn"
+    >
+        <i class="fas fa-donate"></i>
+    </div>
 
     <!-- back to top button -->
     <div class="footer-fixed-btn footer-fixed-btn--hidden back-top">
@@ -253,20 +284,57 @@
 
         <!-- wrapper -->
         <div class="wrapper">
-            <div class="site-intro" style="">
+            <div class="site-intro" style="    height:50vh;
+">
     <!-- 主页  -->
+    <!-- 404页  -->
     <div class="site-intro-placeholder"></div>
-    <div class="site-intro-img" style="background-image: url(/)"></div>
+    <div class="site-intro-img" style="background-image: url(/intro/post-bg.jpg)"></div>
     <div class="site-intro-meta">
         <!-- 标题  -->
         <h1 class="intro-title">
             <!-- 主页  -->
+                linux
+            <!-- 404 -->
         </h1>
         <!-- 副标题 -->
         <p class="intro-subtitle">
             <!-- 主页副标题  -->
+            <!-- 404 -->
         </p>
         <!-- 文章页 meta -->
+            <div class="post-intros">
+                <!-- 文章页标签  -->
+                    <div class="post-intro-tags" >
+        <a class="post-tag" href="javascript:void(0);" data-tags="learn">learn</a>
+</div>
+
+                <!-- 文章字数统计 -->
+                <div class="post-intro-meta">
+                    <!-- 撰写日期 -->
+                    <span class="iconfont-archer post-intro-calander">&#xe676;</span>
+                    <span class="post-intro-time">2024/09/10</span>
+                    <!-- busuanzi -->
+                        <span id="busuanzi_container_page_pv" class="busuanzi-pv">
+                            <span class="iconfont-archer post-intro-busuanzi">&#xe602;</span>
+                            <span id="busuanzi_value_page_pv"></span>
+                        </span>
+                    <!-- 文章分享 -->
+                    <span class="share-wrapper">
+                        <span class="iconfont-archer share-icon">&#xe71d;</span>
+                        <span class="share-text">Share</span>
+                        <ul class="share-list">
+                            <li class="iconfont-archer share-qr" data-type="qr">&#xe75b;
+                                <div class="share-qrcode"></div>
+                            </li>
+                            <li class="iconfont-archer" data-type="weibo">&#xe619;</li>
+                            <li class="iconfont-archer" data-type="qzone">&#xe62e;</li>
+                            <li class="iconfont-archer" data-type="twitter">&#xe634;</li>
+                            <li class="iconfont-archer" data-type="facebook">&#xe67a;</li>
+                        </ul>
+                    </span>
+                </div>
+            </div>
     </div>
 </div>
 
@@ -395,32 +463,57 @@
 
             <img class="loading" src="/assets/loading.svg" style="display: block; margin: 6rem auto 0 auto; width: 6rem; height: 6rem;" alt="loading">
             <div class="container container-unloaded">
-                <main class="main index-page">
-            
-        <article class="index-post">
-            <a class="abstract-title" href="/2024/08/31/%E4%B8%8A%E5%AD%A6%E5%89%8D%E7%9A%84%E9%81%97%E8%A8%80/">
-                <span class="abstract-title-text">上学前的遗言</span>
-            </a>
-            <div class="abstract-content">
-                开学前随便写点东西回顾一下hexo怎么用
-回顾暑假
-玩了什么游戏norco类迪文字冒险游戏，美国科幻废土，很有味道，我很喜欢！流程再长点就好了MR.PREPPER基建生存游戏，像辐射缺氧，原本是看海猫玩了买的，感觉中规中矩The Sekimeiya:Spun Glass硬核神作，暑假主要就是在玩这个，本来预估20h左右完事，结果是玩了70h+…而后在steam怒写（？）600字测评，可以说此游在暑假的最后撑起了我整个暑假的游戏回忆咩咩羊启示录和兄弟玩的，好像还有两个boss没打，感觉这点内容原价卖100多太贵了Hades从上学期就在玩的，是觉得xx正在冲出冥界很搞笑开始玩的，好像还没玩明...
-            </div>
-            <!-- read more -->
-            <div class="abstract-post-meta">
-                <!-- date -->
-                <div class="abstract-date" title="Last updated: 2024/09/10">
-                    <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2024/08/31</span>
-                </div>
-                <!-- tags -->
-                    <div class="abstract-tags" >
-        <a class="post-tag" href="javascript:void(0);" data-tags="碎碎念">碎碎念</a>
-</div>
+                <main class="main post-page">
+    <article class="article-entry">
+        <p> windows subsystem for linux （WSL）</p>
+<h1 id="ls"><a href="#ls" class="headerlink" title="ls"></a>ls</h1><p> list</p>
+<p> <code>ls -l</code> 列出每个文件的属性<br> <code>d/-</code>目录或普通文件<code>rwx</code>read&amp;write&amp;执行<code>r--``r-x</code>group用户权限<code>r-x</code>其他人权限</p>
+<p> <code>ls -a</code><br> <code>.</code>开头的文件是隐藏文件<br> <code>ls -la</code>&#x3D;<code>ll</code>以详细的方式列出来</p>
+<h1 id="cd"><a href="#cd" class="headerlink" title="cd"></a>cd</h1><p><code>cd ..</code>进入上一层目录<br><code>cd .</code>进入当前目录（啥用<br><code>cd ../..</code>上层目录的上层目录<br><strong>在windows操作系统里是\，除了windows系统都是&#x2F;</strong><br><code>cd -</code>回到你刚才所在的目录</p>
+<h1 id="pwd"><a href="#pwd" class="headerlink" title="pwd"></a>pwd</h1><p>print working directory(打印当前路径)</p>
+<h1 id="cat-head-tail"><a href="#cat-head-tail" class="headerlink" title="cat&#x2F;head&#x2F;tail"></a>cat&#x2F;head&#x2F;tail</h1><p>看文件内容<br><code>head --lines=2 README.md</code>只看两行</p>
+<h1 id="less-more"><a href="#less-more" class="headerlink" title="less&#x2F;more"></a>less&#x2F;more</h1><p>看全文<br>按<code>Q</code>退出</p>
+<h1 id="nano-vim"><a href="#nano-vim" class="headerlink" title="nano&#x2F;vim"></a>nano&#x2F;vim</h1><p>文本编辑器<br>vim 按<code>I</code>进入insert模式后修改<br>按<code>:q</code>退出 <code>:q!</code>强制退出</p>
+<h1 id="file-where"><a href="#file-where" class="headerlink" title="file&#x2F;where"></a>file&#x2F;where</h1><p>file查看文件属性<br>where查找文件位置，可能是which，whereis</p>
+<h1 id="echo"><a href="#echo" class="headerlink" title="echo"></a>echo</h1><p>打印</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">h=&quot;hello&quot;</span><br><span class="line">echo $h</span><br><span class="line">echo &quot;abc$h&quot;</span><br><span class="line">echo &quot;abc$&#123;h&#125;efg&quot;</span><br></pre></td></tr></table></figure>
+<p><strong>变量的使用要加<code>$</code>,可以自由连接<code>&#123;&#125;</code>防止歧义</strong></p>
+<h1 id="mv"><a href="#mv" class="headerlink" title="mv"></a>mv</h1><p>重命名<br>mv 文件名 新文件名</p>
+<h1 id="简单shell"><a href="#简单shell" class="headerlink" title="简单shell"></a>简单shell</h1><h2 id="for循环"><a href="#for循环" class="headerlink" title="for循环"></a>for循环</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">for ff in week*  #以week开头的文件 ; week??(以week开头后有两个字符的文件)</span><br><span class="line">do</span><br><span class="line">echo $ff #循环体</span><br><span class="line">echo $&#123;ff#week&#125; #把week给掐掉</span><br><span class="line">echo chapter$&#123;ff#week&#125; #再把chapter加上</span><br><span class="line">mv $ff chapter$&#123;ff#week&#125; #这里前一个ff是不是$不加也行  </span><br><span class="line">done</span><br></pre></td></tr></table></figure>
+<p><strong>没有撤销机制^^</strong><br><strong>但是可以用git调回上一个版本</strong></p>
 
-            </div>
-        </article>
-        <div class="index-post-divider"></div>
-    <!-- paginator  -->
+    </article>
+    <!-- license -->
+    <!-- paginator -->
+    <ul class="post-paginator">
+        <li class="next">
+        </li>
+        <li class="previous">
+                <div class="prevSlogan">Previous Post</div>
+                <a href="/2024/09/10/test/" title="后端">
+                    <div class="prevTitle">后端</div>
+                </a>
+        </li>
+    </ul>
+    <!-- comment -->
+        <div class="post-comment">
+            <!-- 来必力 City 版安装代码 -->
+
+            
+            
+            
+            <!-- utteranc评论 -->
+
+            <!-- partial('_partial/comment/changyan') -->
+            <!--PC版-->
+
+            
+            
+            
+        </div>
+    <!-- timeliness note -->
+    <!-- idea from: https://hexo.fluid-dev.com/posts/hexo-injector/#%E6%96%87%E7%AB%A0%E6%97%B6%E6%95%88%E6%80%A7%E6%8F%90%E7%A4%BA -->
+    <!-- Mathjax -->
 </main>
 
                 <!-- profile -->
@@ -451,6 +544,13 @@
 
         </div>
         <!-- toc -->
+            <div class="toc-wrapper toc-wrapper-loding" style=    top:50vh;
+>
+                <div class="toc-catalog">
+                    <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
+                </div>
+                <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#ls"><span class="toc-number">1.</span> <span class="toc-text">ls</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#cd"><span class="toc-number">2.</span> <span class="toc-text">cd</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#pwd"><span class="toc-number">3.</span> <span class="toc-text">pwd</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#cat-head-tail"><span class="toc-number">4.</span> <span class="toc-text">cat&#x2F;head&#x2F;tail</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#less-more"><span class="toc-number">5.</span> <span class="toc-text">less&#x2F;more</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#nano-vim"><span class="toc-number">6.</span> <span class="toc-text">nano&#x2F;vim</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#file-where"><span class="toc-number">7.</span> <span class="toc-text">file&#x2F;where</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#echo"><span class="toc-number">8.</span> <span class="toc-text">echo</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#mv"><span class="toc-number">9.</span> <span class="toc-text">mv</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%AE%80%E5%8D%95shell"><span class="toc-number">10.</span> <span class="toc-text">简单shell</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#for%E5%BE%AA%E7%8E%AF"><span class="toc-number">10.1.</span> <span class="toc-text">for循环</span></a></li></ol></li></ol>
+            </div>
         <!-- sidebar -->
         <div class="sidebar sidebar-hide">
     <ul class="sidebar-tabs sidebar-tabs-active-0">
@@ -558,6 +658,7 @@
         <!-- busuanzi -->
             <script src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script>
         <!-- async load share.js -->
+            <script src="/scripts/share.js" async></script>
         <!-- mermaid -->
     </body>
 </html>
