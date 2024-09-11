@@ -437,10 +437,9 @@ Run server1$ hexo server
 查询代理
 1git config --global http.proxy
 
-设置github访问代理12git config --global http.proxy http://127.0.0.1:33210git config --global http.proxy https://127.0.0.1:33210
-
-取消github访问代理12git config --global --unset http.proxygit config --global --unset https.proxy
-这两个是一个有用...
+设置github访问代理12git config --global https.proxy 127.0.0.1:33210git config --global http.proxy 127.0.0.1:33210
+呃呃，proxy后面是ip+端口…哪个教程写了http:&#x2F;&#x2F;!?
+取消github访问代理12git config --global --unset http.proxygit config --global ...
             </div>
             <!-- read more -->
             <div class="abstract-post-meta">
