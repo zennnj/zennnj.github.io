@@ -24,7 +24,7 @@
 <meta property="og:image" content="http://example.com/images/JVM/7.png">
 <meta property="og:image" content="http://example.com/images/JVM/8.png">
 <meta property="article:published_time" content="2024-09-28T08:57:28.000Z">
-<meta property="article:modified_time" content="2024-09-28T11:58:29.766Z">
+<meta property="article:modified_time" content="2024-09-28T12:07:31.805Z">
 <meta property="article:tag" content="learn">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="http://example.com/images/JVM/2.png">
@@ -489,8 +489,9 @@
 <h1 id="类加载子系统"><a href="#类加载子系统" class="headerlink" title="类加载子系统"></a>类加载子系统</h1><p><img src="/../images/JVM/3.png"><br>不同类加载器加载的目录不一样(jre&#x2F;lib ;jre&#x2F;lib&#x2F;etc; classpath你所指定的类加载器的路径)<br><strong>双亲委派</strong>(BootStrapClassLaoder-ExtClassLoader-AppClassLaoder)<br>子类加载类时，先用父类加载类</p>
 <ul>
 <li>避免类重复加载</li>
-<li>防止核心API被篡改<br><strong>Tomcat为什么要自定义类加载器</strong><br>为了进行类的隔离<br>应用A和应用B设置各自的类加载器<br>JVM中判断一个类是不是已经被加载的逻辑是：类名＋对应的类加载器实例</li>
+<li>防止核心API被篡改</li>
 </ul>
+<p><strong>Tomcat为什么要自定义类加载器</strong><br>为了进行类的隔离<br>应用A和应用B设置各自的类加载器<br>JVM中判断一个类是不是已经被加载的逻辑是：类名＋对应的类加载器实例</p>
 <hr>
 <h1 id="运行时数据区"><a href="#运行时数据区" class="headerlink" title="运行时数据区"></a>运行时数据区</h1><p>方法区&amp;堆：多线程共享<br>Java方法栈&amp;本地方法栈&amp;程序计数器：各线程独享</p>
 <h2 id="程序计数器"><a href="#程序计数器" class="headerlink" title="程序计数器"></a>程序计数器</h2><p>PC Register</p>
@@ -520,8 +521,9 @@
 <h1 id="垃圾回收"><a href="#垃圾回收" class="headerlink" title="垃圾回收"></a>垃圾回收</h1><h2 id="垃圾标记阶段"><a href="#垃圾标记阶段" class="headerlink" title="垃圾标记阶段"></a>垃圾标记阶段</h2><p>找到JVM中（主要是堆中）有那些垃圾对象</p>
 <ul>
 <li>引用计数法</li>
-<li>可达性分析法<br><strong>引用计数法</strong><br>每个对象都保存一个引用计数器属性，用户记录对象被引用次数<br>优点：<br>实现简单，计数器为0则表示是垃圾对象<br>缺点：</li>
+<li>可达性分析法</li>
 </ul>
+<p><strong>引用计数法</strong><br>每个对象都保存一个引用计数器属性，用户记录对象被引用次数<br>优点：<br>实现简单，计数器为0则表示是垃圾对象<br>缺点：</p>
 <ol>
 <li>需要额外的空间来存储引用计数</li>
 <li>需要额外的时间来维护引用计数</li>
@@ -538,7 +540,10 @@
 <h2 id="标记-清除-Mark-Sweep-算法"><a href="#标记-清除-Mark-Sweep-算法" class="headerlink" title="标记-清除(Mark-Sweep)算法"></a>标记-清除(Mark-Sweep)算法</h2><p>针对某块内存空间，比如新生代、老年代，如果可用内存不足后，就会STW，暂定用户现成的执行，然后执行算法进行垃圾回收</p>
 <ol>
 <li><strong>标记阶段</strong>：从GC Roots开始遍历，找到可达对象，并在对象头中进行记录</li>
-<li><strong>清除阶段</strong>：堆内存空间进行线性遍历，如果发现对象头中没有记录是可达对象，则回收它<br><strong>缺点</strong>：</li>
+<li><strong>清除阶段</strong>：堆内存空间进行线性遍历，如果发现对象头中没有记录是可达对象，则回收它</li>
+</ol>
+<p><strong>缺点</strong>：</p>
+<ol>
 <li>效率不高</li>
 <li>内存碎片<br>优点：<br>思路简单</li>
 </ol>
