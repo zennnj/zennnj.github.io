@@ -398,24 +398,72 @@
                 <main class="main index-page">
             
         <article class="index-post">
-            <a class="abstract-title" href="/2024/09/26/MySQL/">
-                <span class="abstract-title-text">MySQL</span>
+            <a class="abstract-title" href="/2024/09/28/SpringBoot/">
+                <span class="abstract-title-text">SpringBoot</span>
             </a>
             <div class="abstract-content">
-                兄弟你的笔记我偷了DBDBMSSQL(STRUCTURED QUERY LANGUAGE)
-MySQL启动services.msc
-net start mysql80net stop mysql80
-客户端连接① MySQL提供的客户端② mysql [-h 127.0.0.1] [-P 3306] -u root -p(需要配置环境变量)([-h 127.0.0.1] [-P 3306]可省略)
-RDBMS
-SQLSQL的通用语法以分号结尾MySQL数据库的SQL雨具不区分大小写，关键字建议使用大写注释: -- 或 # 多行注释使用 /* */
-SQL分类
-数据定义语言(DDL)
-数据...
+                
             </div>
             <!-- read more -->
             <div class="abstract-post-meta">
                 <!-- date -->
-                <div class="abstract-date" title="Last updated: 2024/09/26">
+                <div class="abstract-date" title="Last updated: 2024/09/28">
+                    <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2024/09/28</span>
+                </div>
+                <!-- tags -->
+            </div>
+        </article>
+        <div class="index-post-divider"></div>
+            
+        <article class="index-post">
+            <a class="abstract-title" href="/2024/09/28/JVM/">
+                <span class="abstract-title-text">JVM</span>
+            </a>
+            <div class="abstract-content">
+                JVM跨平台原理本质：不同操作系统上运行的JVM是不一样的
+字节码的作用编译时：Java代码——&gt;字节码运行时(解释)：① Java代码—-&gt;机器指令↑| 快于|② 字节码——&gt;机器指令
+JAVA语言使用编译＋解释(python仅解释 c++纯编译性)
+有其他高级语言可以编译字节码，也可以实现跨平台（兼容多种语言
+JVM整体结构
+
+类加载子系统：把磁盘上的东西(字节码)加载到内存
+JIT编译器：类似快表，缓存反复执行的(热点)指令不用每次编译
+堆：产生的对象在里面
+Java方法栈：把某个线程的信息，定义的局部变量等
+本地方法栈：native方法(jvm里面的)
+程序计数...
+            </div>
+            <!-- read more -->
+            <div class="abstract-post-meta">
+                <!-- date -->
+                <div class="abstract-date" title="Last updated: 2024/09/28">
+                    <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2024/09/28</span>
+                </div>
+                <!-- tags -->
+                    <div class="abstract-tags" >
+        <a class="post-tag" href="javascript:void(0);" data-tags="learn">learn</a>
+</div>
+
+            </div>
+        </article>
+        <div class="index-post-divider"></div>
+            
+        <article class="index-post">
+            <a class="abstract-title" href="/2024/09/26/MySQL/">
+                <span class="abstract-title-text">MySQL</span>
+            </a>
+            <div class="abstract-content">
+                兄弟你的笔记我偷了
+VSCODE连接MySQL添加拓展MySQL,资源管理器里按+连接
+在MySQL终端输入ALTER USER &#39;root&#39;@&#39;localhost&#39; IDENTIFIED WITH mysql_native_password BY &#39;password&#39;;root、password 分别为数据库账户，密码原因：登录数据库的客户端跟mysql8.0不兼容了，mysql8.0密码认证采用了新的密码格式
+MySQL启动services.msc
+net start mysql80net stop mysql80
+客户端连接① MyS...
+            </div>
+            <!-- read more -->
+            <div class="abstract-post-meta">
+                <!-- date -->
+                <div class="abstract-date" title="Last updated: 2024/09/27">
                     <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2024/09/26</span>
                 </div>
                 <!-- tags -->
@@ -616,31 +664,10 @@ cdcd ..进入上一层目录cd .进入当前目录（啥用cd ../..上层目录�
             </div>
         </article>
         <div class="index-post-divider"></div>
-            
-        <article class="index-post">
-            <a class="abstract-title" href="/2024/07/24/%E6%8C%87%E5%8D%97/">
-                    <span class="iconfont-archer stick-top">&#xe63d;</span>
-                <span class="abstract-title-text">个人用使用指南</span>
-            </a>
-            <div class="abstract-content">
-                Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub.
-基本操作Create a new post1$ hexo new &quot;My New Post&quot;
-
-More info: Writing
-Run server1$ hexo server
-...
-            </div>
-            <!-- read more -->
-            <div class="abstract-post-meta">
-                <!-- date -->
-                <div class="abstract-date" title="Last updated: 2024/09/20">
-                    <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2024/07/24</span>
-                </div>
-                <!-- tags -->
-            </div>
-        </article>
-        <div class="index-post-divider"></div>
     <!-- paginator  -->
+        <nav class="page-nav">
+            <span class="page-number current">1</span><a class="page-number" href="/archives/page/2/">2</a><a class="extend next" rel="next" href="/archives/page/2/">NEXT &gt;</a>
+        </nav>
 </main>
 
                 <!-- profile -->
@@ -690,15 +717,25 @@ Run server1$ hexo server
         
         
         
+        
+        
     <div class="total-and-search">
         <div class="total-archive">
-        Total : 9
+        Total : 11
         </div>
         <!-- search  -->
     </div>
     <div class="post-archive">
             <div class="archive-year"> 2024 </div>
             <ul class="year-list">
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/28</span>
+            <a class="archive-post-title" href="/2024/09/28/SpringBoot/">SpringBoot</a>
+        </li>
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/28</span>
+            <a class="archive-post-title" href="/2024/09/28/JVM/">JVM</a>
+        </li>
         <li class="archive-post-item">
             <span class="archive-post-date">09/26</span>
             <a class="archive-post-title" href="/2024/09/26/MySQL/">MySQL</a>

@@ -10,16 +10,28 @@
     <meta name="copyright" content="">
         <meta name="keywords" content="hexo,hexo-theme,hexo-blog">
     <meta name="description" content="">
-    <meta property="og:type" content="website">
-<meta property="og:title" content="Hexo">
-<meta property="og:url" content="http://example.com/archives/2024/07/index.html">
+    <meta name="description" content="JVM跨平台原理本质：不同操作系统上运行的JVM是不一样的 字节码的作用编译时：Java代码——&gt;字节码运行时(解释)：① Java代码—-&gt;机器指令↑| 快于|② 字节码——&gt;机器指令 JAVA语言使用编译＋解释(python仅解释 c++纯编译性) 有其他高级语言可以编译字节码，也可以实现跨平台（兼容多种语言 JVM整体结构  类加载子系统：把磁盘上的东西(字节码)加载到内存">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JVM">
+<meta property="og:url" content="http://example.com/2024/09/28/JVM/index.html">
 <meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="JVM跨平台原理本质：不同操作系统上运行的JVM是不一样的 字节码的作用编译时：Java代码——&gt;字节码运行时(解释)：① Java代码—-&gt;机器指令↑| 快于|② 字节码——&gt;机器指令 JAVA语言使用编译＋解释(python仅解释 c++纯编译性) 有其他高级语言可以编译字节码，也可以实现跨平台（兼容多种语言 JVM整体结构  类加载子系统：把磁盘上的东西(字节码)加载到内存">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/images/JVM/2.png">
+<meta property="og:image" content="http://example.com/images/JVM/3.png">
+<meta property="og:image" content="http://example.com/images/JVM/5.png">
+<meta property="og:image" content="http://example.com/images/JVM/6.png">
+<meta property="og:image" content="http://example.com/images/JVM/7.png">
+<meta property="og:image" content="http://example.com/images/JVM/8.png">
+<meta property="article:published_time" content="2024-09-28T08:57:28.000Z">
+<meta property="article:modified_time" content="2024-09-28T11:58:29.766Z">
+<meta property="article:tag" content="learn">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/images/JVM/2.png">
     <meta http-equiv="Cache-control" content="no-cache">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <link rel="icon" href="/assets/my.ico">
-    <title>Terminal 4</title>
+    <title>JVM · Terminal 4</title>
     <!-- /*! loadCSS. [c]2017 Filament Group, Inc. MIT License */
 /* This file is meant as a standalone workflow for
 - testing support for link[rel=preload]
@@ -207,6 +219,7 @@
             document.write('<script src="/lib/jquery.min.js" />')
         }
     </script>
+        <body class="post-body">
         <!-- header -->
         <header class="header header-mobile">
     <!-- top read progress line -->
@@ -236,7 +249,7 @@
             <a href="/">Terminal 4.</a>
         </div>
         <div class="post-title header-element">
-            <a href="#" class="post-name"></a>
+            <a href="#" class="post-name">JVM</a>
         </div>
     </div>
 </header>
@@ -244,6 +257,31 @@
         <!-- fixed footer -->
         <footer class="footer-fixed">
     <!-- donate button -->
+    <div class="donate-popup donate-popup--hidden">
+    <div class="donate-popup__title">Buy Me A Milktea!</div>
+    <div class="donate-popup__content">
+        <div class="donate-popup__content-description">If this post helped you🤓👆, please consider buying the author a cup of milktea 🥤!(Actually,I prefer fruit tea.🥳)</div>
+        <img
+            class="donate-popup__content-qrCode"
+            title="Wechat"
+            alt="Wechat"
+            src="/assets/donate-wechat.png"
+        ></img>
+        <img
+            class="donate-popup__content-qrCode"
+            title="Alipay"
+            alt="Alipay"
+            src="/assets/donate-alipay.jpg"
+        ></img>
+    </div>
+</div>
+
+    <div
+        title="Donate to the author"
+        class="footer-fixed-btn footer-fixed-btn--hidden donate-btn"
+    >
+        <i class="fas fa-donate"></i>
+    </div>
 
     <!-- back to top button -->
     <div class="footer-fixed-btn footer-fixed-btn--hidden back-top">
@@ -253,20 +291,57 @@
 
         <!-- wrapper -->
         <div class="wrapper">
-            <div class="site-intro" style="">
+            <div class="site-intro" style="    height:50vh;
+">
     <!-- 主页  -->
+    <!-- 404页  -->
     <div class="site-intro-placeholder"></div>
-    <div class="site-intro-img" style="background-image: url(/)"></div>
+    <div class="site-intro-img" style="background-image: url(/intro/post-bg.jpg)"></div>
     <div class="site-intro-meta">
         <!-- 标题  -->
         <h1 class="intro-title">
             <!-- 主页  -->
+                JVM
+            <!-- 404 -->
         </h1>
         <!-- 副标题 -->
         <p class="intro-subtitle">
             <!-- 主页副标题  -->
+            <!-- 404 -->
         </p>
         <!-- 文章页 meta -->
+            <div class="post-intros">
+                <!-- 文章页标签  -->
+                    <div class="post-intro-tags" >
+        <a class="post-tag" href="javascript:void(0);" data-tags="learn">learn</a>
+</div>
+
+                <!-- 文章字数统计 -->
+                <div class="post-intro-meta">
+                    <!-- 撰写日期 -->
+                    <span class="iconfont-archer post-intro-calander">&#xe676;</span>
+                    <span class="post-intro-time">2024/09/28</span>
+                    <!-- busuanzi -->
+                        <span id="busuanzi_container_page_pv" class="busuanzi-pv">
+                            <span class="iconfont-archer post-intro-busuanzi">&#xe602;</span>
+                            <span id="busuanzi_value_page_pv"></span>
+                        </span>
+                    <!-- 文章分享 -->
+                    <span class="share-wrapper">
+                        <span class="iconfont-archer share-icon">&#xe71d;</span>
+                        <span class="share-text">Share</span>
+                        <ul class="share-list">
+                            <li class="iconfont-archer share-qr" data-type="qr">&#xe75b;
+                                <div class="share-qrcode"></div>
+                            </li>
+                            <li class="iconfont-archer" data-type="weibo">&#xe619;</li>
+                            <li class="iconfont-archer" data-type="qzone">&#xe62e;</li>
+                            <li class="iconfont-archer" data-type="twitter">&#xe634;</li>
+                            <li class="iconfont-archer" data-type="facebook">&#xe67a;</li>
+                        </ul>
+                    </span>
+                </div>
+            </div>
     </div>
 </div>
 
@@ -395,32 +470,115 @@
 
             <img class="loading" src="/assets/loading.svg" style="display: block; margin: 6rem auto 0 auto; width: 6rem; height: 6rem;" alt="loading">
             <div class="container container-unloaded">
-                <main class="main index-page">
-            
-        <article class="index-post">
-            <a class="abstract-title" href="/2024/07/24/%E6%8C%87%E5%8D%97/">
-                    <span class="iconfont-archer stick-top">&#xe63d;</span>
-                <span class="abstract-title-text">个人用使用指南</span>
-            </a>
-            <div class="abstract-content">
-                Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub.
-基本操作Create a new post1$ hexo new &quot;My New Post&quot;
+                <main class="main post-page">
+    <article class="article-entry">
+        <h1 id="JVM跨平台原理"><a href="#JVM跨平台原理" class="headerlink" title="JVM跨平台原理"></a>JVM跨平台原理</h1><p>本质：不同操作系统上运行的JVM是不一样的</p>
+<h2 id="字节码的作用"><a href="#字节码的作用" class="headerlink" title="字节码的作用"></a>字节码的作用</h2><p>编译时：<br><strong>Java代码——&gt;字节码</strong><br>运行时(解释)：<br>① Java代码—-&gt;机器指令<br>↑<br>| 快于<br>|<br>② <strong>字节码——&gt;机器指令</strong></p>
+<p>JAVA语言使用编译＋解释<br>(python仅解释 c++纯编译性)</p>
+<p>有其他高级语言可以编译字节码，<br>也可以实现跨平台（<strong>兼容多种语言</strong></p>
+<h1 id="JVM整体结构"><a href="#JVM整体结构" class="headerlink" title="JVM整体结构"></a>JVM整体结构</h1><p><img src="/../images/JVM/2.png" alt="请看图片"></p>
+<ul>
+<li><a href="#%E7%B1%BB%E5%8A%A0%E8%BD%BD%E5%AD%90%E7%B3%BB%E7%BB%9F">类加载子系统</a>：把磁盘上的东西(字节码)加载到内存</li>
+<li>JIT编译器：类似快表，缓存反复执行的(热点)指令不用每次编译</li>
+<li><a href="#%E5%A0%86">堆</a>：产生的对象在里面</li>
+<li><a href="#%E8%99%9A%E6%8B%9F%E6%9C%BA%E6%A0%88java%E6%A0%88java%E6%96%B9%E6%B3%95%E6%A0%88">Java方法栈</a>：把某个线程的信息，定义的局部变量等</li>
+<li><a href="#%E6%9C%AC%E5%9C%B0%E6%96%B9%E6%B3%95%E6%A0%88">本地方法栈</a>：native方法(jvm里面的)</li>
+<li><a href="#%E7%A8%8B%E5%BA%8F%E8%AE%A1%E6%95%B0%E5%99%A8">程序计数器</a>：记录等一下要去执行的下一条指令的地址(方便线程切换)</li>
+</ul>
+<hr>
+<h1 id="类加载子系统"><a href="#类加载子系统" class="headerlink" title="类加载子系统"></a>类加载子系统</h1><p><img src="/../images/JVM/3.png"><br>不同类加载器加载的目录不一样(jre&#x2F;lib ;jre&#x2F;lib&#x2F;etc; classpath你所指定的类加载器的路径)<br><strong>双亲委派</strong>(BootStrapClassLaoder-ExtClassLoader-AppClassLaoder)<br>子类加载类时，先用父类加载类</p>
+<ul>
+<li>避免类重复加载</li>
+<li>防止核心API被篡改<br><strong>Tomcat为什么要自定义类加载器</strong><br>为了进行类的隔离<br>应用A和应用B设置各自的类加载器<br>JVM中判断一个类是不是已经被加载的逻辑是：类名＋对应的类加载器实例</li>
+</ul>
+<hr>
+<h1 id="运行时数据区"><a href="#运行时数据区" class="headerlink" title="运行时数据区"></a>运行时数据区</h1><p>方法区&amp;堆：多线程共享<br>Java方法栈&amp;本地方法栈&amp;程序计数器：各线程独享</p>
+<h2 id="程序计数器"><a href="#程序计数器" class="headerlink" title="程序计数器"></a>程序计数器</h2><p>PC Register</p>
+<ul>
+<li>物理寄存器的抽象实现</li>
+<li>记录待执行的下一条指令的地址</li>
+<li>程序控制流的指示器，循环、if-else。异常处理、线程恢复等都依赖它来完成</li>
+<li>解释器工作时就是通过它来获取下一条需要执行的字节码指令的</li>
+<li><strong>他是唯一一个在JVM规范中没有规定任何OutOfMemoryError情况的区域</strong>(不会内存溢出)</li>
+</ul>
+<h2 id="虚拟机栈-Java栈、Java方法栈"><a href="#虚拟机栈-Java栈、Java方法栈" class="headerlink" title="虚拟机栈(Java栈、Java方法栈)"></a>虚拟机栈(Java栈、Java方法栈)</h2><ul>
+<li>虚拟机栈是线程私有的</li>
+<li>一个方法开始执行栈帧入栈、方法执行完对应的栈帧就出栈，所以虚拟机栈不需要进行垃圾回收</li>
+<li>虚拟机栈存在OutOfMemoryError、StackOverflowError</li>
+<li>线程太多就有可能出现OutOfMemoryError，线程创建时没有足够的内存去创建虚拟机栈了</li>
+<li>方法调用层次太多，可能就会出现StackOverflowError</li>
+<li>可以通过-Xss来设置虚拟机栈的大小<br><img src="/../images/JVM/5.png"></li>
+</ul>
+<h3 id="栈帧"><a href="#栈帧" class="headerlink" title="栈帧"></a>栈帧</h3><p><img src="/../images/JVM/6.png"><br><strong>操作数栈</strong><br>Operand Stack<br>计算机组成原理 加法器</p>
+<h2 id="本地方法栈"><a href="#本地方法栈" class="headerlink" title="本地方法栈"></a>本地方法栈</h2><p>native method,在java中定义的方法，但由其他语言实现<br>虚拟机栈存的是Java方法调用过程中的栈帧，本地方法栈存的是本地方法调用过程中的栈帧<br>也是线程私有的，也可能出现OOM和SOF</p>
+<h2 id="堆"><a href="#堆" class="headerlink" title="堆"></a>堆</h2><p>堆是JVM中最重要的一块区域，JVM规范中规定所有的对象和数组都应该存放在堆中，在执行字节码指令时，会把创建的对象存入堆中，对象对应的引用地址存入虚拟机栈中的栈帧中，不过当方法执行完之后，刚刚所创建的对象并不会立马被回收，而是要等JVM后台执行GC后，对象才会被回收</p>
+<ul>
+<li>-Xms，指定堆的初始化内存大小</li>
+<li>Xmx，指定堆的最大内存大小<br><img src="/../images/JVM/7.png"></li>
+</ul>
+<hr>
+<h1 id="垃圾回收"><a href="#垃圾回收" class="headerlink" title="垃圾回收"></a>垃圾回收</h1><h2 id="垃圾标记阶段"><a href="#垃圾标记阶段" class="headerlink" title="垃圾标记阶段"></a>垃圾标记阶段</h2><p>找到JVM中（主要是堆中）有那些垃圾对象</p>
+<ul>
+<li>引用计数法</li>
+<li>可达性分析法<br><strong>引用计数法</strong><br>每个对象都保存一个引用计数器属性，用户记录对象被引用次数<br>优点：<br>实现简单，计数器为0则表示是垃圾对象<br>缺点：</li>
+</ul>
+<ol>
+<li>需要额外的空间来存储引用计数</li>
+<li>需要额外的时间来维护引用计数</li>
+<li><strong>无法处理循环引用的问题</strong></li>
+</ol>
+<h3 id="可达性分析法"><a href="#可达性分析法" class="headerlink" title="可达性分析法"></a>可达性分析法</h3><p>以GC Roots为起始点，然后一层一层找到所引用的对象，被找到的对象就是存货对象，那么其他不可达的对象就是垃圾对象<br><img src="/../images/JVM/8.png" alt="此处应有"><br><strong>GC Roots</strong><br>GC Roots是一组引用，包括：</p>
+<ul>
+<li>线程中虚拟机栈中正在执行的方法中方法参数、局部变量所对应的对象引用</li>
+<li>线程中本地方法栈中正在执行的方法中方法参数、局部变量所对应的对象引用</li>
+<li>方法区中保存的类信息中静态属性所对应的对象引用</li>
+<li>方法区中保存的类信息中常量属性所对应的对象引用</li>
+<li>etc</li>
+</ul>
+<h2 id="标记-清除-Mark-Sweep-算法"><a href="#标记-清除-Mark-Sweep-算法" class="headerlink" title="标记-清除(Mark-Sweep)算法"></a>标记-清除(Mark-Sweep)算法</h2><p>针对某块内存空间，比如新生代、老年代，如果可用内存不足后，就会STW，暂定用户现成的执行，然后执行算法进行垃圾回收</p>
+<ol>
+<li><strong>标记阶段</strong>：从GC Roots开始遍历，找到可达对象，并在对象头中进行记录</li>
+<li><strong>清除阶段</strong>：堆内存空间进行线性遍历，如果发现对象头中没有记录是可达对象，则回收它<br><strong>缺点</strong>：</li>
+<li>效率不高</li>
+<li>内存碎片<br>优点：<br>思路简单</li>
+</ol>
 
-More info: Writing
-Run server1$ hexo server
-...
-            </div>
-            <!-- read more -->
-            <div class="abstract-post-meta">
-                <!-- date -->
-                <div class="abstract-date" title="Last updated: 2024/09/20">
-                    <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2024/07/24</span>
-                </div>
-                <!-- tags -->
-            </div>
-        </article>
-        <div class="index-post-divider"></div>
-    <!-- paginator  -->
+    </article>
+    <!-- license -->
+    <!-- paginator -->
+    <ul class="post-paginator">
+        <li class="next">
+                <div class="nextSlogan">Next Post</div>
+                <a href="/2024/09/28/SpringBoot/" title="SpringBoot">
+                    <div class="nextTitle">SpringBoot</div>
+                </a>
+        </li>
+        <li class="previous">
+                <div class="prevSlogan">Previous Post</div>
+                <a href="/2024/09/26/MySQL/" title="MySQL">
+                    <div class="prevTitle">MySQL</div>
+                </a>
+        </li>
+    </ul>
+    <!-- comment -->
+        <div class="post-comment">
+            <!-- 来必力 City 版安装代码 -->
+
+            
+            
+            
+            <!-- utteranc评论 -->
+
+            <!-- partial('_partial/comment/changyan') -->
+            <!--PC版-->
+
+            
+            
+            
+        </div>
+    <!-- timeliness note -->
+    <!-- idea from: https://hexo.fluid-dev.com/posts/hexo-injector/#%E6%96%87%E7%AB%A0%E6%97%B6%E6%95%88%E6%80%A7%E6%8F%90%E7%A4%BA -->
+    <!-- Mathjax -->
 </main>
 
                 <!-- profile -->
@@ -451,6 +609,13 @@ Run server1$ hexo server
 
         </div>
         <!-- toc -->
+            <div class="toc-wrapper toc-wrapper-loding" style=    top:50vh;
+>
+                <div class="toc-catalog">
+                    <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
+                </div>
+                <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#JVM%E8%B7%A8%E5%B9%B3%E5%8F%B0%E5%8E%9F%E7%90%86"><span class="toc-number">1.</span> <span class="toc-text">JVM跨平台原理</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AD%97%E8%8A%82%E7%A0%81%E7%9A%84%E4%BD%9C%E7%94%A8"><span class="toc-number">1.1.</span> <span class="toc-text">字节码的作用</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#JVM%E6%95%B4%E4%BD%93%E7%BB%93%E6%9E%84"><span class="toc-number">2.</span> <span class="toc-text">JVM整体结构</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%B1%BB%E5%8A%A0%E8%BD%BD%E5%AD%90%E7%B3%BB%E7%BB%9F"><span class="toc-number">3.</span> <span class="toc-text">类加载子系统</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%BF%90%E8%A1%8C%E6%97%B6%E6%95%B0%E6%8D%AE%E5%8C%BA"><span class="toc-number">4.</span> <span class="toc-text">运行时数据区</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%A8%8B%E5%BA%8F%E8%AE%A1%E6%95%B0%E5%99%A8"><span class="toc-number">4.1.</span> <span class="toc-text">程序计数器</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%99%9A%E6%8B%9F%E6%9C%BA%E6%A0%88-Java%E6%A0%88%E3%80%81Java%E6%96%B9%E6%B3%95%E6%A0%88"><span class="toc-number">4.2.</span> <span class="toc-text">虚拟机栈(Java栈、Java方法栈)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A0%88%E5%B8%A7"><span class="toc-number">4.2.1.</span> <span class="toc-text">栈帧</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%AC%E5%9C%B0%E6%96%B9%E6%B3%95%E6%A0%88"><span class="toc-number">4.3.</span> <span class="toc-text">本地方法栈</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A0%86"><span class="toc-number">4.4.</span> <span class="toc-text">堆</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6"><span class="toc-number">5.</span> <span class="toc-text">垃圾回收</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9E%83%E5%9C%BE%E6%A0%87%E8%AE%B0%E9%98%B6%E6%AE%B5"><span class="toc-number">5.1.</span> <span class="toc-text">垃圾标记阶段</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%AF%E8%BE%BE%E6%80%A7%E5%88%86%E6%9E%90%E6%B3%95"><span class="toc-number">5.1.1.</span> <span class="toc-text">可达性分析法</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A0%87%E8%AE%B0-%E6%B8%85%E9%99%A4-Mark-Sweep-%E7%AE%97%E6%B3%95"><span class="toc-number">5.2.</span> <span class="toc-text">标记-清除(Mark-Sweep)算法</span></a></li></ol></li></ol>
+            </div>
         <!-- sidebar -->
         <div class="sidebar sidebar-hide">
     <ul class="sidebar-tabs sidebar-tabs-active-0">
@@ -593,6 +758,7 @@ Run server1$ hexo server
         <!-- busuanzi -->
             <script src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script>
         <!-- async load share.js -->
+            <script src="/scripts/share.js" async></script>
         <!-- mermaid -->
     </body>
 </html>
