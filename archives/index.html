@@ -398,16 +398,40 @@
                 <main class="main index-page">
             
         <article class="index-post">
-            <a class="abstract-title" href="/2024/09/28/SpringBoot/">
-                <span class="abstract-title-text">SpringBoot</span>
+            <a class="abstract-title" href="/2024/10/13/Java%E5%A4%9A%E7%BA%BF%E7%A8%8B/">
+                <span class="abstract-title-text">Java多线程</span>
             </a>
             <div class="abstract-content">
-                
+                在此之前，发现了好东西
+
             </div>
             <!-- read more -->
             <div class="abstract-post-meta">
                 <!-- date -->
-                <div class="abstract-date" title="Last updated: 2024/09/28">
+                <div class="abstract-date" title="Last updated: 2024/10/13">
+                    <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2024/10/13</span>
+                </div>
+                <!-- tags -->
+                    <div class="abstract-tags" >
+        <a class="post-tag" href="javascript:void(0);" data-tags="learn">learn</a>
+</div>
+
+            </div>
+        </article>
+        <div class="index-post-divider"></div>
+            
+        <article class="index-post">
+            <a class="abstract-title" href="/2024/09/28/SpringBoot/">
+                <span class="abstract-title-text">SpringBoot</span>
+            </a>
+            <div class="abstract-content">
+                先等着
+
+            </div>
+            <!-- read more -->
+            <div class="abstract-post-meta">
+                <!-- date -->
+                <div class="abstract-date" title="Last updated: 2024/10/13">
                     <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2024/09/28</span>
                 </div>
                 <!-- tags -->
@@ -436,7 +460,7 @@ Java方法栈：把某个线程的信息，定义的局部变量等
             <!-- read more -->
             <div class="abstract-post-meta">
                 <!-- date -->
-                <div class="abstract-date" title="Last updated: 2024/09/28">
+                <div class="abstract-date" title="Last updated: 2024/10/13">
                     <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2024/09/28</span>
                 </div>
                 <!-- tags -->
@@ -512,14 +536,15 @@ import static java.lang.Math.*;(静态导入)
             </a>
             <div class="abstract-content">
                 单例模式
-确保一个类只有一个实例，而且自行实例化并向整个系统提供这个实例
+确保一个类只有一个实例，而且自行实例化并向整个系统提供这个实例只有一个实例—&gt;构造方法只能是private,并且拥有一个当前类的静态成员变量
 
-工厂模式策略模式观察者模式
+饿汉式实现这个唯一的实例，在类加载的时候马上进行实例化
+123456789101112public class SingletonPattern&#123;    public static void main(String[] args)&#123;    &#125;&#125;class Singleton&#123;    private static Singleton singleton = new Singleton...
             </div>
             <!-- read more -->
             <div class="abstract-post-meta">
                 <!-- date -->
-                <div class="abstract-date" title="Last updated: 2024/09/11">
+                <div class="abstract-date" title="Last updated: 2024/10/13">
                     <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2024/09/11</span>
                 </div>
                 <!-- tags -->
@@ -640,30 +665,6 @@ cdcd ..进入上一层目录cd .进入当前目录（啥用cd ../..上层目录�
             </div>
         </article>
         <div class="index-post-divider"></div>
-            
-        <article class="index-post">
-            <a class="abstract-title" href="/2024/08/31/%E4%B8%8A%E5%AD%A6%E5%89%8D%E7%9A%84%E9%81%97%E8%A8%80/">
-                <span class="abstract-title-text">上学前的遗言</span>
-            </a>
-            <div class="abstract-content">
-                开学前随便写点东西回顾一下hexo怎么用
-回顾暑假
-玩了什么游戏norco类迪文字冒险游戏，美国科幻废土，很有味道，我很喜欢！流程再长点就好了MR.PREPPER基建生存游戏，像辐射缺氧，原本是看海猫玩了买的，感觉中规中矩The Sekimeiya:Spun Glass硬核神作，暑假主要就是在玩这个，本来预估20h左右完事，结果是玩了70h+…而后在steam怒写（？）600字测评，可以说此游在暑假的最后撑起了我整个暑假的游戏回忆咩咩羊启示录和兄弟玩的，好像还有两个boss没打，感觉这点内容原价卖100多太贵了Hades从上学期就在玩的，是觉得xx正在冲出冥界很搞笑开始玩的，好像还没玩明...
-            </div>
-            <!-- read more -->
-            <div class="abstract-post-meta">
-                <!-- date -->
-                <div class="abstract-date" title="Last updated: 2024/09/25">
-                    <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2024/08/31</span>
-                </div>
-                <!-- tags -->
-                    <div class="abstract-tags" >
-        <a class="post-tag" href="javascript:void(0);" data-tags="碎碎念">碎碎念</a>
-</div>
-
-            </div>
-        </article>
-        <div class="index-post-divider"></div>
     <!-- paginator  -->
         <nav class="page-nav">
             <span class="page-number current">1</span><a class="page-number" href="/archives/page/2/">2</a><a class="extend next" rel="next" href="/archives/page/2/">NEXT &gt;</a>
@@ -719,15 +720,20 @@ cdcd ..进入上一层目录cd .进入当前目录（啥用cd ../..上层目录�
         
         
         
+        
     <div class="total-and-search">
         <div class="total-archive">
-        Total : 11
+        Total : 12
         </div>
         <!-- search  -->
     </div>
     <div class="post-archive">
             <div class="archive-year"> 2024 </div>
             <ul class="year-list">
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/13</span>
+            <a class="archive-post-title" href="/2024/10/13/Java%E5%A4%9A%E7%BA%BF%E7%A8%8B/">Java多线程</a>
+        </li>
         <li class="archive-post-item">
             <span class="archive-post-date">09/28</span>
             <a class="archive-post-title" href="/2024/09/28/SpringBoot/">SpringBoot</a>

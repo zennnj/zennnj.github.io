@@ -23,8 +23,12 @@
 <meta property="og:image" content="http://example.com/images/JVM/6.png">
 <meta property="og:image" content="http://example.com/images/JVM/7.png">
 <meta property="og:image" content="http://example.com/images/JVM/8.png">
+<meta property="og:image" content="http://example.com/images/JVM/10.png">
+<meta property="og:image" content="http://example.com/images/JVM/11.png">
+<meta property="og:image" content="http://example.com/images/JVM/12.png">
+<meta property="og:image" content="http://example.com/images/JVM/13.png">
 <meta property="article:published_time" content="2024-09-28T08:57:28.000Z">
-<meta property="article:modified_time" content="2024-09-28T12:07:31.805Z">
+<meta property="article:modified_time" content="2024-10-13T09:58:19.054Z">
 <meta property="article:tag" content="learn">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="http://example.com/images/JVM/2.png">
@@ -479,7 +483,7 @@
 <h1 id="JVM整体结构"><a href="#JVM整体结构" class="headerlink" title="JVM整体结构"></a>JVM整体结构</h1><p><img src="/../images/JVM/2.png" alt="请看图片"></p>
 <ul>
 <li><a href="#%E7%B1%BB%E5%8A%A0%E8%BD%BD%E5%AD%90%E7%B3%BB%E7%BB%9F">类加载子系统</a>：把磁盘上的东西(字节码)加载到内存</li>
-<li>JIT编译器：类似快表，缓存反复执行的(热点)指令不用每次编译</li>
+<li><a href="#jit">JIT编译器</a>：类似快表，缓存反复执行的(热点)指令不用每次编译</li>
 <li><a href="#%E5%A0%86">堆</a>：产生的对象在里面</li>
 <li><a href="#%E8%99%9A%E6%8B%9F%E6%9C%BA%E6%A0%88java%E6%A0%88java%E6%96%B9%E6%B3%95%E6%A0%88">Java方法栈</a>：把某个线程的信息，定义的局部变量等</li>
 <li><a href="#%E6%9C%AC%E5%9C%B0%E6%96%B9%E6%B3%95%E6%A0%88">本地方法栈</a>：native方法(jvm里面的)</li>
@@ -547,6 +551,39 @@
 <li>效率不高</li>
 <li>内存碎片<br>优点：<br>思路简单</li>
 </ol>
+<h2 id="复制算法"><a href="#复制算法" class="headerlink" title="复制算法"></a>复制算法</h2><p>将内存空间分为两块，每次只使用一块，在进行垃圾回收时，将可达对象复制到另外没有被使用的内存块中，然后再清除当前内存块中的所有对象，后续再按同样的流程进行垃圾回收，交换着来<br><strong>优点</strong> </p>
+<ol>
+<li>效率高</li>
+<li>不会出现内存碎片<br><strong>缺点</strong></li>
+<li>需要更多的内存</li>
+<li>对象存放的地址发生了改变，需要额外的时间修改栈帧中记录的地址引用</li>
+<li>垃圾对象少时效率低</li>
+</ol>
+<h2 id="标记-整理-Mark-Compact-算法"><a href="#标记-整理-Mark-Compact-算法" class="headerlink" title="标记-整理(Mark-Compact)算法"></a>标记-整理(Mark-Compact)算法</h2><p>第一阶段和标记-清除算法一样<br>第二阶段将所有存货对象移动到内存的一端<br>最后清理边界外所有的空间<br><img src="/../images/JVM/10.png" alt="效率有点低"></p>
+<h2 id="分代收集算法"><a href="#分代收集算法" class="headerlink" title="分代收集算法"></a>分代收集算法</h2><p>（只是一个理念）<br>不同对象的存活市场是不一样的，也就可以针对不同的对象采取不同的垃圾回收算法</p>
+<p>默认几乎所有的垃圾收集器都是采用分代收集算法进行垃圾回收的</p>
+<ul>
+<li>新生代中的对象存活时间比较短，可以利用复制算法，他适合垃圾对象比较多的情况</li>
+<li>老年代中的对象存活时间比较长，可以用标记清除或标记整理算法，<br>比如：<ul>
+<li>CMS垃圾收集器采用的就是标记-清除算法</li>
+<li>Serial Old垃圾收集器采用的就是标记-整理算法</li>
+</ul>
+</li>
+</ul>
+<p><img src="/../images/JVM/11.png" alt="垃圾回收器"></p>
+<h3 id="CMS"><a href="#CMS" class="headerlink" title="CMS"></a>CMS</h3><p>STW时间变短，用户体验更好，但是吞吐量变低了（单位时间内执行的用户线程更少了）<br><img src="/../images/JVM/12.png"><br>并发标记：遍历老年代，标记出所有可达对象<br>不需要STW，用户线程与垃圾收集线程一起执行</p>
+<h3 id="G1-Garbage-First"><a href="#G1-Garbage-First" class="headerlink" title="G1(Garbage-First)"></a>G1(Garbage-First)</h3><p><img src="/../images/JVM/13.png"> </p>
+<hr>
+<h1 id="JIT"><a href="#JIT" class="headerlink" title="JIT"></a>JIT</h1><p>JIT（Just-In-Time）编译器是一种动态编译技术，常用于将字节码或其他中间表示形式转换为本地机器码。JIT 编译器与传统的静态编译器不同，它在运行时根据需要进行编译，并将已编译的代码缓存以供后续重复执行。</p>
+<p>JIT 编译器通常与虚拟机（如 Java 虚拟机）一起使用，用于提高程序的执行性能。以下是 JIT 编译器的基本工作过程：</p>
+<p>解释执行：一开始，虚拟机会使用解释器直接解释字节码指令。这种解释执行的方式灵活但速度较慢。</p>
+<p>热点探测：JIT 编译器会监控程序的运行情况，收集信息来确定哪些代码片段被频繁执行，即所谓的热点代码。</p>
+<p>即时编译：当某个代码片段被判定为热点时，JIT 编译器将该片段的字节码转换为本地机器码。这个过程只发生一次，后续执行相同的代码时将直接使用已编译的机器码，不再解释执行。</p>
+<p>缓存和优化：编译得到的机器码通常会被缓存起来，以备后续执行同样的代码。JIT 编译器还可以根据运行时的信息进行优化，例如内联函数调用、消除冗余检查等，以进一步提高性能。</p>
+<p>通过将热点代码编译成机器码，JIT 编译器能够显著提高程序的执行速度。它在程序运行初期可能会有一些性能损失，因为需要额外的编译时间，但随着时间的推移和热点代码的不断优化，整体性能会得到提升。</p>
+<p>JIT 编译器是许多现代虚拟机的关键组件，它们帮助解决了解释执行和静态编译之间的折衷，实现了高效的动态代码执行。</p>
+<hr>
+<h1 id="后话"><a href="#后话" class="headerlink" title="后话"></a>后话</h1><p>0929,概念上的东西总是学得很快<br>但是好久没敲代码了，国庆该练练手了（捋袖子）</p>
 
     </article>
     <!-- license -->
@@ -619,7 +656,7 @@
                 <div class="toc-catalog">
                     <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
                 </div>
-                <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#JVM%E8%B7%A8%E5%B9%B3%E5%8F%B0%E5%8E%9F%E7%90%86"><span class="toc-number">1.</span> <span class="toc-text">JVM跨平台原理</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AD%97%E8%8A%82%E7%A0%81%E7%9A%84%E4%BD%9C%E7%94%A8"><span class="toc-number">1.1.</span> <span class="toc-text">字节码的作用</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#JVM%E6%95%B4%E4%BD%93%E7%BB%93%E6%9E%84"><span class="toc-number">2.</span> <span class="toc-text">JVM整体结构</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%B1%BB%E5%8A%A0%E8%BD%BD%E5%AD%90%E7%B3%BB%E7%BB%9F"><span class="toc-number">3.</span> <span class="toc-text">类加载子系统</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%BF%90%E8%A1%8C%E6%97%B6%E6%95%B0%E6%8D%AE%E5%8C%BA"><span class="toc-number">4.</span> <span class="toc-text">运行时数据区</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%A8%8B%E5%BA%8F%E8%AE%A1%E6%95%B0%E5%99%A8"><span class="toc-number">4.1.</span> <span class="toc-text">程序计数器</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%99%9A%E6%8B%9F%E6%9C%BA%E6%A0%88-Java%E6%A0%88%E3%80%81Java%E6%96%B9%E6%B3%95%E6%A0%88"><span class="toc-number">4.2.</span> <span class="toc-text">虚拟机栈(Java栈、Java方法栈)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A0%88%E5%B8%A7"><span class="toc-number">4.2.1.</span> <span class="toc-text">栈帧</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%AC%E5%9C%B0%E6%96%B9%E6%B3%95%E6%A0%88"><span class="toc-number">4.3.</span> <span class="toc-text">本地方法栈</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A0%86"><span class="toc-number">4.4.</span> <span class="toc-text">堆</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6"><span class="toc-number">5.</span> <span class="toc-text">垃圾回收</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9E%83%E5%9C%BE%E6%A0%87%E8%AE%B0%E9%98%B6%E6%AE%B5"><span class="toc-number">5.1.</span> <span class="toc-text">垃圾标记阶段</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%AF%E8%BE%BE%E6%80%A7%E5%88%86%E6%9E%90%E6%B3%95"><span class="toc-number">5.1.1.</span> <span class="toc-text">可达性分析法</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A0%87%E8%AE%B0-%E6%B8%85%E9%99%A4-Mark-Sweep-%E7%AE%97%E6%B3%95"><span class="toc-number">5.2.</span> <span class="toc-text">标记-清除(Mark-Sweep)算法</span></a></li></ol></li></ol>
+                <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#JVM%E8%B7%A8%E5%B9%B3%E5%8F%B0%E5%8E%9F%E7%90%86"><span class="toc-number">1.</span> <span class="toc-text">JVM跨平台原理</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AD%97%E8%8A%82%E7%A0%81%E7%9A%84%E4%BD%9C%E7%94%A8"><span class="toc-number">1.1.</span> <span class="toc-text">字节码的作用</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#JVM%E6%95%B4%E4%BD%93%E7%BB%93%E6%9E%84"><span class="toc-number">2.</span> <span class="toc-text">JVM整体结构</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%B1%BB%E5%8A%A0%E8%BD%BD%E5%AD%90%E7%B3%BB%E7%BB%9F"><span class="toc-number">3.</span> <span class="toc-text">类加载子系统</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%BF%90%E8%A1%8C%E6%97%B6%E6%95%B0%E6%8D%AE%E5%8C%BA"><span class="toc-number">4.</span> <span class="toc-text">运行时数据区</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%A8%8B%E5%BA%8F%E8%AE%A1%E6%95%B0%E5%99%A8"><span class="toc-number">4.1.</span> <span class="toc-text">程序计数器</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%99%9A%E6%8B%9F%E6%9C%BA%E6%A0%88-Java%E6%A0%88%E3%80%81Java%E6%96%B9%E6%B3%95%E6%A0%88"><span class="toc-number">4.2.</span> <span class="toc-text">虚拟机栈(Java栈、Java方法栈)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A0%88%E5%B8%A7"><span class="toc-number">4.2.1.</span> <span class="toc-text">栈帧</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%AC%E5%9C%B0%E6%96%B9%E6%B3%95%E6%A0%88"><span class="toc-number">4.3.</span> <span class="toc-text">本地方法栈</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A0%86"><span class="toc-number">4.4.</span> <span class="toc-text">堆</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6"><span class="toc-number">5.</span> <span class="toc-text">垃圾回收</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9E%83%E5%9C%BE%E6%A0%87%E8%AE%B0%E9%98%B6%E6%AE%B5"><span class="toc-number">5.1.</span> <span class="toc-text">垃圾标记阶段</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%AF%E8%BE%BE%E6%80%A7%E5%88%86%E6%9E%90%E6%B3%95"><span class="toc-number">5.1.1.</span> <span class="toc-text">可达性分析法</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A0%87%E8%AE%B0-%E6%B8%85%E9%99%A4-Mark-Sweep-%E7%AE%97%E6%B3%95"><span class="toc-number">5.2.</span> <span class="toc-text">标记-清除(Mark-Sweep)算法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A4%8D%E5%88%B6%E7%AE%97%E6%B3%95"><span class="toc-number">5.3.</span> <span class="toc-text">复制算法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A0%87%E8%AE%B0-%E6%95%B4%E7%90%86-Mark-Compact-%E7%AE%97%E6%B3%95"><span class="toc-number">5.4.</span> <span class="toc-text">标记-整理(Mark-Compact)算法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%86%E4%BB%A3%E6%94%B6%E9%9B%86%E7%AE%97%E6%B3%95"><span class="toc-number">5.5.</span> <span class="toc-text">分代收集算法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#CMS"><span class="toc-number">5.5.1.</span> <span class="toc-text">CMS</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#G1-Garbage-First"><span class="toc-number">5.5.2.</span> <span class="toc-text">G1(Garbage-First)</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#JIT"><span class="toc-number">6.</span> <span class="toc-text">JIT</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%90%8E%E8%AF%9D"><span class="toc-number">7.</span> <span class="toc-text">后话</span></a></li></ol>
             </div>
         <!-- sidebar -->
         <div class="sidebar sidebar-hide">
@@ -642,15 +679,20 @@
         
         
         
+        
     <div class="total-and-search">
         <div class="total-archive">
-        Total : 11
+        Total : 12
         </div>
         <!-- search  -->
     </div>
     <div class="post-archive">
             <div class="archive-year"> 2024 </div>
             <ul class="year-list">
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/13</span>
+            <a class="archive-post-title" href="/2024/10/13/Java%E5%A4%9A%E7%BA%BF%E7%A8%8B/">Java多线程</a>
+        </li>
         <li class="archive-post-item">
             <span class="archive-post-date">09/28</span>
             <a class="archive-post-title" href="/2024/09/28/SpringBoot/">SpringBoot</a>
