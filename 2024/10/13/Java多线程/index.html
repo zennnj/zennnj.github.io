@@ -18,7 +18,7 @@
 <meta property="og:description" content="在此之前，发现了好东西 基本概念进程&amp;线程进程：程序的基本执行实体线程：操作系统能够进行运算调度的最小单位，它被包含在进程之中，是进程中的实际运作单位。 多线程的应用场景 拷贝、迁移大文件 加载大量的资源文件  并发和并行并发：在同一时刻，有多个指令在单个CPU上交替执行并行：在同一时刻，有多个指令在多个CPU上同时执行 多线程的实现方式继承Thread类的方式进行实现1234567891">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2024-10-13T08:07:42.000Z">
-<meta property="article:modified_time" content="2024-10-20T09:25:27.620Z">
+<meta property="article:modified_time" content="2024-10-24T12:02:19.907Z">
 <meta property="article:tag" content="learn">
 <meta name="twitter:card" content="summary">
     <meta http-equiv="Cache-control" content="no-cache">
@@ -507,7 +507,8 @@
 <td align="left">可以得到结果</td>
 </tr>
 </tbody></table>
-
+<h2 id="常见的成员方法"><a href="#常见的成员方法" class="headerlink" title="常见的成员方法"></a>常见的成员方法</h2><p><code>String getName()</code> 返回此线程的名字<br><code>void setName(String name)</code> 设置线程的名字（构造方法也可以设置名字，即实例化时调用thread类那个有参构造器）<em>默认Thread-x</em><br><code>static Thread currentThread()</code> 获取当前线程的对象<br>当JVM虚拟机启动之后，会自动启动多条线程，其中一条main线程的作用是去调用main方法执行代码<br><code>static void sleep(long time)</code> 让线程休眠指定的时间，单位为毫秒，哪条线程执行到这里就会在这里停留(1s&#x3D;1000ms)<br><code>setPriority(int newPriority)</code> 设置线程的优先级 优先级只是一个概率<br><code>final int getPriority()</code> 获取线程的优先级<br><code>final void setDaemon(boolean on)</code> 设置为守护线程<br>当非守护线程执行完毕之后，守护线程会陆续结束<br>e.g.关闭qq聊天窗，传输线程也结束<br><code>public static void yield()</code> 出让线程&#x2F;礼让线程<br>让出当前cpu执行权<br><code>public static void join()</code> 插入线程&#x2F;插队线程<br>把这个线程插入到当前线程之前</p>
+<h2 id="线程的生命周期"><a href="#线程的生命周期" class="headerlink" title="线程的生命周期"></a>线程的生命周期</h2>
     </article>
     <!-- license -->
     <!-- paginator -->
@@ -579,7 +580,7 @@
                 <div class="toc-catalog">
                     <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
                 </div>
-                <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5"><span class="toc-number">1.</span> <span class="toc-text">基本概念</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%9B%E7%A8%8B-%E7%BA%BF%E7%A8%8B"><span class="toc-number">1.1.</span> <span class="toc-text">进程&amp;线程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A4%9A%E7%BA%BF%E7%A8%8B%E7%9A%84%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="toc-number">1.2.</span> <span class="toc-text">多线程的应用场景</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B9%B6%E5%8F%91%E5%92%8C%E5%B9%B6%E8%A1%8C"><span class="toc-number">1.3.</span> <span class="toc-text">并发和并行</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A4%9A%E7%BA%BF%E7%A8%8B%E7%9A%84%E5%AE%9E%E7%8E%B0%E6%96%B9%E5%BC%8F"><span class="toc-number">1.4.</span> <span class="toc-text">多线程的实现方式</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BB%A7%E6%89%BFThread%E7%B1%BB%E7%9A%84%E6%96%B9%E5%BC%8F%E8%BF%9B%E8%A1%8C%E5%AE%9E%E7%8E%B0"><span class="toc-number">1.4.1.</span> <span class="toc-text">继承Thread类的方式进行实现</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E7%8E%B0Runnable%E6%8E%A5%E5%8F%A3%E7%9A%84%E6%96%B9%E5%BC%8F%E8%BF%9B%E8%A1%8C%E5%AE%9E%E7%8E%B0"><span class="toc-number">1.4.2.</span> <span class="toc-text">实现Runnable接口的方式进行实现</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%A9%E7%94%A8Callable%E6%8E%A5%E5%8F%A3%E5%92%8CFuture%E6%8E%A5%E5%8F%A3%E6%96%B9%E5%BC%8F%E5%AE%9E%E7%8E%B0"><span class="toc-number">1.4.3.</span> <span class="toc-text">利用Callable接口和Future接口方式实现</span></a></li></ol></li></ol></li></ol>
+                <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5"><span class="toc-number">1.</span> <span class="toc-text">基本概念</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%9B%E7%A8%8B-%E7%BA%BF%E7%A8%8B"><span class="toc-number">1.1.</span> <span class="toc-text">进程&amp;线程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A4%9A%E7%BA%BF%E7%A8%8B%E7%9A%84%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="toc-number">1.2.</span> <span class="toc-text">多线程的应用场景</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B9%B6%E5%8F%91%E5%92%8C%E5%B9%B6%E8%A1%8C"><span class="toc-number">1.3.</span> <span class="toc-text">并发和并行</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A4%9A%E7%BA%BF%E7%A8%8B%E7%9A%84%E5%AE%9E%E7%8E%B0%E6%96%B9%E5%BC%8F"><span class="toc-number">1.4.</span> <span class="toc-text">多线程的实现方式</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BB%A7%E6%89%BFThread%E7%B1%BB%E7%9A%84%E6%96%B9%E5%BC%8F%E8%BF%9B%E8%A1%8C%E5%AE%9E%E7%8E%B0"><span class="toc-number">1.4.1.</span> <span class="toc-text">继承Thread类的方式进行实现</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E7%8E%B0Runnable%E6%8E%A5%E5%8F%A3%E7%9A%84%E6%96%B9%E5%BC%8F%E8%BF%9B%E8%A1%8C%E5%AE%9E%E7%8E%B0"><span class="toc-number">1.4.2.</span> <span class="toc-text">实现Runnable接口的方式进行实现</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%A9%E7%94%A8Callable%E6%8E%A5%E5%8F%A3%E5%92%8CFuture%E6%8E%A5%E5%8F%A3%E6%96%B9%E5%BC%8F%E5%AE%9E%E7%8E%B0"><span class="toc-number">1.4.3.</span> <span class="toc-text">利用Callable接口和Future接口方式实现</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B8%B8%E8%A7%81%E7%9A%84%E6%88%90%E5%91%98%E6%96%B9%E6%B3%95"><span class="toc-number">1.5.</span> <span class="toc-text">常见的成员方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BA%BF%E7%A8%8B%E7%9A%84%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F"><span class="toc-number">1.6.</span> <span class="toc-text">线程的生命周期</span></a></li></ol></li></ol>
             </div>
         <!-- sidebar -->
         <div class="sidebar sidebar-hide">
@@ -604,15 +605,20 @@
         
         
         
+        
     <div class="total-and-search">
         <div class="total-archive">
-        Total : 13
+        Total : 14
         </div>
         <!-- search  -->
     </div>
     <div class="post-archive">
             <div class="archive-year"> 2024 </div>
             <ul class="year-list">
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/25</span>
+            <a class="archive-post-title" href="/2024/10/25/C/">C#</a>
+        </li>
         <li class="archive-post-item">
             <span class="archive-post-date">10/19</span>
             <a class="archive-post-title" href="/2024/10/19/%E7%BC%96%E7%A8%8B%E7%BB%86%E8%8A%82%E8%AE%B0%E5%BD%95/">编程细节记录</a>
@@ -678,6 +684,10 @@
             <span class="sidebar-tag-name" data-tags="learn">
                 <span class="iconfont-archer">&#xe606;</span>
                 learn
+            </span>
+            <span class="sidebar-tag-name" data-tags="unity">
+                <span class="iconfont-archer">&#xe606;</span>
+                unity
             </span>
     </div>
     <div class="iconfont-archer sidebar-tags-empty">&#xe678;</div>
