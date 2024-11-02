@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <!-- title -->
+<!-- keywords -->
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="author" content="">
+    <meta name="renderer" content="webkit">
+    <meta name="copyright" content="">
+        <meta name="keywords" content="hexo,hexo-theme,hexo-blog">
+    <meta name="description" content="">
+    <meta name="description" content="一天c#铺垫后的正文 新建文件夹！ 脚本创建规则 不要在vs中创建脚本 可以放在assets文件夹下的任何位置(建议同一文件下) 类名和文件名必须一致，不然不能挂载（反射机制通过文件名找type 不要用中文命名 不用管命名空间 创建的脚本默认继承MonoBehavior  MonoBehavior基类 脚本只有继承了mb类才能挂载在gameobj上 继承了mb类的脚本不能new，只能挂，因此写构造">
+<meta property="og:type" content="article">
+<meta property="og:title" content="unity">
+<meta property="og:url" content="http://example.com/2024/10/26/unity/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="一天c#铺垫后的正文 新建文件夹！ 脚本创建规则 不要在vs中创建脚本 可以放在assets文件夹下的任何位置(建议同一文件下) 类名和文件名必须一致，不然不能挂载（反射机制通过文件名找type 不要用中文命名 不用管命名空间 创建的脚本默认继承MonoBehavior  MonoBehavior基类 脚本只有继承了mb类才能挂载在gameobj上 继承了mb类的脚本不能new，只能挂，因此写构造">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/images/unity/1.png">
+<meta property="og:image" content="http://example.com/images/unity/2.png">
+<meta property="article:published_time" content="2024-10-26T00:45:24.000Z">
+<meta property="article:modified_time" content="2024-11-02T10:14:08.903Z">
+<meta property="article:tag" content="unity">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/images/unity/1.png">
+    <meta http-equiv="Cache-control" content="no-cache">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <link rel="icon" href="/assets/my.ico">
+    <title>unity · Terminal 4</title>
+    <!-- /*! loadCSS. [c]2017 Filament Group, Inc. MIT License */
+/* This file is meant as a standalone workflow for
+- testing support for link[rel=preload]
+- enabling async CSS loading in browsers that do not support rel=preload
+- applying rel preload css once loaded, whether supported or not.
+*/ -->
+<script>
+    (function (w) {
+        'use strict'
+        // rel=preload support test
+        if (!w.loadCSS) {
+            w.loadCSS = function () {}
+        }
+        // define on the loadCSS obj
+        var rp = (loadCSS.relpreload = {})
+        // rel=preload feature support test
+        // runs once and returns a function for compat purposes
+        rp.support = (function () {
+            var ret
+            try {
+                ret = w.document.createElement('link').relList.supports('preload')
+            } catch (e) {
+                ret = false
+            }
+            return function () {
+                return ret
+            }
+        })()
+
+        // if preload isn't supported, get an asynchronous load by using a non-matching media attribute
+        // then change that media back to its intended value on load
+        rp.bindMediaToggle = function (link) {
+            // remember existing media attr for ultimate state, or default to 'all'
+            var finalMedia = link.media || 'all'
+
+            function enableStylesheet() {
+                link.media = finalMedia
+            }
+
+            // bind load handlers to enable media
+            if (link.addEventListener) {
+                link.addEventListener('load', enableStylesheet)
+            } else if (link.attachEvent) {
+                link.attachEvent('onload', enableStylesheet)
+            }
+
+            // Set rel and non-applicable media type to start an async request
+            // note: timeout allows this to happen async to let rendering continue in IE
+            setTimeout(function () {
+                link.rel = 'stylesheet'
+                link.media = 'only x'
+            })
+            // also enable media after 3 seconds,
+            // which will catch very old browsers (android 2.x, old firefox) that don't support onload on link
+            setTimeout(enableStylesheet, 3000)
+        }
+
+        // loop through link elements in DOM
+        rp.poly = function () {
+            // double check this to prevent external calls from running
+            if (rp.support()) {
+                return
+            }
+            var links = w.document.getElementsByTagName('link')
+            for (var i = 0; i < links.length; i++) {
+                var link = links[i]
+                // qualify links to those with rel=preload and as=style attrs
+                if (
+                    link.rel === 'preload' &&
+                    link.getAttribute('as') === 'style' &&
+                    !link.getAttribute('data-loadcss')
+                ) {
+                    // prevent rerunning on link
+                    link.setAttribute('data-loadcss', true)
+                    // bind listeners to toggle media back
+                    rp.bindMediaToggle(link)
+                }
+            }
+        }
+
+        // if unsupported, run the polyfill
+        if (!rp.support()) {
+            // run once at least
+            rp.poly()
+
+            // rerun poly on an interval until onload
+            var run = w.setInterval(rp.poly, 500)
+            if (w.addEventListener) {
+                w.addEventListener('load', function () {
+                    rp.poly()
+                    w.clearInterval(run)
+                })
+            } else if (w.attachEvent) {
+                w.attachEvent('onload', function () {
+                    rp.poly()
+                    w.clearInterval(run)
+                })
+            }
+        }
+
+        // commonjs
+        if (typeof exports !== 'undefined') {
+            exports.loadCSS = loadCSS
+        } else {
+            w.loadCSS = loadCSS
+        }
+    })(typeof global !== 'undefined' ? global : this)
+</script>
+
+    <style type="text/css">
+    @font-face {
+        font-family: 'Oswald-Regular';
+        src: url("/font/Oswald-Regular.ttf");
+    }
+
+    body {
+        margin: 0;
+    }
+
+    header,
+    footer,
+    .footer-fixed-btn,
+    .sidebar,
+    .container,
+    .site-intro-meta,
+    .toc-wrapper {
+        display: none;
+    }
+
+    .site-intro {
+        position: relative;
+        z-index: 3;
+        width: 100%;
+        /* height: 50vh; */
+        overflow: hidden;
+    }
+
+    .site-intro-placeholder {
+        position: absolute;
+        z-index: -2;
+        top: 0;
+        left: 0;
+        width: calc(100% + 300px);
+        height: 100%;
+        background: repeating-linear-gradient(
+            -45deg,
+            #444 0,
+            #444 80px,
+            #333 80px,
+            #333 160px
+        );
+        background-position: center center;
+        transform: translate3d(-226px, 0, 0);
+        animation: gradient-move 2.5s ease-out 0s infinite;
+    }
+
+    @keyframes gradient-move {
+        0% {
+            transform: translate3d(-226px, 0, 0);
+        }
+        100% {
+            transform: translate3d(0, 0, 0);
+        }
+    }
+</style>
+
+    <link id="stylesheet-fancybox" rel="preload" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.36/dist/fancybox/fancybox.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <link id="stylesheet-base" rel="preload" href="/css/style.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <link id="stylesheet-mobile" rel="preload" href="/css/mobile.css" as="style" onload="this.onload=null;this.rel='stylesheet';this.media='screen and (max-width: 960px)'">
+    <link id="stylesheet-theme-dark" rel="preload" href="/css/dark.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" as="script">
+    <link rel="preload" href="/scripts/main.js" as="script">
+    <link rel="preload" href="/font/Oswald-Regular.ttf" as="font" crossorigin>
+    <link rel="preload" href="https://at.alicdn.com/t/font_327081_1dta1rlogw17zaor.woff" as="font" crossorigin>
+    <!-- algolia -->
+    <!-- 百度统计  -->
+    <!-- 谷歌统计  -->
+    <!-- Google tag (gtag.js) -->
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+    <script type="text/javascript">
+        if (typeof window.$ == undefined) {
+            console.warn('jquery load from jsdelivr failed, will load local script')
+            document.write('<script src="/lib/jquery.min.js" />')
+        }
+    </script>
+        <body class="post-body">
+        <!-- header -->
+        <header class="header header-mobile">
+    <!-- top read progress line -->
+    <div class="header-element">
+        <div class="read-progress"></div>
+    </div>
+    <!-- sidebar menu button -->
+    <div class="header-element">
+        <div class="header-sidebar-menu">
+            <div style="padding-left: 1px;">&#xe775;</div>
+        </div>
+    </div>
+    <!-- header actions -->
+    <div class="header-actions">
+        <!-- theme mode switch button -->
+        <span class="header-theme-btn header-element">
+            <i class="fas fa-adjust"></i>
+        </span>
+        <!-- back to home page text -->
+        <span class="home-link header-element">
+            <a href="/">Terminal 4.</a>
+        </span>
+    </div>
+    <!-- toggle banner -->
+    <div class="banner">
+        <div class="blog-title header-element">
+            <a href="/">Terminal 4.</a>
+        </div>
+        <div class="post-title header-element">
+            <a href="#" class="post-name">unity</a>
+        </div>
+    </div>
+</header>
+
+        <!-- fixed footer -->
+        <footer class="footer-fixed">
+    <!-- donate button -->
+    <div class="donate-popup donate-popup--hidden">
+    <div class="donate-popup__title">Buy Me A Milktea!</div>
+    <div class="donate-popup__content">
+        <div class="donate-popup__content-description">If this post helped you🤓👆, please consider buying the author a cup of milktea 🥤!(Actually,I prefer fruit tea.🥳)</div>
+        <img
+            class="donate-popup__content-qrCode"
+            title="Wechat"
+            alt="Wechat"
+            src="/assets/donate-wechat.png"
+        ></img>
+        <img
+            class="donate-popup__content-qrCode"
+            title="Alipay"
+            alt="Alipay"
+            src="/assets/donate-alipay.jpg"
+        ></img>
+    </div>
+</div>
+
+    <div
+        title="Donate to the author"
+        class="footer-fixed-btn footer-fixed-btn--hidden donate-btn"
+    >
+        <i class="fas fa-donate"></i>
+    </div>
+
+    <!-- back to top button -->
+    <div class="footer-fixed-btn footer-fixed-btn--hidden back-top">
+        <div>&#xe639;</div>
+    </div>
+</footer>
+
+        <!-- wrapper -->
+        <div class="wrapper">
+            <div class="site-intro" style="    height:50vh;
+">
+    <!-- 主页  -->
+    <!-- 404页  -->
+    <div class="site-intro-placeholder"></div>
+    <div class="site-intro-img" style="background-image: url(/intro/post-bg.jpg)"></div>
+    <div class="site-intro-meta">
+        <!-- 标题  -->
+        <h1 class="intro-title">
+            <!-- 主页  -->
+                unity
+            <!-- 404 -->
+        </h1>
+        <!-- 副标题 -->
+        <p class="intro-subtitle">
+            <!-- 主页副标题  -->
+            <!-- 404 -->
+        </p>
+        <!-- 文章页 meta -->
+            <div class="post-intros">
+                <!-- 文章页标签  -->
+                    <div class="post-intro-tags" >
+        <a class="post-tag" href="javascript:void(0);" data-tags="unity">unity</a>
+</div>
+
+                <!-- 文章字数统计 -->
+                <div class="post-intro-meta">
+                    <!-- 撰写日期 -->
+                    <span class="iconfont-archer post-intro-calander">&#xe676;</span>
+                    <span class="post-intro-time">2024/10/26</span>
+                    <!-- busuanzi -->
+                        <span id="busuanzi_container_page_pv" class="busuanzi-pv">
+                            <span class="iconfont-archer post-intro-busuanzi">&#xe602;</span>
+                            <span id="busuanzi_value_page_pv"></span>
+                        </span>
+                    <!-- 文章分享 -->
+                    <span class="share-wrapper">
+                        <span class="iconfont-archer share-icon">&#xe71d;</span>
+                        <span class="share-text">Share</span>
+                        <ul class="share-list">
+                            <li class="iconfont-archer share-qr" data-type="qr">&#xe75b;
+                                <div class="share-qrcode"></div>
+                            </li>
+                            <li class="iconfont-archer" data-type="weibo">&#xe619;</li>
+                            <li class="iconfont-archer" data-type="qzone">&#xe62e;</li>
+                            <li class="iconfont-archer" data-type="twitter">&#xe634;</li>
+                            <li class="iconfont-archer" data-type="facebook">&#xe67a;</li>
+                        </ul>
+                    </span>
+                </div>
+            </div>
+    </div>
+</div>
+
+            <script>
+  // get user agent
+  function getBrowserVersions() {
+    var u = window.navigator.userAgent
+    return {
+      userAgent: u,
+      trident: u.indexOf('Trident') > -1, //IE内核
+      presto: u.indexOf('Presto') > -1, //opera内核
+      webKit: u.indexOf('AppleWebKit') > -1, //苹果、谷歌内核
+      gecko: u.indexOf('Gecko') > -1 && u.indexOf('KHTML') == -1, //火狐内核
+      mobile: !!u.match(/AppleWebKit.*Mobile.*/), //是否为移动终端
+      ios: !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/), //ios终端
+      android: u.indexOf('Android') > -1 || u.indexOf('Linux') > -1, //android终端或者uc浏览器
+      iPhone: u.indexOf('iPhone') > -1 || u.indexOf('Mac') > -1, //是否为iPhone或者安卓QQ浏览器
+      iPad: u.indexOf('iPad') > -1, //是否为iPad
+      webApp: u.indexOf('Safari') == -1, //是否为web应用程序，没有头部与底部
+      weixin: u.indexOf('MicroMessenger') == -1, //是否为微信浏览器
+      uc: u.indexOf('UCBrowser') > -1, //是否为android下的UC浏览器
+    }
+  }
+  var browser = {
+    versions: getBrowserVersions(),
+  }
+  console.log('userAgent: ' + browser.versions.userAgent)
+
+  // callback
+  function fontLoaded() {
+    console.log('font loaded')
+    if (document.getElementsByClassName('site-intro-meta')) {
+      document
+        .getElementsByClassName('intro-title')[0]
+        .classList.add('intro-fade-in')
+      document
+        .getElementsByClassName('intro-subtitle')[0]
+        .classList.add('intro-fade-in')
+      var postIntros = document.getElementsByClassName('post-intros')[0]
+      if (postIntros) {
+        postIntros.classList.add('post-fade-in')
+      }
+    }
+  }
+
+  // UC不支持跨域，所以直接显示
+  function asyncCb() {
+    if (browser.versions.uc) {
+      console.log('UCBrowser')
+      fontLoaded()
+    } else {
+      WebFont.load({
+        custom: {
+          families: ['Oswald-Regular'],
+        },
+        loading: function () {
+          // 所有字体开始加载
+          // console.log('font loading');
+        },
+        active: function () {
+          // 所有字体已渲染
+          fontLoaded()
+        },
+        inactive: function () {
+          // 字体预加载失败，无效字体或浏览器不支持加载
+          console.log('inactive: timeout')
+          fontLoaded()
+        },
+        timeout: 5000, // Set the timeout to two seconds
+      })
+    }
+  }
+
+  function asyncErr() {
+    console.warn('script load from CDN failed, will load local script')
+  }
+
+  // load webfont-loader async, and add callback function
+  function async(u, cb, err) {
+    var d = document,
+      t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0]
+    o.src = u
+    if (cb) {
+      o.addEventListener(
+        'load',
+        function (e) {
+          cb(null, e)
+        },
+        false
+      )
+    }
+    if (err) {
+      o.addEventListener(
+        'error',
+        function (e) {
+          err(null, e)
+        },
+        false
+      )
+    }
+    s.parentNode.insertBefore(o, s)
+  }
+
+  var asyncLoadWithFallBack = function (arr, success, reject) {
+    var currReject = function () {
+      reject()
+      arr.shift()
+      if (arr.length) async(arr[0], success, currReject)
+    }
+
+    async(arr[0], success, currReject)
+  }
+
+  asyncLoadWithFallBack(
+    [
+      'https://cdn.jsdelivr.net/npm/webfontloader@1.6.28/webfontloader.min.js',
+      'https://cdn.bootcss.com/webfont/1.6.28/webfontloader.js',
+      "/lib/webfontloader.min.js",
+    ],
+    asyncCb,
+    asyncErr
+  )
+</script>
+
+            <img class="loading" src="/assets/loading.svg" style="display: block; margin: 6rem auto 0 auto; width: 6rem; height: 6rem;" alt="loading">
+            <div class="container container-unloaded">
+                <main class="main post-page">
+    <article class="article-entry">
+        <p>一天c#铺垫后的正文</p>
+<h1 id="新建文件夹！"><a href="#新建文件夹！" class="headerlink" title="新建文件夹！"></a>新建文件夹！</h1><p><img src="/../images/unity/1.png"><br><img src="/../images/unity/2.png"></p>
+<h1 id="脚本"><a href="#脚本" class="headerlink" title="脚本"></a>脚本</h1><h2 id="创建规则"><a href="#创建规则" class="headerlink" title="创建规则"></a>创建规则</h2><ol>
+<li>不要在vs中创建脚本</li>
+<li>可以放在assets文件夹下的任何位置(建议同一文件下)</li>
+<li>类名和文件名必须一致，不然不能挂载（反射机制通过文件名找type</li>
+<li>不要用中文命名</li>
+<li>不用管命名空间</li>
+<li>创建的脚本默认继承MonoBehavior</li>
+</ol>
+<h2 id="MonoBehavior基类"><a href="#MonoBehavior基类" class="headerlink" title="MonoBehavior基类"></a>MonoBehavior基类</h2><ol>
+<li>脚本只有继承了mb类才能挂载在gameobj上</li>
+<li>继承了mb类的脚本不能new，只能挂，因此写构造函数毫无意义</li>
+<li>继承了mb类的脚本可以在一个对象挂多个(如果没有DisallowMultipleComponent特性)</li>
+<li>继承了mb的类可以再次被继承</li>
+</ol>
+<h2 id="生命周期函数"><a href="#生命周期函数" class="headerlink" title="生命周期函数"></a>生命周期函数</h2><p>unity底层已经帮我们做好了死循环，我们只需要用unity的生命周期函数来执行游戏逻辑<br>脚本对象依附的gameobj对象从出生到消亡整个周期中会通过反射自动调用的一些特殊函数<br>访问修饰符一般是private和protected，因为不需要自己调用，unity自己帮助我们调用</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">Test</span> : <span class="title">MonoBehavior</span>&#123;</span><br><span class="line">    <span class="comment">//对象出生</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">Awake</span>()</span>&#123;</span><br><span class="line">        <span class="comment">//出生时调用，一个对象只会调用一次-&gt;脚本对象</span></span><br><span class="line">        <span class="comment">//类似构造函数</span></span><br><span class="line">        Debug.Log(<span class="string">&quot;xxx&quot;</span>);<span class="comment">//没有继承mb时可以这样</span></span><br><span class="line">        print(<span class="string">&quot;&quot;</span>);<span class="comment">//继承了mb后可以用</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">OnEnable</span>()</span>&#123;</span><br><span class="line">        <span class="comment">//依附的gameobj每次激活时调用</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">start</span>()</span>&#123;</span><br><span class="line">        <span class="comment">//比awake晚，第一次帧更新时调用,只调用一次</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">FixedUpdate</span>()</span>&#123;</span><br><span class="line">        <span class="comment">//物理更新，每一帧都更新，（和游戏帧有区别</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">Update</span>()</span>&#123;</span><br><span class="line">        <span class="comment">//主要用于游戏核心逻辑的函数</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">LateUpdate</span>()</span>&#123;</span><br><span class="line">        <span class="comment">//一般用来处理摄像机位置更新相关内容</span></span><br><span class="line">        <span class="comment">//update和lateupdate之间unity做了一些处理 处理我们动画相关的更新</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">onDisable</span>()</span>&#123;</span><br><span class="line">        <span class="comment">//每次失活时调用</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">OnDestroy</span>()</span>&#123;</span><br><span class="line">        <span class="comment">//销毁时调用(被移除时)</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//对象死亡</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>生命周期支持继承多态</strong></p>
+<h2 id="Inspector窗口可编辑的变量"><a href="#Inspector窗口可编辑的变量" class="headerlink" title="Inspector窗口可编辑的变量"></a>Inspector窗口可编辑的变量</h2><p>private和protected无法显示编辑<br>加上强制序列化特性<code>[SerializeFeild]</code>则可以被显示<br>public可以显示编辑<br>加上<code>[HideInspector]</code>则不会显示<br><code>[System.Serializeable]</code>让自定义类可以被访问<br>字典怎样都不能被访问</p>
+<h3 id="辅助特性"><a href="#辅助特性" class="headerlink" title="辅助特性"></a>辅助特性</h3><p><code>[Header(&quot;分组说明&quot;)]</code>为成员分组<br><code>[Tooltip(&quot;说明内容&quot;)]</code>为变量添加说明，悬停注释<br><code>[Space()]</code>让字段出现间隔<br><code>[Range(最大值,最小值)]</code>修饰数值的滑条范围<br><code>[Multiline(4)]</code>多行显示字符串<br><code>[TextArea(3,4)]</code>最少3行，最多4行<br><code>[ContextMenuItem(&quot;显示按钮名&quot;,&quot;方法名&quot;)]</code>为变量添加快捷方法<br><code>[ContextMenu(&quot;测试函数&quot;)]</code>为方法添加特性能在inspector中执行</p>
+<p>运行中改变的信息不会保存</p>
+<h2 id="MonoBehavior"><a href="#MonoBehavior" class="headerlink" title="MonoBehavior"></a>MonoBehavior</h2><h3 id="重要成员"><a href="#重要成员" class="headerlink" title="重要成员"></a>重要成员</h3><figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">print(gameObject);<span class="comment">//获取依附的gameobj</span></span><br><span class="line"><span class="comment">//相当于this.gameObject</span></span><br><span class="line"><span class="comment">//这是mb里提供的成员属性</span></span><br><span class="line">print(<span class="keyword">this</span>.transform.position);</span><br><span class="line"><span class="comment">//获取依附gameobj的位置信息</span></span><br><span class="line"><span class="comment">//this同样可以省略</span></span><br><span class="line">transform.eulerAngles;</span><br><span class="line">transform.lossyScale;</span><br><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="keyword">this</span>.enabled = <span class="literal">true</span>;</span><br><span class="line"><span class="keyword">this</span>.enabled = <span class="literal">false</span>;</span><br><span class="line"><span class="comment">//获取脚本是否激活</span></span><br><span class="line"><span class="keyword">public</span> Lesson3 otherLisson3;</span><br><span class="line"><span class="comment">//要首先在unity里把别的脚本拖过来才不为空</span></span><br><span class="line">print(otherLesson3.gameObject.name);</span><br><span class="line"><span class="comment">//获取别的脚本对象 依附的gmobj信息</span></span><br></pre></td></tr></table></figure>
+<h3 id="重要方法"><a href="#重要方法" class="headerlink" title="重要方法"></a>重要方法</h3><figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">Lesson3_Test t = <span class="keyword">this</span>.GetComponet(<span class="string">&quot;Lesson3_Test&quot;</span>) <span class="keyword">as</span> Lesson3_Test;<span class="comment">//获取失败默认返回空</span></span><br><span class="line">print(t);</span><br><span class="line"><span class="comment">//根据脚本名获取</span></span><br><span class="line"></span><br><span class="line">t = <span class="keyword">this</span>.GetComponent(<span class="keyword">typeof</span>(Lesson3_Test))<span class="keyword">as</span> Lesson3_Test;</span><br><span class="line"><span class="comment">//根据type获取</span></span><br><span class="line"></span><br><span class="line">t = <span class="keyword">this</span>.GetComponent&lt;Lesoon3_Test&gt;();</span><br><span class="line"><span class="comment">//根据泛型获取</span></span><br><span class="line"><span class="comment">//用最多</span></span><br><span class="line"><span class="comment">//只要能获取脚本呢就能得到所有的信息</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//得到自己挂载的多个脚本</span></span><br><span class="line">Lesson3[] array = <span class="keyword">this</span>.GetComponents&lt;Lesson3&gt;();</span><br><span class="line">print(array.length);</span><br><span class="line"></span><br><span class="line"><span class="comment">//得到子对象挂载的脚本（它默认也会找自己身上是否挂载该脚本）</span></span><br><span class="line">t = <span class="keyword">this</span>.GetComponentInChildren&lt;Lesson3_Test&gt;(<span class="literal">true</span>);</span><br><span class="line"><span class="comment">//函数有一个参数 默认不传是false 意思就是 如果子对象失活是不会去找这个对象上是否有某个脚本的</span></span><br><span class="line"><span class="comment">//如果传true 如果失活也会找</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//得到父对象挂载的脚本</span></span><br><span class="line">t = <span class="keyword">this</span>.GetComponentInParent&lt;Lesson3_Test&gt;();</span><br><span class="line"><span class="comment">//没有参数 因为父类失活子类一定失活</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//尝试获取脚本</span></span><br><span class="line"><span class="comment">//提供了一个更加安全的 获取单个脚本的方法 如果得到了会返回true</span></span><br><span class="line">Lesson_Test lt;</span><br><span class="line"><span class="keyword">if</span>(<span class="keyword">this</span>.TryGetComponent&lt;Lesson_Test&gt;(<span class="keyword">out</span> lt))&#123;</span><br><span class="line">    <span class="comment">//逻辑处理</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="GameObject"><a href="#GameObject" class="headerlink" title="GameObject"></a>GameObject</h2><figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">region</span> GameObject中的成员变量</span></span><br><span class="line"><span class="comment">//名字,可赋值改变</span></span><br><span class="line">gameObject.name;</span><br><span class="line"><span class="comment">//是否激活</span></span><br><span class="line">gameObject.activeSelf;</span><br><span class="line"><span class="comment">//是否静态</span></span><br><span class="line">gameObject.ifStatic;</span><br><span class="line"><span class="comment">//层级</span></span><br><span class="line">gameObject.layer;</span><br><span class="line"><span class="comment">//标签</span></span><br><span class="line">gameObject.tag;</span><br><span class="line"><span class="meta">#<span class="keyword">endregion</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">region</span> GameObject中的静态方法</span></span><br><span class="line"><span class="comment">//创建自带几何体</span></span><br><span class="line">GameObject obj =GameObject.CreatePrimitive(PrimitiveType.Cube);</span><br><span class="line">obj.name= <span class="string">&quot;lalal&quot;</span>;</span><br><span class="line">obj.transform;</span><br><span class="line"><span class="comment">//只要得到了一个gobj对象我就可以得到它身上挂载的任何脚本信息</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//查找</span></span><br><span class="line"><span class="comment">//1查找单个对象</span></span><br><span class="line">GameObject.Find(<span class="string">&quot;&quot;</span>);</span><br><span class="line"><span class="comment">//效率低下，他会在场景中的所有对象去查找</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//根据标签</span></span><br><span class="line">GameObject.FindWithTag(<span class="string">&quot;&quot;</span>);</span><br><span class="line">GameObject.FindGameObjectWithTag(<span class="string">&quot;&quot;</span>);</span><br><span class="line"><span class="comment">//无法找到失活对象</span></span><br><span class="line"><span class="comment">//有多个对象时无法确定找到是谁</span></span><br><span class="line"></span><br><span class="line"> </span><br><span class="line"><span class="comment">//找到多个对象</span></span><br><span class="line">GameObject.FindGameObjectsWithTag(<span class="string">&quot;&quot;</span>);</span><br><span class="line"><span class="comment">//这是unity里obj的方法(gobj的父类)</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//找到场景中挂载某一脚本的对象</span></span><br><span class="line">GameObject.FindObjectOfType&lt;Lesson4&gt;();</span><br><span class="line"><span class="comment">//效率更低（笑</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//以上方法实际开发几乎不会用....</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">//实例化对象（克隆对象方法</span></span><br><span class="line"><span class="comment">//根据一个gobj对象 创建出一个和它一模一样的对象</span></span><br><span class="line">GameObject.Instantiate(myObj);</span><br><span class="line"><span class="meta">#<span class="keyword">region</span> !!veryveryimportant!!↑</span></span><br><span class="line"><span class="comment">//删除对象方法</span></span><br><span class="line">GameObject.Desroy(myObj);</span><br><span class="line">GameObject.Desroy(myObj,<span class="number">5</span>);<span class="comment">//延时删除</span></span><br><span class="line">GameObject.Desroy(<span class="keyword">this</span>);<span class="comment">//删除脚本，这里删除了自己的脚本</span></span><br><span class="line"><span class="comment">//一般会在下一帧后移除，只是加一个标识</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//如果没有特殊需求 一定要马航移除对象的话</span></span><br><span class="line"><span class="comment">//建议使用上面的方法 因为是异步的 降低卡顿几率</span></span><br><span class="line">GameObject.DesroyImmediate(myObj);</span><br><span class="line"></span><br><span class="line"><span class="comment">//过场景不移除</span></span><br><span class="line">GameObject.DontDestroyOnLoad(<span class="keyword">this</span>.gameObject);</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">endregion</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">region</span> GameObject中的成员方法</span></span><br><span class="line"><span class="comment">//创建空物体</span></span><br><span class="line">GameObject obj3=<span class="keyword">new</span> GameObject(<span class="string">&quot;&quot;</span>,<span class="keyword">typeof</span>(Lesson),<span class="keyword">typeof</span>(Lesson2));</span><br><span class="line"></span><br><span class="line"><span class="comment">//为对象添加脚本</span></span><br><span class="line"><span class="comment">//如果想要动态的添加mb脚本在某一个对象上</span></span><br><span class="line">obj3.AddComponent&lt;Lesson2&gt;();</span><br><span class="line"></span><br><span class="line"><span class="comment">//得到脚本的成员方法和上面一样</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//设置激活失活</span></span><br><span class="line">obj.SetActive(<span class="literal">false</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">//次要方法</span></span><br><span class="line"><span class="comment">//通知自己去执行脚本</span></span><br><span class="line"><span class="keyword">this</span>.gameObject.SendMessage(<span class="string">&quot;TestFun&quot;</span>);</span><br><span class="line"><span class="keyword">this</span>.gameObject.BroadcastMessage(<span class="string">&quot;TestFun&quot;</span>);</span><br><span class="line">....</span><br></pre></td></tr></table></figure>
+<h2 id="Time"><a href="#Time" class="headerlink" title="Time"></a>Time</h2><figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">region</span> 时间缩放比例</span></span><br><span class="line"><span class="comment">//时间停止</span></span><br><span class="line">Time.timeScale = <span class="number">0</span>;</span><br><span class="line"><span class="comment">//恢复正常</span></span><br><span class="line">Time.timeScale = <span class="number">1</span>;</span><br><span class="line"><span class="comment">//二倍速</span></span><br><span class="line">Time.timeScale = <span class="number">2</span>;</span><br><span class="line"><span class="meta">#<span class="keyword">endregion</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">region</span> 帧间隔时间</span></span><br><span class="line"><span class="comment">//帧间隔时间 主要是用来计算位移</span></span><br><span class="line"><span class="comment">//最近的一帧用了多长时间(秒)</span></span><br><span class="line"><span class="comment">//路程 = 时间*速度</span></span><br><span class="line">print(Time.deltaTime);</span><br><span class="line">print(Time.unscaleddeltaTime);</span><br><span class="line"><span class="meta">#<span class="keyword">endregion</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">region</span>  游戏开始到现在的时间</span></span><br><span class="line"><span class="comment">//单机游戏中计时</span></span><br><span class="line">print(Time.time);</span><br><span class="line">print(Time.unscaledTime);</span><br><span class="line"><span class="meta">#<span class="keyword">endregion</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">region</span> 物理帧间隔时间</span></span><br><span class="line"><span class="meta">#<span class="keyword">endregion</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">region</span> 帧数</span></span><br><span class="line"><span class="comment">//从现在开始游戏跑了多少帧</span></span><br><span class="line">print(Time.frameCount);</span><br><span class="line"><span class="meta">#<span class="keyword">endregion</span></span></span><br></pre></td></tr></table></figure>
+
+<h2 id="Transform"><a href="#Transform" class="headerlink" title="Transform"></a>Transform</h2>
+    </article>
+    <!-- license -->
+    <!-- paginator -->
+    <ul class="post-paginator">
+        <li class="next">
+        </li>
+        <li class="previous">
+                <div class="prevSlogan">Previous Post</div>
+                <a href="/2024/10/25/C/" title="C#">
+                    <div class="prevTitle">C#</div>
+                </a>
+        </li>
+    </ul>
+    <!-- comment -->
+        <div class="post-comment">
+            <!-- 来必力 City 版安装代码 -->
+
+            
+            
+            
+            <!-- utteranc评论 -->
+
+            <!-- partial('_partial/comment/changyan') -->
+            <!--PC版-->
+
+            
+            
+            
+        </div>
+    <!-- timeliness note -->
+    <!-- idea from: https://hexo.fluid-dev.com/posts/hexo-injector/#%E6%96%87%E7%AB%A0%E6%97%B6%E6%95%88%E6%80%A7%E6%8F%90%E7%A4%BA -->
+    <!-- Mathjax -->
+</main>
+
+                <!-- profile -->
+            </div>
+            <footer class="footer footer-unloaded">
+    <!-- social  -->
+        <div class="social">
+                            <a href="mailto:limiese0zen@gmail.com" class="iconfont-archer email" title="email" ></a>
+                <a href="//github.com/zennnj" class="iconfont-archer github" target="_blank" title="github"></a>
+                <span class="iconfont-archer wechat" title="wechat">
+                    <img class="profile-qr" src="/assets/example_qr.png" />
+                </span>
+                <a href="https://weibo.com/u/5717651025" class="iconfont-archer weibo" target="_blank" title="weibo"></a>
+                <a href="https://space.bilibili.com/100278128" class="iconfont-archer bilibili" target="_blank" title="bilibili"></a>
+                <a href="https://steamcommunity.com/profiles/76561199557415174" class="iconfont-archer steam" target="_blank" title="steam"></a>
+
+        </div>
+    <!-- powered by Hexo  -->
+    <div class="copyright">
+        <span id="hexo-power">Powered by <a href="https://hexo.io/" target="_blank">Hexo</a></span><span class="iconfont-archer power">&#xe635;</span><span id="theme-info">theme <a href="https://github.com/fi3ework/hexo-theme-archer" target="_blank">Archer</a></span>
+    </div>
+    <!-- website approve for Chinese user -->
+    <!-- 不蒜子  -->
+        <div class="busuanzi-container">
+                <span id="busuanzi_container_site_pv">PV: <span id="busuanzi_value_site_pv"></span> :)</span>
+        </div>
+</footer>
+
+        </div>
+        <!-- toc -->
+            <div class="toc-wrapper toc-wrapper-loding" style=    top:50vh;
+>
+                <div class="toc-catalog">
+                    <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
+                </div>
+                <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%96%B0%E5%BB%BA%E6%96%87%E4%BB%B6%E5%A4%B9%EF%BC%81"><span class="toc-number">1.</span> <span class="toc-text">新建文件夹！</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%84%9A%E6%9C%AC"><span class="toc-number">2.</span> <span class="toc-text">脚本</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E8%A7%84%E5%88%99"><span class="toc-number">2.1.</span> <span class="toc-text">创建规则</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#MonoBehavior%E5%9F%BA%E7%B1%BB"><span class="toc-number">2.2.</span> <span class="toc-text">MonoBehavior基类</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E5%87%BD%E6%95%B0"><span class="toc-number">2.3.</span> <span class="toc-text">生命周期函数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Inspector%E7%AA%97%E5%8F%A3%E5%8F%AF%E7%BC%96%E8%BE%91%E7%9A%84%E5%8F%98%E9%87%8F"><span class="toc-number">2.4.</span> <span class="toc-text">Inspector窗口可编辑的变量</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BE%85%E5%8A%A9%E7%89%B9%E6%80%A7"><span class="toc-number">2.4.1.</span> <span class="toc-text">辅助特性</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#MonoBehavior"><span class="toc-number">2.5.</span> <span class="toc-text">MonoBehavior</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%87%8D%E8%A6%81%E6%88%90%E5%91%98"><span class="toc-number">2.5.1.</span> <span class="toc-text">重要成员</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%87%8D%E8%A6%81%E6%96%B9%E6%B3%95"><span class="toc-number">2.5.2.</span> <span class="toc-text">重要方法</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#GameObject"><span class="toc-number">2.6.</span> <span class="toc-text">GameObject</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Time"><span class="toc-number">2.7.</span> <span class="toc-text">Time</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Transform"><span class="toc-number">2.8.</span> <span class="toc-text">Transform</span></a></li></ol></li></ol>
+            </div>
+        <!-- sidebar -->
+        <div class="sidebar sidebar-hide">
+    <ul class="sidebar-tabs sidebar-tabs-active-0">
+        <li class="sidebar-tab-archives"><span class="iconfont-archer">&#xe67d;</span><span class="tab-name">Archive</span></li>
+        <li class="sidebar-tab-tags"><span class="iconfont-archer">&#xe61b;</span><span class="tab-name">Tag</span></li>
+        <li class="sidebar-tab-categories"><span class="iconfont-archer">&#xe666;</span><span class="tab-name">Cate</span></li>
+    </ul>
+    <div class="sidebar-content sidebar-content-show-archive">
+        <div class="sidebar-panel-archives">
+    <!-- 在 ejs 中将 archive 按照时间排序 -->
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+    <div class="total-and-search">
+        <div class="total-archive">
+        Total : 15
+        </div>
+        <!-- search  -->
+    </div>
+    <div class="post-archive">
+            <div class="archive-year"> 2024 </div>
+            <ul class="year-list">
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/26</span>
+            <a class="archive-post-title" href="/2024/10/26/unity/">unity</a>
+        </li>
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/25</span>
+            <a class="archive-post-title" href="/2024/10/25/C/">C#</a>
+        </li>
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/19</span>
+            <a class="archive-post-title" href="/2024/10/19/%E7%BC%96%E7%A8%8B%E7%BB%86%E8%8A%82%E8%AE%B0%E5%BD%95/">编程细节记录</a>
+        </li>
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/13</span>
+            <a class="archive-post-title" href="/2024/10/13/Java%E5%A4%9A%E7%BA%BF%E7%A8%8B/">Java多线程</a>
+        </li>
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/28</span>
+            <a class="archive-post-title" href="/2024/09/28/SpringBoot/">SpringBoot</a>
+        </li>
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/28</span>
+            <a class="archive-post-title" href="/2024/09/28/JVM/">JVM</a>
+        </li>
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/26</span>
+            <a class="archive-post-title" href="/2024/09/26/MySQL/">MySQL</a>
+        </li>
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/11</span>
+            <a class="archive-post-title" href="/2024/09/11/JAVA/">JAVA</a>
+        </li>
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/11</span>
+            <a class="archive-post-title" href="/2024/09/11/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a>
+        </li>
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/11</span>
+            <a class="archive-post-title" href="/2024/09/11/Github%E8%AE%BF%E9%97%AE%E8%BF%9E%E6%8E%A5%E5%A4%B1%E8%B4%A5%E9%97%AE%E9%A2%98/">Github访问连接失败问题</a>
+        </li>
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/11</span>
+            <a class="archive-post-title" href="/2024/09/11/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">计算机网络</a>
+        </li>
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/10</span>
+            <a class="archive-post-title" href="/2024/09/10/linux/">Linux</a>
+        </li>
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/10</span>
+            <a class="archive-post-title" href="/2024/09/10/%E5%90%8E%E7%AB%AF/">后端</a>
+        </li>
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/31</span>
+            <a class="archive-post-title" href="/2024/08/31/%E4%B8%8A%E5%AD%A6%E5%89%8D%E7%9A%84%E9%81%97%E8%A8%80/">上学前的遗言</a>
+        </li>
+        <li class="archive-post-item">
+            <span class="archive-post-date">07/24</span>
+            <a class="archive-post-title" href="/2024/07/24/%E6%8C%87%E5%8D%97/">个人用使用指南</a>
+        </li>
+            </ul>
+    </div>
+</div>
+
+        <div class="sidebar-panel-tags">
+    <div class="sidebar-tags-name">
+            <span class="sidebar-tag-name" data-tags="碎碎念">
+                <span class="iconfont-archer">&#xe606;</span>
+                碎碎念
+            </span>
+            <span class="sidebar-tag-name" data-tags="learn">
+                <span class="iconfont-archer">&#xe606;</span>
+                learn
+            </span>
+            <span class="sidebar-tag-name" data-tags="unity">
+                <span class="iconfont-archer">&#xe606;</span>
+                unity
+            </span>
+    </div>
+    <div class="iconfont-archer sidebar-tags-empty">&#xe678;</div>
+    <div class="tag-load-fail" style="display: none; color: #ccc; font-size: 0.6rem;">
+        缺失模块，请参考主题文档进行安装配置：https://github.com/fi3ework/hexo-theme-archer#%E5%AE%89%E8%A3%85%E4%B8%BB%E9%A2%98
+    </div> 
+    <div class="sidebar-tags-list"></div>
+</div>
+
+        <div class="sidebar-panel-categories">
+    <div class="sidebar-categories-name">
+        <span class="sidebar-category-name" data-categories="chat">
+            <span class="iconfont-archer">&#xe60a;</span>
+            chat
+        </span>
+        <span class="sidebar-category-name" data-categories="use">
+            <span class="iconfont-archer">&#xe60a;</span>
+            use
+        </span>
+        <span class="sidebar-category-name" data-categories="后端">
+            <span class="iconfont-archer">&#xe60a;</span>
+            后端
+        </span>
+    </div>
+    <div class="iconfont-archer sidebar-categories-empty">&#xe678;</div>
+    <div class="sidebar-categories-list"></div>
+</div>
+
+    </div>
+</div>
+
+        <!-- site-meta -->
+        <script>
+    var siteMetaRoot = "/"
+    if (siteMetaRoot === "undefined") {
+        siteMetaRoot = '/'
+    }
+    var siteMeta = {
+        url: "http://example.com",
+        root: siteMetaRoot,
+        author: ""
+    }
+</script>
+
+        <!-- import experimental options here -->
+        <!-- Custom Font -->
+
+        <!-- main func -->
+        <script src="/scripts/main.js"></script>
+        <!-- fancybox -->
+        <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.36/dist/fancybox/fancybox.umd.js" onload="window.Fancybox.bind('[data-fancybox]')" defer></script>
+        <!-- algolia -->
+        <!-- busuanzi -->
+            <script src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script>
+        <!-- async load share.js -->
+            <script src="/scripts/share.js" async></script>
+        <!-- mermaid -->
+    </body>
+</html>
