@@ -19,7 +19,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://example.com/images/Java%E5%A4%9A%E7%BA%BF%E7%A8%8B/1.png">
 <meta property="article:published_time" content="2024-10-13T08:07:42.000Z">
-<meta property="article:modified_time" content="2024-10-26T03:34:47.829Z">
+<meta property="article:modified_time" content="2024-11-03T15:10:34.017Z">
 <meta property="article:tag" content="learn">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="http://example.com/images/Java%E5%A4%9A%E7%BA%BF%E7%A8%8B/1.png">
@@ -511,7 +511,20 @@
 </tbody></table>
 <h2 id="常见的成员方法"><a href="#常见的成员方法" class="headerlink" title="常见的成员方法"></a>常见的成员方法</h2><p><code>String getName()</code> 返回此线程的名字<br><code>void setName(String name)</code> 设置线程的名字（构造方法也可以设置名字，即实例化时调用thread类那个有参构造器）<em>默认Thread-x</em><br><code>static Thread currentThread()</code> 获取当前线程的对象<br>当JVM虚拟机启动之后，会自动启动多条线程，其中一条main线程的作用是去调用main方法执行代码<br><code>static void sleep(long time)</code> 让线程休眠指定的时间，单位为毫秒，哪条线程执行到这里就会在这里停留(1s&#x3D;1000ms)<br><code>setPriority(int newPriority)</code> 设置线程的优先级 优先级只是一个概率<br><code>final int getPriority()</code> 获取线程的优先级<br><code>final void setDaemon(boolean on)</code> 设置为守护线程<br>当非守护线程执行完毕之后，守护线程会陆续结束<br>e.g.关闭qq聊天窗，传输线程也结束<br><code>public static void yield()</code> 出让线程&#x2F;礼让线程<br>让出当前cpu执行权<br><code>public static void join()</code> 插入线程&#x2F;插队线程<br>把这个线程插入到当前线程之前</p>
 <h2 id="线程的生命周期"><a href="#线程的生命周期" class="headerlink" title="线程的生命周期"></a>线程的生命周期</h2><p><img src="/../images/Java%E5%A4%9A%E7%BA%BF%E7%A8%8B/1.png"></p>
-<h2 id="线程安全问题"><a href="#线程安全问题" class="headerlink" title="线程安全问题"></a>线程安全问题</h2>
+<h1 id="同步代码块"><a href="#同步代码块" class="headerlink" title="同步代码块"></a>同步代码块</h1><p>把操作共享数据的代码锁起来</p>
+<blockquote>
+<p>synchronized(lock){<br>   操作共享的代码<br>}</p>
+</blockquote>
+<p><font color=darkblue>特点1:</font>锁默认打开，有一个线程进去了，锁自动关闭<br><font color=darkblue>特点2:</font>里买的呢代码全部执行完毕，线程出来，锁自动打开</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> <span class="type">int</span> <span class="variable">ticket</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">//锁对象，一定要是唯一的-&gt;要加static</span></span><br><span class="line"><span class="comment">//static Object obj = new Object();</span></span><br><span class="line"><span class="comment">//↑这个就可以当锁，锁可以是任何东西，不过一般不这样</span></span><br><span class="line"></span><br><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">run</span><span class="params">()</span>&#123;</span><br><span class="line">    <span class="keyword">while</span> (<span class="literal">true</span>)&#123;</span><br><span class="line">        <span class="keyword">synchronized</span>(MyThread.class)&#123;<span class="comment">//当前类的字节码文件对象</span></span><br><span class="line">            <span class="keyword">if</span>(ticket&lt;<span class="number">100</span>)&#123;<span class="comment">//字节码是唯一的</span></span><br><span class="line">                <span class="keyword">try</span>&#123;</span><br><span class="line">                    Thread.sleep(<span class="number">100</span>);</span><br><span class="line">                &#125;<span class="keyword">catch</span>(InterruptedException e)&#123;</span><br><span class="line">                    e.printStackTrace;</span><br><span class="line">                &#125;</span><br><span class="line">                ticket++;</span><br><span class="line">                System.out.println(getName()+<span class="string">&quot;正在卖第&quot;</span>+ticket+<span class="string">&quot;张票&quot;</span>);</span><br><span class="line">            &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="同步方法"><a href="#同步方法" class="headerlink" title="同步方法"></a>同步方法</h1><p>把synchronized关键字加到方法上<br><font color=darkblue>特点1:</font>同步方法是锁住方法里的所有代码<br><font color=darkblue>特点2:</font>锁对象不能自己指定</p>
+<ul>
+<li>非静态:this</li>
+<li>静态:当前类的字节码文件对象</li>
+</ul>
+<pre><code class="java">//技巧：同步代码块-&gt;方法
+</code></pre>
+
     </article>
     <!-- license -->
     <!-- paginator -->
@@ -583,7 +596,7 @@
                 <div class="toc-catalog">
                     <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
                 </div>
-                <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5"><span class="toc-number">1.</span> <span class="toc-text">基本概念</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%9B%E7%A8%8B-%E7%BA%BF%E7%A8%8B"><span class="toc-number">1.1.</span> <span class="toc-text">进程&amp;线程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A4%9A%E7%BA%BF%E7%A8%8B%E7%9A%84%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="toc-number">1.2.</span> <span class="toc-text">多线程的应用场景</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B9%B6%E5%8F%91%E5%92%8C%E5%B9%B6%E8%A1%8C"><span class="toc-number">1.3.</span> <span class="toc-text">并发和并行</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A4%9A%E7%BA%BF%E7%A8%8B%E7%9A%84%E5%AE%9E%E7%8E%B0%E6%96%B9%E5%BC%8F"><span class="toc-number">1.4.</span> <span class="toc-text">多线程的实现方式</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BB%A7%E6%89%BFThread%E7%B1%BB%E7%9A%84%E6%96%B9%E5%BC%8F%E8%BF%9B%E8%A1%8C%E5%AE%9E%E7%8E%B0"><span class="toc-number">1.4.1.</span> <span class="toc-text">继承Thread类的方式进行实现</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E7%8E%B0Runnable%E6%8E%A5%E5%8F%A3%E7%9A%84%E6%96%B9%E5%BC%8F%E8%BF%9B%E8%A1%8C%E5%AE%9E%E7%8E%B0"><span class="toc-number">1.4.2.</span> <span class="toc-text">实现Runnable接口的方式进行实现</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%A9%E7%94%A8Callable%E6%8E%A5%E5%8F%A3%E5%92%8CFuture%E6%8E%A5%E5%8F%A3%E6%96%B9%E5%BC%8F%E5%AE%9E%E7%8E%B0"><span class="toc-number">1.4.3.</span> <span class="toc-text">利用Callable接口和Future接口方式实现</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B8%B8%E8%A7%81%E7%9A%84%E6%88%90%E5%91%98%E6%96%B9%E6%B3%95"><span class="toc-number">1.5.</span> <span class="toc-text">常见的成员方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BA%BF%E7%A8%8B%E7%9A%84%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F"><span class="toc-number">1.6.</span> <span class="toc-text">线程的生命周期</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BA%BF%E7%A8%8B%E5%AE%89%E5%85%A8%E9%97%AE%E9%A2%98"><span class="toc-number">1.7.</span> <span class="toc-text">线程安全问题</span></a></li></ol></li></ol>
+                <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5"><span class="toc-number">1.</span> <span class="toc-text">基本概念</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%9B%E7%A8%8B-%E7%BA%BF%E7%A8%8B"><span class="toc-number">1.1.</span> <span class="toc-text">进程&amp;线程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A4%9A%E7%BA%BF%E7%A8%8B%E7%9A%84%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="toc-number">1.2.</span> <span class="toc-text">多线程的应用场景</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B9%B6%E5%8F%91%E5%92%8C%E5%B9%B6%E8%A1%8C"><span class="toc-number">1.3.</span> <span class="toc-text">并发和并行</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A4%9A%E7%BA%BF%E7%A8%8B%E7%9A%84%E5%AE%9E%E7%8E%B0%E6%96%B9%E5%BC%8F"><span class="toc-number">1.4.</span> <span class="toc-text">多线程的实现方式</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BB%A7%E6%89%BFThread%E7%B1%BB%E7%9A%84%E6%96%B9%E5%BC%8F%E8%BF%9B%E8%A1%8C%E5%AE%9E%E7%8E%B0"><span class="toc-number">1.4.1.</span> <span class="toc-text">继承Thread类的方式进行实现</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E7%8E%B0Runnable%E6%8E%A5%E5%8F%A3%E7%9A%84%E6%96%B9%E5%BC%8F%E8%BF%9B%E8%A1%8C%E5%AE%9E%E7%8E%B0"><span class="toc-number">1.4.2.</span> <span class="toc-text">实现Runnable接口的方式进行实现</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%A9%E7%94%A8Callable%E6%8E%A5%E5%8F%A3%E5%92%8CFuture%E6%8E%A5%E5%8F%A3%E6%96%B9%E5%BC%8F%E5%AE%9E%E7%8E%B0"><span class="toc-number">1.4.3.</span> <span class="toc-text">利用Callable接口和Future接口方式实现</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B8%B8%E8%A7%81%E7%9A%84%E6%88%90%E5%91%98%E6%96%B9%E6%B3%95"><span class="toc-number">1.5.</span> <span class="toc-text">常见的成员方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BA%BF%E7%A8%8B%E7%9A%84%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F"><span class="toc-number">1.6.</span> <span class="toc-text">线程的生命周期</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%90%8C%E6%AD%A5%E4%BB%A3%E7%A0%81%E5%9D%97"><span class="toc-number">2.</span> <span class="toc-text">同步代码块</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%90%8C%E6%AD%A5%E6%96%B9%E6%B3%95"><span class="toc-number">3.</span> <span class="toc-text">同步方法</span></a></li></ol>
             </div>
         <!-- sidebar -->
         <div class="sidebar sidebar-hide">
@@ -610,15 +623,20 @@
         
         
         
+        
     <div class="total-and-search">
         <div class="total-archive">
-        Total : 15
+        Total : 16
         </div>
         <!-- search  -->
     </div>
     <div class="post-archive">
             <div class="archive-year"> 2024 </div>
             <ul class="year-list">
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/03</span>
+            <a class="archive-post-title" href="/2024/11/03/%E5%81%9A%E9%A2%98%E8%AE%B0%E5%BD%95%E4%B8%B2/">做题记录串</a>
+        </li>
         <li class="archive-post-item">
             <span class="archive-post-date">10/26</span>
             <a class="archive-post-title" href="/2024/10/26/unity/">unity</a>
@@ -696,6 +714,10 @@
             <span class="sidebar-tag-name" data-tags="unity">
                 <span class="iconfont-archer">&#xe606;</span>
                 unity
+            </span>
+            <span class="sidebar-tag-name" data-tags="practice">
+                <span class="iconfont-archer">&#xe606;</span>
+                practice
             </span>
     </div>
     <div class="iconfont-archer sidebar-tags-empty">&#xe678;</div>
