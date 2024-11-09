@@ -18,7 +18,7 @@
 <meta property="og:description" content="诶☝️🤓好不容易整了一个blog自然是要搞点好玩的🤗">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2024-11-09T08:50:21.000Z">
-<meta property="article:modified_time" content="2024-11-09T12:24:01.643Z">
+<meta property="article:modified_time" content="2024-11-09T12:41:24.535Z">
 <meta name="twitter:card" content="summary">
     <meta http-equiv="Cache-control" content="no-cache">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
@@ -496,54 +496,42 @@ p.spoiler {
         <link rel="stylesheet" type="text&#x2F;css" href="https://cdn.jsdelivr.net/npm/hexo-tag-hint@0.3.1/dist/hexo-tag-hint.min.css"><p>诶☝️🤓好不容易整了一个blog自然是要搞点好玩的🤗</p>
 <span id="more"></span>
 <p><a target="_blank" rel="noopener" href="https://loafing.cn/posts/pin.html#%E5%88%86%E6%A0%8F%E6%B5%8B%E8%AF%95">学学你的</a></p>
-<h1>短链生成</h1>
-<p><code>npm install hexo-abbrlink --save</code><br>
-自动添加abbrlink</p>
-<h1>文章加密</h1>
-<p><a target="_blank" rel="noopener" href="https://github.com/D0n9X1n/hexo-blog-encrypt/blob/master/ReadMe.zh.md">hexo-blog-encrypt</a><br>
-<code>npm install --save hexo-blog-encrypt</code></p>
+<h1 id="短链生成"><a href="#短链生成" class="headerlink" title="短链生成"></a>短链生成</h1><p><code>npm install hexo-abbrlink --save</code><br>自动添加abbrlink</p>
+<h1 id="文章加密"><a href="#文章加密" class="headerlink" title="文章加密"></a>文章加密</h1><p><a target="_blank" rel="noopener" href="https://github.com/D0n9X1n/hexo-blog-encrypt/blob/master/ReadMe.zh.md">hexo-blog-encrypt</a><br><code>npm install --save hexo-blog-encrypt</code></p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">---</span><br><span class="line">title: Hello World</span><br><span class="line">tags:</span><br><span class="line">- 作为日记加密</span><br><span class="line">date: 2016-03-30 21:12:21</span><br><span class="line">password: mikemessi</span><br><span class="line">abstract: 有东西被加密了, 请输入密码查看.</span><br><span class="line">message: 您好, 这里需要密码.</span><br><span class="line">wrong_pass_message: 抱歉, 这个密码看着不太对, 请再试试.</span><br><span class="line">wrong_hash_message: 抱歉, 这个文章不能被校验, 不过您还是能看看解密后的内容.</span><br><span class="line">---</span><br></pre></td></tr></table></figure>
-<h1>文章隐藏</h1>
-<p><a target="_blank" rel="noopener" href="https://github.com/prinsss/hexo-hide-posts/blob/master/README_ZH.md">hexo-hide-posts</a><br>
-<code>npm install hexo-hide-posts</code><br>
-好像在只在主页隐藏功能上有点问题！</p>
+
+<h1 id="文章隐藏"><a href="#文章隐藏" class="headerlink" title="文章隐藏"></a>文章隐藏</h1><p><a target="_blank" rel="noopener" href="https://github.com/prinsss/hexo-hide-posts/blob/master/README_ZH.md">hexo-hide-posts</a><br><code>npm install hexo-hide-posts</code><br>好像在只在主页隐藏功能上有点问题！</p>
 <!--# 代码压缩
 [hexo-neat](https://github.com/ohroy/hexo-neat/blob/master/README.md)
 `npm install hexo-neat --save`
 写完发现好像对我作用不大()-->
-<h1>文字上方注释 Ruby</h1>
-<!--似乎要先下[hexo-render-markdown-it](https://github.com/hexojs/hexo-renderer-markdown-it)
+
+<h1 id="文字上方注释-Ruby"><a href="#文字上方注释-Ruby" class="headerlink" title="文字上方注释 Ruby"></a>文字上方注释 Ruby</h1><!--似乎要先下[hexo-render-markdown-it](https://github.com/hexojs/hexo-renderer-markdown-it)
 [markdown-it-ruby](https://github.com/lostandfound/markdown-it-ruby/blob/master/README.md)
 `npm install markdown-it-ruby --save`
 很难过的发现使用它的markdown渲染之后我主题的目录载不出来了。。。只能下回来原来的了！！
 改用下面这个可以直接配置在hexo里的 缺点是不能喝遮盖效果混用 且ruby不能是中文自动转为拼音
 -->
-<p><a target="_blank" rel="noopener" href="https://github.com/JamesPan/hexo-ruby-character">hexo-ruby-character</a><br>
-<code>npm install hexo-ruby-character --save</code></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/JamesPan/hexo-ruby-character">hexo-ruby-character</a><br><code>npm install hexo-ruby-character --save</code></p>
 <figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;% ruby 我喜欢你|fuck   you %&#125;</span><br></pre></td></tr></table></figure>
 <ruby>我喜欢你<rp> (</rp><rt>fuck you</rt><rp>) </rp></ruby>
-<h1>文字遮盖效果 Spoiler</h1>
-<p><a target="_blank" rel="noopener" href="https://github.com/unnamed42/hexo-spoiler/blob/master/README.md">hexo-spoiler</a><br>
-<code>npm install hexo-spoiler --save</code></p>
+
+<h1 id="文字遮盖效果-Spoiler"><a href="#文字遮盖效果-Spoiler" class="headerlink" title="文字遮盖效果 Spoiler"></a>文字遮盖效果 Spoiler</h1><p><a target="_blank" rel="noopener" href="https://github.com/unnamed42/hexo-spoiler/blob/master/README.md">hexo-spoiler</a><br><code>npm install hexo-spoiler --save</code></p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;% spoiler 我喜欢你 %&#125;</span><br></pre></td></tr></table></figure>
 <span class="spoiler" onclick="this.classList.toggle('spoiler')"><span class="spoiler-blur ">我喜欢你</span></span>
-<h1>分栏</h1>
-<p><a target="_blank" rel="noopener" href="https://github.com/YunYouJun/hexo-tag-common">hexo-tag-commom</a><br>
-<a target="_blank" rel="noopener" href="https://theme-next.js.org/docs/tag-plugins/tabs.html">使用教程</a><br>
-<code>npm install hexo-tag-common</code></p>
+
+<h1 id="分栏"><a href="#分栏" class="headerlink" title="分栏"></a>分栏</h1><p><a target="_blank" rel="noopener" href="https://github.com/YunYouJun/hexo-tag-common">hexo-tag-commom</a><br><a target="_blank" rel="noopener" href="https://theme-next.js.org/docs/tag-plugins/tabs.html">使用教程</a><br><code>npm install hexo-tag-common</code></p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">&#123;% tabs 测试测试,1 %&#125;</span><br><span class="line">&lt;!-- tab 很遗憾 --&gt;</span><br><span class="line">**你的脑子太小**</span><br><span class="line">&lt;!-- endtab --&gt;</span><br><span class="line"></span><br><span class="line">&lt;!-- tab 经考核 --&gt;</span><br><span class="line">**只容得下爱恨**</span><br><span class="line">&lt;!-- endtab --&gt;</span><br><span class="line"></span><br><span class="line">&lt;!-- tab 不通过 --&gt;</span><br><span class="line">**容不下数学**</span><br><span class="line">&lt;!-- endtab --&gt;</span><br><span class="line">&#123;% endtabs %&#125;</span><br></pre></td></tr></table></figure>
 <div class="tag-common tabs" id="测试测试"><ul class="nav-tabs"><li class="tab active"><a data-target="测试测试-1">很遗憾</a></li><li class="tab"><a data-target="测试测试-2">经考核</a></li><li class="tab"><a data-target="测试测试-3">不通过</a></li></ul><div class="tab-content"><div class="tab-pane active" id="测试测试-1"><p><strong>你的脑子太小</strong></p></div><div class="tab-pane" id="测试测试-2"><p><strong>只容得下爱恨</strong></p></div><div class="tab-pane" id="测试测试-3"><p><strong>容不下数学</strong></p></div></div></div>
-<h1>数据可视化工具</h1>
-<p><a target="_blank" rel="noopener" href="https://github.com/Shen-Yu/hexo-tag-chart">hexo-tag-chart</a><br>
-<a target="_blank" rel="noopener" href="https://chartjs.bootcss.com/docs.html">官方文档</a><br>
-<code>npm install hexo-tag-chart --save</code></p>
+
+<h1 id="数据可视化工具"><a href="#数据可视化工具" class="headerlink" title="数据可视化工具"></a>数据可视化工具</h1><p><a target="_blank" rel="noopener" href="https://github.com/Shen-Yu/hexo-tag-chart">hexo-tag-chart</a><br><a target="_blank" rel="noopener" href="https://chartjs.bootcss.com/docs.html">官方文档</a><br><code>npm install hexo-tag-chart --save</code></p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">&#123;% chart 80% 300 %&#125;</span><br><span class="line">&#123;</span><br><span class="line">    type: &#x27;line&#x27;,</span><br><span class="line">    data: &#123;</span><br><span class="line">        labels: [&#x27;January&#x27;, &#x27;February&#x27;, &#x27;March&#x27;, &#x27;April&#x27;, &#x27;May&#x27;, &#x27;June&#x27;, &#x27;July&#x27;],</span><br><span class="line">        datasets: [&#123;</span><br><span class="line">            label: &#x27;My First dataset&#x27;,</span><br><span class="line">            backgroundColor: &#x27;rgb(255, 99, 132)&#x27;,</span><br><span class="line">            borderColor: &#x27;rgb(255, 99, 132)&#x27;,</span><br><span class="line">            data: [0, 10, 5, 2, 20, 30, 45]</span><br><span class="line">        &#125;]</span><br><span class="line">    &#125;,</span><br><span class="line">    options: &#123;</span><br><span class="line">        responsive: true,</span><br><span class="line">        title: &#123;</span><br><span class="line">            display: true,</span><br><span class="line">            text: &#x27;Chart.js Line Chart&#x27;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line">&#123;% endchart %&#125;</span><br></pre></td></tr></table></figure>
 <div style="width: 80%;margin: 0 auto">
-    <canvas id="chart26" style="height: 300px"></canvas>
+    <canvas id="chart5241" style="height: 300px"></canvas>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
 <script type="text/javascript">
-    var ctx = document.getElementById('chart26').getContext('2d');
+    var ctx = document.getElementById('chart5241').getContext('2d');
     var options = {
     type: 'line',
     data: {
@@ -565,28 +553,23 @@ p.spoiler {
 };;
     new Chart(ctx, options);
 </script>
-<h1>悬浮注释</h1>
-<p><a target="_blank" rel="noopener" href="https://github.com/etigerstudio/hexo-tag-hint">hexo-tag-hint</a><br>
-<code>npm install hexo-tag-hint --save</code></p>
+
+<h1 id="悬浮注释"><a href="#悬浮注释" class="headerlink" title="悬浮注释"></a>悬浮注释</h1><p><a target="_blank" rel="noopener" href="https://github.com/etigerstudio/hexo-tag-hint">hexo-tag-hint</a><br><code>npm install hexo-tag-hint --save</code></p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;% hint &#x27;I WANT YOU&#x27; &#x27;🫵&#x27; %&#125;</span><br></pre></td></tr></table></figure>
 <span class="hint--info hint--rounded hint--top" data-hint="🫵" ontouchstart>I WANT YOU</span>
-<h1>动态终端代码演示</h1>
-<p>这个也太帅了我一定要学，下次看看<br>
-<a target="_blank" rel="noopener" href="https://github.com/heowc/hexo-tag-gdemo">https://github.com/heowc/hexo-tag-gdemo</a></p>
-<h1>折叠</h1>
-<p><a target="_blank" rel="noopener" href="https://github.com/AimTao/hexo-fold/blob/master/README_CN.md">hexo-fold</a></p>
+
+<h1 id="动态终端代码演示"><a href="#动态终端代码演示" class="headerlink" title="动态终端代码演示"></a>动态终端代码演示</h1><p>这个也太帅了我一定要学，下次看看<br><a target="_blank" rel="noopener" href="https://github.com/heowc/hexo-tag-gdemo">https://github.com/heowc/hexo-tag-gdemo</a></p>
+<h1 id="折叠"><a href="#折叠" class="headerlink" title="折叠"></a>折叠</h1><p><a target="_blank" rel="noopener" href="https://github.com/AimTao/hexo-fold/blob/master/README_CN.md">hexo-fold</a></p>
 <div class='fold collapsed'>
     <div class='fold-title'>
         我是可折叠内容
     </div>
     <div class='fold-content'>
-        <p>你看到了隐藏起来的我！</p>
+        <p><a target="_blank" rel="noopener" href="https://zennnj.github.io/2024/11/09/%E4%BD%A0%E6%98%AF%E5%BC%BA%E5%BA%A6%E5%85%9A%E5%90%97/">你看到了隐藏起来的我！</a></p>
 
     </div>
 </div>
-<p>++test++<br>
-H~2~O<br>
-29^TH^</p>
+
 <link rel="stylesheet" href="/css/folder.css" type="text/css"><script src="/js/folder.js" type="text/javascript" async></script>
     </article>
     <!-- license -->
@@ -650,7 +633,7 @@ H~2~O<br>
                 <div class="toc-catalog">
                     <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
                 </div>
-                <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">1.</span> <span class="toc-text">短链生成</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">2.</span> <span class="toc-text">文章加密</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">3.</span> <span class="toc-text">文章隐藏</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">4.</span> <span class="toc-text">文字上方注释 Ruby</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">5.</span> <span class="toc-text">文字遮盖效果 Spoiler</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">6.</span> <span class="toc-text">分栏</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">7.</span> <span class="toc-text">数据可视化工具</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">8.</span> <span class="toc-text">悬浮注释</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">9.</span> <span class="toc-text">动态终端代码演示</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">10.</span> <span class="toc-text">折叠</span></a></li></ol>
+                <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%9F%AD%E9%93%BE%E7%94%9F%E6%88%90"><span class="toc-number">1.</span> <span class="toc-text">短链生成</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%96%87%E7%AB%A0%E5%8A%A0%E5%AF%86"><span class="toc-number">2.</span> <span class="toc-text">文章加密</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%96%87%E7%AB%A0%E9%9A%90%E8%97%8F"><span class="toc-number">3.</span> <span class="toc-text">文章隐藏</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%96%87%E5%AD%97%E4%B8%8A%E6%96%B9%E6%B3%A8%E9%87%8A-Ruby"><span class="toc-number">4.</span> <span class="toc-text">文字上方注释 Ruby</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%96%87%E5%AD%97%E9%81%AE%E7%9B%96%E6%95%88%E6%9E%9C-Spoiler"><span class="toc-number">5.</span> <span class="toc-text">文字遮盖效果 Spoiler</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%88%86%E6%A0%8F"><span class="toc-number">6.</span> <span class="toc-text">分栏</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E5%8F%AF%E8%A7%86%E5%8C%96%E5%B7%A5%E5%85%B7"><span class="toc-number">7.</span> <span class="toc-text">数据可视化工具</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%82%AC%E6%B5%AE%E6%B3%A8%E9%87%8A"><span class="toc-number">8.</span> <span class="toc-text">悬浮注释</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%8A%A8%E6%80%81%E7%BB%88%E7%AB%AF%E4%BB%A3%E7%A0%81%E6%BC%94%E7%A4%BA"><span class="toc-number">9.</span> <span class="toc-text">动态终端代码演示</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%8A%98%E5%8F%A0"><span class="toc-number">10.</span> <span class="toc-text">折叠</span></a></li></ol>
             </div>
         <!-- sidebar -->
         <div class="sidebar sidebar-hide">
@@ -762,21 +745,21 @@ H~2~O<br>
 
         <div class="sidebar-panel-tags">
     <div class="sidebar-tags-name">
-            <span class="sidebar-tag-name" data-tags="problems">
-                <span class="iconfont-archer">&#xe606;</span>
-                problems
-            </span>
             <span class="sidebar-tag-name" data-tags="learn">
                 <span class="iconfont-archer">&#xe606;</span>
                 learn
             </span>
-            <span class="sidebar-tag-name" data-tags="practice">
+            <span class="sidebar-tag-name" data-tags="problems">
                 <span class="iconfont-archer">&#xe606;</span>
-                practice
+                problems
             </span>
             <span class="sidebar-tag-name" data-tags="碎碎念">
                 <span class="iconfont-archer">&#xe606;</span>
                 碎碎念
+            </span>
+            <span class="sidebar-tag-name" data-tags="practice">
+                <span class="iconfont-archer">&#xe606;</span>
+                practice
             </span>
     </div>
     <div class="iconfont-archer sidebar-tags-empty">&#xe678;</div>
@@ -788,13 +771,17 @@ H~2~O<br>
 
         <div class="sidebar-panel-categories">
     <div class="sidebar-categories-name">
+        <span class="sidebar-category-name" data-categories="JAVA">
+            <span class="iconfont-archer">&#xe60a;</span>
+            JAVA
+        </span>
         <span class="sidebar-category-name" data-categories="记录">
             <span class="iconfont-archer">&#xe60a;</span>
             记录
         </span>
-        <span class="sidebar-category-name" data-categories="JAVA">
+        <span class="sidebar-category-name" data-categories="unity">
             <span class="iconfont-archer">&#xe60a;</span>
-            JAVA
+            unity
         </span>
         <span class="sidebar-category-name" data-categories="框架">
             <span class="iconfont-archer">&#xe60a;</span>
@@ -804,25 +791,21 @@ H~2~O<br>
             <span class="iconfont-archer">&#xe60a;</span>
             计算机
         </span>
-        <span class="sidebar-category-name" data-categories="数据库">
+        <span class="sidebar-category-name" data-categories="chat">
             <span class="iconfont-archer">&#xe60a;</span>
-            数据库
-        </span>
-        <span class="sidebar-category-name" data-categories="unity">
-            <span class="iconfont-archer">&#xe60a;</span>
-            unity
-        </span>
-        <span class="sidebar-category-name" data-categories="use">
-            <span class="iconfont-archer">&#xe60a;</span>
-            use
+            chat
         </span>
         <span class="sidebar-category-name" data-categories="secrets">
             <span class="iconfont-archer">&#xe60a;</span>
             secrets
         </span>
-        <span class="sidebar-category-name" data-categories="chat">
+        <span class="sidebar-category-name" data-categories="数据库">
             <span class="iconfont-archer">&#xe60a;</span>
-            chat
+            数据库
+        </span>
+        <span class="sidebar-category-name" data-categories="use">
+            <span class="iconfont-archer">&#xe60a;</span>
+            use
         </span>
     </div>
     <div class="iconfont-archer sidebar-categories-empty">&#xe678;</div>

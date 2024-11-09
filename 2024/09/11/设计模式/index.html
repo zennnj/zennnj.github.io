@@ -10,23 +10,23 @@
     <meta name="copyright" content="">
         <meta name="keywords" content="hexo,hexo-theme,hexo-blog">
     <meta name="description" content="">
-    <meta name="description" content="目前记录的模式：单例模式、工厂模式、策略模式、状态模式、观察者模式 持续更新中; ;">
+    <meta name="description" content="目前记录的模式：单例模式、工厂模式、策略模式、状态模式、观察者模式持续更新中; ;">
 <meta property="og:type" content="article">
 <meta property="og:title" content="设计模式">
 <meta property="og:url" content="http://example.com/2024/09/11/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="目前记录的模式：单例模式、工厂模式、策略模式、状态模式、观察者模式 持续更新中; ;">
+<meta property="og:description" content="目前记录的模式：单例模式、工厂模式、策略模式、状态模式、观察者模式持续更新中; ;">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://example.com/2024/09/11/images/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/1.png">
-<meta property="og:image" content="http://example.com/2024/09/11/images/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/2.png">
-<meta property="og:image" content="http://example.com/2024/09/11/images/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/3.png">
-<meta property="og:image" content="http://example.com/2024/09/11/images/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/4.png">
-<meta property="og:image" content="http://example.com/2024/09/11/images/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/5.png">
+<meta property="og:image" content="http://example.com/images/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/1.png">
+<meta property="og:image" content="http://example.com/images/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/2.png">
+<meta property="og:image" content="http://example.com/images/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/3.png">
+<meta property="og:image" content="http://example.com/images/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/4.png">
+<meta property="og:image" content="http://example.com/images/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/5.png">
 <meta property="article:published_time" content="2024-09-11T13:38:56.000Z">
 <meta property="article:modified_time" content="2024-11-09T10:00:21.966Z">
 <meta property="article:tag" content="learn">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://example.com/2024/09/11/images/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/1.png">
+<meta name="twitter:image" content="http://example.com/images/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/1.png">
     <meta http-equiv="Cache-control" content="no-cache">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <link rel="icon" href="/assets/my.ico">
@@ -501,64 +501,40 @@ p.spoiler {
             <div class="container container-unloaded">
                 <main class="main post-page">
     <article class="article-entry">
-        <link rel="stylesheet" type="text&#x2F;css" href="https://cdn.jsdelivr.net/npm/hexo-tag-hint@0.3.1/dist/hexo-tag-hint.min.css"><p>目前记录的模式：单例模式、工厂模式、策略模式、状态模式、观察者模式<br>
-持续更新中; ;</p>
+        <link rel="stylesheet" type="text&#x2F;css" href="https://cdn.jsdelivr.net/npm/hexo-tag-hint@0.3.1/dist/hexo-tag-hint.min.css"><p>目前记录的模式：单例模式、工厂模式、策略模式、状态模式、观察者模式<br>持续更新中; ;</p>
 <span id="more"></span>
-<h1>单例模式</h1>
-<blockquote>
-<p>确保一个类只有一个实例，而且自行实例化并向整个系统提供这个实例<br>
-只有一个实例—&gt;构造方法只能是private,并且拥有一个当前类的静态成员变量</p>
+<h1 id="单例模式"><a href="#单例模式" class="headerlink" title="单例模式"></a>单例模式</h1><blockquote>
+<p>确保一个类只有一个实例，而且自行实例化并向整个系统提供这个实例<br>只有一个实例—&gt;构造方法只能是private,并且拥有一个当前类的静态成员变量</p>
 </blockquote>
-<h2 id="饿汉式实现">饿汉式实现</h2>
-<p>这个唯一的实例，在类加载的时候马上进行实例化</p>
+<h2 id="饿汉式实现"><a href="#饿汉式实现" class="headerlink" title="饿汉式实现"></a>饿汉式实现</h2><p>这个唯一的实例，在类加载的时候马上进行实例化</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">SingletonPattern</span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span>&#123;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Singleton</span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="type">Singleton</span> <span class="variable">singleton</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Singleton</span>();</span><br><span class="line">    <span class="keyword">private</span> <span class="title function_">Singleton</span><span class="params">()</span>&#123;&#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> Singleton <span class="title function_">getInstance</span><span class="params">()</span>&#123;</span><br><span class="line">        <span class="keyword">return</span> singleton; </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="懒汉式实例">懒汉式实例</h2>
-<p>在类加载的时候不进行实例化，在第一次使用时(调用getinstance时)在进行实例化</p>
+<h2 id="懒汉式实例"><a href="#懒汉式实例" class="headerlink" title="懒汉式实例"></a>懒汉式实例</h2><p>在类加载的时候不进行实例化，在第一次使用时(调用getinstance时)在进行实例化</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">SingletonPattern</span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span>&#123;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Singleton</span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> Singleton singleton;</span><br><span class="line">    <span class="keyword">private</span> <span class="title function_">Singleton</span><span class="params">()</span>&#123;&#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">synchronized</span> <span class="keyword">static</span> Singleton <span class="title function_">getInstance</span><span class="params">()</span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(singleton == <span class="literal">null</span>)</span><br><span class="line">            singleton = <span class="keyword">new</span> <span class="title class_">Singleton</span>();</span><br><span class="line">        <span class="keyword">return</span> singleton; </span><br><span class="line">    &#125;<span class="comment">//synchronized加锁，防止在多线程时多次实例化</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><strong>双重检查锁</strong><br>
-减小同步的范围 提高getinstance时的返回速度</p>
+
+<p><strong>双重检查锁</strong><br>减小同步的范围 提高getinstance时的返回速度</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">synchronized</span> <span class="keyword">static</span> Singleton <span class="title function_">getInstance</span><span class="params">()</span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(singleton == <span class="literal">null</span>)</span><br><span class="line">        <span class="keyword">synchronized</span>(Singleton.class)&#123;</span><br><span class="line">            <span class="keyword">if</span>(singleton == <span class="literal">null</span>)</span><br><span class="line">                singleton = <span class="keyword">new</span> <span class="title class_">Singleton</span>();</span><br><span class="line">        &#125;</span><br><span class="line">    <span class="keyword">return</span> singleton; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>要加 volatile 修饰，<br>
-singleton = new Singleton() 可以拆解为3步：<br>
-1、分配内存，2、初始化对象，3、指向刚分配的地址<br>
-若发生重排序，假设 A 线程执行了1和3，还没有执行2，B线程来到判断 NULL，B线程就会直接返回还没初始化的instance了。volatile 可以避免重排序。<br>
-<em>详见java多线程</em></p>
-<p>在存在多个JVM虚拟机时会出现多个实例<br>
-一个JVM虚拟机使用多个类加载器，产生多个实例 ？</p>
+<p>要加 volatile 修饰，<br>singleton &#x3D; new Singleton() 可以拆解为3步：<br>1、分配内存，2、初始化对象，3、指向刚分配的地址<br>若发生重排序，假设 A 线程执行了1和3，还没有执行2，B线程来到判断 NULL，B线程就会直接返回还没初始化的instance了。volatile 可以避免重排序。<br><em>详见java多线程</em></p>
+<p>在存在多个JVM虚拟机时会出现多个实例<br>一个JVM虚拟机使用多个类加载器，产生多个实例 ？</p>
 <p>单例模式最佳以无状态的，比如工具类的形式提供</p>
-<h1>工厂模式</h1>
-<h2 id="简单工厂模式">简单工厂模式</h2>
-<blockquote>
+<h1 id="工厂模式"><a href="#工厂模式" class="headerlink" title="工厂模式"></a>工厂模式</h1><h2 id="简单工厂模式"><a href="#简单工厂模式" class="headerlink" title="简单工厂模式"></a>简单工厂模式</h2><blockquote>
 <p>简单工厂模式又称为静态工厂方法模式，它属于类创建型模式。在简单工厂模式中，可以根据参数的不同返回不同类的实例。简单工厂模式专门定义一个类来负责创建其他类的实例，被创建的实例通常都有共有的父类。</p>
 </blockquote>
-<p><img src="../images/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/1.png" alt="此处应有例图"></p>
+<p><img src="/../images/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/1.png" alt="此处应有例图"></p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">SimpleFactory</span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> Product <span class="title function_">createProduct</span><span class="params">(String type)</span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(<span class="string">&quot;A&quot;</span>.equals(type))<span class="comment">//最好常量在前，防止变量是null的情况报空指针</span></span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">ProductA</span>();</span><br><span class="line">        <span class="keyword">else</span> </span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">ProductB</span>();</span><br><span class="line">    &#125;</span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span>&#123;</span><br><span class="line">            <span class="type">Product</span> <span class="variable">product</span> <span class="operator">=</span> SimpleFactory.createProduxt(<span class="string">&quot;A&quot;</span>);</span><br><span class="line">            product.print();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">abstract</span> <span class="keyword">class</span> <span class="title class_">Product</span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title function_">print</span><span class="params">()</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">ProductA</span> <span class="keyword">extends</span> <span class="title class_">Product</span>&#123;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">print</span><span class="params">()</span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;产品A&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">ProductB</span> <span class="keyword">extends</span> <span class="title class_">Product</span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">print</span><span class="params">()</span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;产品B&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>实现对象的创建和使用分离</p>
-<h2 id="工厂模式">工厂模式</h2>
-<p><img src="../images/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/2.png" alt="此处应有例图"><br>
-<img src="../images/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/3.png" alt=""><br>
-新增一个产品，就新增一个工厂类，每一个具体的工厂都负责生产一种对应的具体产品<br>
-e.g. 抽象工厂（接口）Collection 具体工厂ArrayList和LinkedList,抽象产品Iterator,具体产品Itr和ListItr</p>
-<h2 id="抽象工厂模式">抽象工厂模式</h2>
-<p><img src="../images/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/4.png" alt="此处应有例图"><br>
-<img src="../images/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/5.png" alt=""><br>
-使工厂不单可以生产某一大类产品，还可以生产其他大类产品，打破了一对一关系</p>
-<h1>策略模式</h1>
-<blockquote>
+<h2 id="工厂模式-1"><a href="#工厂模式-1" class="headerlink" title="工厂模式"></a>工厂模式</h2><p><img src="/../images/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/2.png" alt="此处应有例图"><br><img src="/../images/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/3.png"><br>新增一个产品，就新增一个工厂类，每一个具体的工厂都负责生产一种对应的具体产品<br>e.g. 抽象工厂（接口）Collection 具体工厂ArrayList和LinkedList,抽象产品Iterator,具体产品Itr和ListItr</p>
+<h2 id="抽象工厂模式"><a href="#抽象工厂模式" class="headerlink" title="抽象工厂模式"></a>抽象工厂模式</h2><p><img src="/../images/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/4.png" alt="此处应有例图"><br><img src="/../images/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/5.png"><br>使工厂不单可以生产某一大类产品，还可以生产其他大类产品，打破了一对一关系</p>
+<h1 id="策略模式"><a href="#策略模式" class="headerlink" title="策略模式"></a>策略模式</h1><blockquote>
 <p>定义一组算法，将每个算法都封装起来，并且使他们之间可以互换。策略模式让算法独立于使用它的可乎而变化，也称为政策模式(Policy)。</p>
 </blockquote>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.concurrent.ThreadPoolExecutor;</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">StrategyPattern</span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span>&#123;</span><br><span class="line">        <span class="type">ThreadPoolExecutor</span> <span class="variable">executor</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ThreadPoolExecutor</span>();</span><br><span class="line">        </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 <p>就是java城堡游戏里用的handler？</p>
-<h1>状态模式</h1>
-<blockquote>
+<h1 id="状态模式"><a href="#状态模式" class="headerlink" title="状态模式"></a>状态模式</h1><blockquote>
 <p>状态模式(State Pattern):允许一个对象在其内部状态改变时改变它的行为，对象看起来似乎修改了它的类。其别名为状态对象(Objects for States),状态模式是一种对象行为型模式。</p>
 </blockquote>
-<p>策略模式和状态模式都可以避免if-else语句的使用<br>
-优点：封装了转换规则，并枚举了可能的状态（策略），将所有与某个对状态（策略）有关的行为放到了状态例中，方便增加新的状态（策略）<br>
-缺点：增加系统类和对象的个数，如使用不当会导致程序结构或代码的混乱</p>
+<p>策略模式和状态模式都可以避免if-else语句的使用<br>优点：封装了转换规则，并枚举了可能的状态（策略），将所有与某个对状态（策略）有关的行为放到了状态例中，方便增加新的状态（策略）<br>缺点：增加系统类和对象的个数，如使用不当会导致程序结构或代码的混乱</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">StatePattern</span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="title function_">main</span><span class="params">(String[] args)</span>&#123;</span><br><span class="line">        <span class="type">Content</span> <span class="variable">ZhangSan</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Content</span>();</span><br><span class="line">        ZhangSan.changeStates(<span class="keyword">new</span> <span class="title class_">Happy</span>());</span><br><span class="line">        ZhangSan.doSomething();</span><br><span class="line">        ZhangSan.changeStates(<span class="keyword">new</span> <span class="title class_">Angry</span>());</span><br><span class="line">        ZhangSan.doSomething();</span><br><span class="line">        ZhangSan.changeStates(<span class="keyword">new</span> <span class="title class_">Sad</span>());</span><br><span class="line">        ZhangSan.doSomething();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">abstract</span> <span class="keyword">class</span> <span class="title class_">State</span>&#123;</span><br><span class="line">    <span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title function_">doWork</span><span class="params">()</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Happy</span> <span class="keyword">extends</span> <span class="title class_">State</span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">void</span> <span class="title function_">doWork</span><span class="params">()</span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;积极主动！&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125; </span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Angry</span> <span class="keyword">extends</span> <span class="title class_">State</span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">void</span> <span class="title function_">doWork</span><span class="params">()</span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;无精打采！&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125; </span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Sad</span> <span class="keyword">extends</span> <span class="title class_">State</span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">void</span> <span class="title function_">doWork</span><span class="params">()</span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;啥也不干！&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125; </span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Content</span>&#123;</span><br><span class="line">    <span class="keyword">private</span> State state;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">changeState</span><span class="params">(State state)</span>&#123;</span><br><span class="line">        <span class="built_in">this</span>.state=state;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">doSomething</span><span class="params">()</span>&#123;</span><br><span class="line">        state.doWork();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h1>观察者模式</h1>
-<p><strong>又称发布-订阅模式</strong></p>
+<h1 id="观察者模式"><a href="#观察者模式" class="headerlink" title="观察者模式"></a>观察者模式</h1><p><strong>又称发布-订阅模式</strong></p>
 <blockquote>
 <p>观察者模式(Oberserver Pattern):定义对象间的一种一对多依赖关系，使得每当一个对象状态发生改变时，其相关依赖对象皆得到通知并被自动更新。</p>
 </blockquote>
@@ -631,7 +607,7 @@ e.g. 抽象工厂（接口）Collection 具体工厂ArrayList和LinkedList,抽�
                 <div class="toc-catalog">
                     <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
                 </div>
-                <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">1.</span> <span class="toc-text">单例模式</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A5%BF%E6%B1%89%E5%BC%8F%E5%AE%9E%E7%8E%B0"><span class="toc-number">1.1.</span> <span class="toc-text">饿汉式实现</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%87%92%E6%B1%89%E5%BC%8F%E5%AE%9E%E4%BE%8B"><span class="toc-number">1.2.</span> <span class="toc-text">懒汉式实例</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">2.</span> <span class="toc-text">工厂模式</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AE%80%E5%8D%95%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8F"><span class="toc-number">2.1.</span> <span class="toc-text">简单工厂模式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8F"><span class="toc-number">2.2.</span> <span class="toc-text">工厂模式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8A%BD%E8%B1%A1%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8F"><span class="toc-number">2.3.</span> <span class="toc-text">抽象工厂模式</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">3.</span> <span class="toc-text">策略模式</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">4.</span> <span class="toc-text">状态模式</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">5.</span> <span class="toc-text">观察者模式</span></a></li></ol>
+                <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F"><span class="toc-number">1.</span> <span class="toc-text">单例模式</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A5%BF%E6%B1%89%E5%BC%8F%E5%AE%9E%E7%8E%B0"><span class="toc-number">1.1.</span> <span class="toc-text">饿汉式实现</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%87%92%E6%B1%89%E5%BC%8F%E5%AE%9E%E4%BE%8B"><span class="toc-number">1.2.</span> <span class="toc-text">懒汉式实例</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8F"><span class="toc-number">2.</span> <span class="toc-text">工厂模式</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AE%80%E5%8D%95%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8F"><span class="toc-number">2.1.</span> <span class="toc-text">简单工厂模式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8F-1"><span class="toc-number">2.2.</span> <span class="toc-text">工厂模式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8A%BD%E8%B1%A1%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8F"><span class="toc-number">2.3.</span> <span class="toc-text">抽象工厂模式</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%AD%96%E7%95%A5%E6%A8%A1%E5%BC%8F"><span class="toc-number">3.</span> <span class="toc-text">策略模式</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%8A%B6%E6%80%81%E6%A8%A1%E5%BC%8F"><span class="toc-number">4.</span> <span class="toc-text">状态模式</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%A7%82%E5%AF%9F%E8%80%85%E6%A8%A1%E5%BC%8F"><span class="toc-number">5.</span> <span class="toc-text">观察者模式</span></a></li></ol>
             </div>
         <!-- sidebar -->
         <div class="sidebar sidebar-hide">
@@ -743,21 +719,21 @@ e.g. 抽象工厂（接口）Collection 具体工厂ArrayList和LinkedList,抽�
 
         <div class="sidebar-panel-tags">
     <div class="sidebar-tags-name">
-            <span class="sidebar-tag-name" data-tags="problems">
-                <span class="iconfont-archer">&#xe606;</span>
-                problems
-            </span>
             <span class="sidebar-tag-name" data-tags="learn">
                 <span class="iconfont-archer">&#xe606;</span>
                 learn
             </span>
-            <span class="sidebar-tag-name" data-tags="practice">
+            <span class="sidebar-tag-name" data-tags="problems">
                 <span class="iconfont-archer">&#xe606;</span>
-                practice
+                problems
             </span>
             <span class="sidebar-tag-name" data-tags="碎碎念">
                 <span class="iconfont-archer">&#xe606;</span>
                 碎碎念
+            </span>
+            <span class="sidebar-tag-name" data-tags="practice">
+                <span class="iconfont-archer">&#xe606;</span>
+                practice
             </span>
     </div>
     <div class="iconfont-archer sidebar-tags-empty">&#xe678;</div>
@@ -769,13 +745,17 @@ e.g. 抽象工厂（接口）Collection 具体工厂ArrayList和LinkedList,抽�
 
         <div class="sidebar-panel-categories">
     <div class="sidebar-categories-name">
+        <span class="sidebar-category-name" data-categories="JAVA">
+            <span class="iconfont-archer">&#xe60a;</span>
+            JAVA
+        </span>
         <span class="sidebar-category-name" data-categories="记录">
             <span class="iconfont-archer">&#xe60a;</span>
             记录
         </span>
-        <span class="sidebar-category-name" data-categories="JAVA">
+        <span class="sidebar-category-name" data-categories="unity">
             <span class="iconfont-archer">&#xe60a;</span>
-            JAVA
+            unity
         </span>
         <span class="sidebar-category-name" data-categories="框架">
             <span class="iconfont-archer">&#xe60a;</span>
@@ -785,25 +765,21 @@ e.g. 抽象工厂（接口）Collection 具体工厂ArrayList和LinkedList,抽�
             <span class="iconfont-archer">&#xe60a;</span>
             计算机
         </span>
-        <span class="sidebar-category-name" data-categories="数据库">
+        <span class="sidebar-category-name" data-categories="chat">
             <span class="iconfont-archer">&#xe60a;</span>
-            数据库
-        </span>
-        <span class="sidebar-category-name" data-categories="unity">
-            <span class="iconfont-archer">&#xe60a;</span>
-            unity
-        </span>
-        <span class="sidebar-category-name" data-categories="use">
-            <span class="iconfont-archer">&#xe60a;</span>
-            use
+            chat
         </span>
         <span class="sidebar-category-name" data-categories="secrets">
             <span class="iconfont-archer">&#xe60a;</span>
             secrets
         </span>
-        <span class="sidebar-category-name" data-categories="chat">
+        <span class="sidebar-category-name" data-categories="数据库">
             <span class="iconfont-archer">&#xe60a;</span>
-            chat
+            数据库
+        </span>
+        <span class="sidebar-category-name" data-categories="use">
+            <span class="iconfont-archer">&#xe60a;</span>
+            use
         </span>
     </div>
     <div class="iconfont-archer sidebar-categories-empty">&#xe678;</div>

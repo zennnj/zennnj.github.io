@@ -10,12 +10,12 @@
     <meta name="copyright" content="">
         <meta name="keywords" content="hexo,hexo-theme,hexo-blog">
     <meta name="description" content="">
-    <meta name="description" content="刚学没几周就因为忘记了MySQL的密码卡进度实在令人忍俊不禁 因为在目前阶段没有前端配合做出的成果，所以学得很累zzz">
+    <meta name="description" content="刚学没几周就因为忘记了MySQL的密码卡进度实在令人忍俊不禁因为在目前阶段没有前端配合做出的成果，所以学得很累zzz">
 <meta property="og:type" content="article">
 <meta property="og:title" content="MySQL">
 <meta property="og:url" content="http://example.com/2024/09/26/MySQL/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="刚学没几周就因为忘记了MySQL的密码卡进度实在令人忍俊不禁 因为在目前阶段没有前端配合做出的成果，所以学得很累zzz">
+<meta property="og:description" content="刚学没几周就因为忘记了MySQL的密码卡进度实在令人忍俊不禁因为在目前阶段没有前端配合做出的成果，所以学得很累zzz">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2024-09-26T08:32:33.000Z">
 <meta property="article:modified_time" content="2024-11-09T10:00:21.967Z">
@@ -495,44 +495,25 @@ p.spoiler {
             <div class="container container-unloaded">
                 <main class="main post-page">
     <article class="article-entry">
-        <link rel="stylesheet" type="text&#x2F;css" href="https://cdn.jsdelivr.net/npm/hexo-tag-hint@0.3.1/dist/hexo-tag-hint.min.css"><p>刚学没几周就因为忘记了MySQL的密码卡进度实在令人忍俊不禁<br>
-因为在目前阶段没有前端配合做出的成果，所以学得很累zzz</p>
+        <link rel="stylesheet" type="text&#x2F;css" href="https://cdn.jsdelivr.net/npm/hexo-tag-hint@0.3.1/dist/hexo-tag-hint.min.css"><p>刚学没几周就因为忘记了MySQL的密码卡进度实在令人忍俊不禁<br>因为在目前阶段没有前端配合做出的成果，所以学得很累zzz</p>
 <span id="more"></span>
+
 <p><a target="_blank" rel="noopener" href="https://jimhackking.github.io/%E8%BF%90%E7%BB%B4/MySQL%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/#more" title="^ ^">兄弟你的笔记我偷了</a></p>
-<h1><a target="_blank" rel="noopener" href="https://blog.csdn.net/hkdhkdhkd/article/details/121158926">Mysql忘记登录密码的解决步骤（完整步骤）</a></h1>
-<p>哈哈（流汗</p>
-<h1>VSCODE连接MySQL</h1>
-<p>添加拓展MySQL,资源管理器里按<code>+</code>连接</p>
-<p>在MySQL终端输入<br>
-<code>ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'password';</code><br>
-root、password 分别为数据库账户，密码<br>
-原因：登录数据库的客户端跟mysql8.0不兼容了，mysql8.0密码认证采用了新的密码格式</p>
-<h1>MySQL启动</h1>
-<p>services.msc</p>
-<p>net start mysql80<br>
-net stop mysql80</p>
-<p><strong>客户端连接</strong><br>
-① MySQL提供的客户端<br>
-② mysql <em>[-h 127.0.0.1] [-P 3306]</em> -u root -p<br>
-(需要配置环境变量)([-h 127.0.0.1] [-P 3306]可省略)</p>
+<h1 id="Mysql忘记登录密码的解决步骤（完整步骤）"><a href="#Mysql忘记登录密码的解决步骤（完整步骤）" class="headerlink" title="Mysql忘记登录密码的解决步骤（完整步骤）"></a><a target="_blank" rel="noopener" href="https://blog.csdn.net/hkdhkdhkd/article/details/121158926">Mysql忘记登录密码的解决步骤（完整步骤）</a></h1><p>哈哈（流汗</p>
+<h1 id="VSCODE连接MySQL"><a href="#VSCODE连接MySQL" class="headerlink" title="VSCODE连接MySQL"></a>VSCODE连接MySQL</h1><p>添加拓展MySQL,资源管理器里按<code>+</code>连接</p>
+<p>在MySQL终端输入<br><code>ALTER USER &#39;root&#39;@&#39;localhost&#39; IDENTIFIED WITH mysql_native_password BY &#39;password&#39;;</code><br>root、password 分别为数据库账户，密码<br>原因：登录数据库的客户端跟mysql8.0不兼容了，mysql8.0密码认证采用了新的密码格式</p>
+<h1 id="MySQL启动"><a href="#MySQL启动" class="headerlink" title="MySQL启动"></a>MySQL启动</h1><p>services.msc</p>
+<p>net start mysql80<br>net stop mysql80</p>
+<p><strong>客户端连接</strong><br>① MySQL提供的客户端<br>② mysql <em>[-h 127.0.0.1] [-P 3306]</em> -u root -p<br>(需要配置环境变量)([-h 127.0.0.1] [-P 3306]可省略)</p>
 <p>RDBMS</p>
-<h1>SQL</h1>
-<h2 id="SQL的通用语法">SQL的通用语法</h2>
-<p>以分号结尾<br>
-MySQL数据库的SQL雨具不区分大小写，关键字建议使用大写<br>
-注释: <code>--</code> 或 <code>#</code> 多行注释使用 <code>/* */</code></p>
-<h2 id="SQL分类">SQL分类</h2>
-<ul>
+<h1 id="SQL"><a href="#SQL" class="headerlink" title="SQL"></a>SQL</h1><h2 id="SQL的通用语法"><a href="#SQL的通用语法" class="headerlink" title="SQL的通用语法"></a>SQL的通用语法</h2><p>以分号结尾<br>MySQL数据库的SQL雨具不区分大小写，关键字建议使用大写<br>注释: <code>--</code> 或 <code>#</code> 多行注释使用 <code>/* */</code></p>
+<h2 id="SQL分类"><a href="#SQL分类" class="headerlink" title="SQL分类"></a>SQL分类</h2><ul>
 <li>数据定义语言(DDL)</li>
 <li>数据操作语言(DML)</li>
 <li>数据查询结构(DQL)</li>
 <li>数据控制语言(DCL)</li>
 </ul>
-<h2 id="DDL">DDL</h2>
-<h2 id="DML">DML</h2>
-<h2 id="DQL">DQL</h2>
-<h2 id="DCL">DCL</h2>
-<link rel="stylesheet" href="/css/folder.css" type="text/css"><script src="/js/folder.js" type="text/javascript" async></script>
+<h2 id="DDL"><a href="#DDL" class="headerlink" title="DDL"></a>DDL</h2><h2 id="DML"><a href="#DML" class="headerlink" title="DML"></a>DML</h2><h2 id="DQL"><a href="#DQL" class="headerlink" title="DQL"></a>DQL</h2><h2 id="DCL"><a href="#DCL" class="headerlink" title="DCL"></a>DCL</h2><link rel="stylesheet" href="/css/folder.css" type="text/css"><script src="/js/folder.js" type="text/javascript" async></script>
     </article>
     <!-- license -->
     <!-- paginator -->
@@ -599,7 +580,7 @@ MySQL数据库的SQL雨具不区分大小写，关键字建议使用大写<br>
                 <div class="toc-catalog">
                     <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
                 </div>
-                <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">1.</span> <span class="toc-text">Mysql忘记登录密码的解决步骤（完整步骤）</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">2.</span> <span class="toc-text">VSCODE连接MySQL</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">3.</span> <span class="toc-text">MySQL启动</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">4.</span> <span class="toc-text">SQL</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#SQL%E7%9A%84%E9%80%9A%E7%94%A8%E8%AF%AD%E6%B3%95"><span class="toc-number">4.1.</span> <span class="toc-text">SQL的通用语法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#SQL%E5%88%86%E7%B1%BB"><span class="toc-number">4.2.</span> <span class="toc-text">SQL分类</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#DDL"><span class="toc-number">4.3.</span> <span class="toc-text">DDL</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#DML"><span class="toc-number">4.4.</span> <span class="toc-text">DML</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#DQL"><span class="toc-number">4.5.</span> <span class="toc-text">DQL</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#DCL"><span class="toc-number">4.6.</span> <span class="toc-text">DCL</span></a></li></ol></li></ol>
+                <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Mysql%E5%BF%98%E8%AE%B0%E7%99%BB%E5%BD%95%E5%AF%86%E7%A0%81%E7%9A%84%E8%A7%A3%E5%86%B3%E6%AD%A5%E9%AA%A4%EF%BC%88%E5%AE%8C%E6%95%B4%E6%AD%A5%E9%AA%A4%EF%BC%89"><span class="toc-number">1.</span> <span class="toc-text">Mysql忘记登录密码的解决步骤（完整步骤）</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#VSCODE%E8%BF%9E%E6%8E%A5MySQL"><span class="toc-number">2.</span> <span class="toc-text">VSCODE连接MySQL</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#MySQL%E5%90%AF%E5%8A%A8"><span class="toc-number">3.</span> <span class="toc-text">MySQL启动</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#SQL"><span class="toc-number">4.</span> <span class="toc-text">SQL</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#SQL%E7%9A%84%E9%80%9A%E7%94%A8%E8%AF%AD%E6%B3%95"><span class="toc-number">4.1.</span> <span class="toc-text">SQL的通用语法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#SQL%E5%88%86%E7%B1%BB"><span class="toc-number">4.2.</span> <span class="toc-text">SQL分类</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#DDL"><span class="toc-number">4.3.</span> <span class="toc-text">DDL</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#DML"><span class="toc-number">4.4.</span> <span class="toc-text">DML</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#DQL"><span class="toc-number">4.5.</span> <span class="toc-text">DQL</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#DCL"><span class="toc-number">4.6.</span> <span class="toc-text">DCL</span></a></li></ol></li></ol>
             </div>
         <!-- sidebar -->
         <div class="sidebar sidebar-hide">
@@ -711,21 +692,21 @@ MySQL数据库的SQL雨具不区分大小写，关键字建议使用大写<br>
 
         <div class="sidebar-panel-tags">
     <div class="sidebar-tags-name">
-            <span class="sidebar-tag-name" data-tags="problems">
-                <span class="iconfont-archer">&#xe606;</span>
-                problems
-            </span>
             <span class="sidebar-tag-name" data-tags="learn">
                 <span class="iconfont-archer">&#xe606;</span>
                 learn
             </span>
-            <span class="sidebar-tag-name" data-tags="practice">
+            <span class="sidebar-tag-name" data-tags="problems">
                 <span class="iconfont-archer">&#xe606;</span>
-                practice
+                problems
             </span>
             <span class="sidebar-tag-name" data-tags="碎碎念">
                 <span class="iconfont-archer">&#xe606;</span>
                 碎碎念
+            </span>
+            <span class="sidebar-tag-name" data-tags="practice">
+                <span class="iconfont-archer">&#xe606;</span>
+                practice
             </span>
     </div>
     <div class="iconfont-archer sidebar-tags-empty">&#xe678;</div>
@@ -737,13 +718,17 @@ MySQL数据库的SQL雨具不区分大小写，关键字建议使用大写<br>
 
         <div class="sidebar-panel-categories">
     <div class="sidebar-categories-name">
+        <span class="sidebar-category-name" data-categories="JAVA">
+            <span class="iconfont-archer">&#xe60a;</span>
+            JAVA
+        </span>
         <span class="sidebar-category-name" data-categories="记录">
             <span class="iconfont-archer">&#xe60a;</span>
             记录
         </span>
-        <span class="sidebar-category-name" data-categories="JAVA">
+        <span class="sidebar-category-name" data-categories="unity">
             <span class="iconfont-archer">&#xe60a;</span>
-            JAVA
+            unity
         </span>
         <span class="sidebar-category-name" data-categories="框架">
             <span class="iconfont-archer">&#xe60a;</span>
@@ -753,25 +738,21 @@ MySQL数据库的SQL雨具不区分大小写，关键字建议使用大写<br>
             <span class="iconfont-archer">&#xe60a;</span>
             计算机
         </span>
-        <span class="sidebar-category-name" data-categories="数据库">
+        <span class="sidebar-category-name" data-categories="chat">
             <span class="iconfont-archer">&#xe60a;</span>
-            数据库
-        </span>
-        <span class="sidebar-category-name" data-categories="unity">
-            <span class="iconfont-archer">&#xe60a;</span>
-            unity
-        </span>
-        <span class="sidebar-category-name" data-categories="use">
-            <span class="iconfont-archer">&#xe60a;</span>
-            use
+            chat
         </span>
         <span class="sidebar-category-name" data-categories="secrets">
             <span class="iconfont-archer">&#xe60a;</span>
             secrets
         </span>
-        <span class="sidebar-category-name" data-categories="chat">
+        <span class="sidebar-category-name" data-categories="数据库">
             <span class="iconfont-archer">&#xe60a;</span>
-            chat
+            数据库
+        </span>
+        <span class="sidebar-category-name" data-categories="use">
+            <span class="iconfont-archer">&#xe60a;</span>
+            use
         </span>
     </div>
     <div class="iconfont-archer sidebar-categories-empty">&#xe678;</div>
