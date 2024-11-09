@@ -198,7 +198,37 @@
     <!-- 百度统计  -->
     <!-- 谷歌统计  -->
     <!-- Google tag (gtag.js) -->
-<meta name="generator" content="Hexo 7.3.0"></head>
+<style type="text/css">
+.spoiler {
+  display: inline;
+}
+p.spoiler {
+  display: flex;
+}
+.spoiler a {
+  pointer-events: none;
+}
+.spoiler-blur, .spoiler-blur > * {
+  transition: text-shadow .5s ease;
+}
+.spoiler .spoiler-blur, .spoiler .spoiler-blur > * {
+  color: rgba(0, 0, 0, 0);
+  background-color: rgba(0, 0, 0, 0);
+  text-shadow: 0 0 10px grey;
+  cursor: pointer;
+}
+.spoiler .spoiler-blur:hover, .spoiler .spoiler-blur:hover > * {
+  text-shadow: 0 0 5px grey;
+}
+.spoiler-box, .spoiler-box > * {
+  transition: color .5s ease,
+  background-color .5s ease;
+}
+.spoiler .spoiler-box, .spoiler .spoiler-box > * {
+  color: black;
+  background-color: black;
+  text-shadow: none;
+}</style><meta name="generator" content="Hexo 7.3.0"></head>
 
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
     <script type="text/javascript">
@@ -396,14 +426,12 @@
             <img class="loading" src="/assets/loading.svg" style="display: block; margin: 6rem auto 0 auto; width: 6rem; height: 6rem;" alt="loading">
             <div class="container container-unloaded">
                 <main class="main index-page">
-            
         <article class="index-post">
             <a class="abstract-title" href="/2024/10/26/unity/">
                 <span class="abstract-title-text">unity</span>
             </a>
             <div class="abstract-content">
-                一天c#铺垫后的正文PROBLEMS:这一段代码的逻辑让我再想想
-123456789101112AsyncOperation operation;void Start()&#123;    StartCoroutine(loadScene());&#125;//协程方法用来异步加载场景IEnumerator loadScene()&#123;    operation = SceneManager.LoadSceneAsync(1);    //加载完场景不要自动跳转    operation.allowSceneActivation = false;    yield return o...
+                <p>前情提要：博主自愿被抓去做(玩)游戏，组内高手云集(真的吗)，令博主焦虑不安，坐在电脑前狂敲一千多行笔记，于是有了这篇文章</p>
             </div>
             <!-- read more -->
             <div class="abstract-post-meta">
@@ -413,58 +441,44 @@
                 </div>
                 <!-- tags -->
                     <div class="abstract-tags" >
-        <a class="post-tag" href="javascript:void(0);" data-tags="unity">unity</a>
+        <a class="post-tag" href="javascript:void(0);" data-tags="learn">learn</a>
 </div>
 
             </div>
         </article>
         <div class="index-post-divider"></div>
-            
         <article class="index-post">
             <a class="abstract-title" href="/2024/10/25/C/">
                 <span class="abstract-title-text">C#</span>
             </a>
             <div class="abstract-content">
-                总之来玩玩，感觉和java区别没有很大C#语法随记——Event?.Invoke()
-控制台输入输出Console.WriteLine(&quot;&quot;);Console.Write(&quot;&quot;);Console.ReadLine();直到回车Console.ReadKey();吃一个按键的内容
-
-常量和变量关键字const
-值和引用类型引用类型string，数组，类
-值类型其他，结构体
-
-转义字符string str=&quot;ww\&#39;&quot;\\a警报音 &lt;-这个好玩
-
-类型转换括号(int)str
-Parse只能转字符串int.Parse(...
+                <p>总之来玩玩，感觉和java区别没有很大</p>
             </div>
             <!-- read more -->
             <div class="abstract-post-meta">
                 <!-- date -->
-                <div class="abstract-date" title="Last updated: 2024/11/07">
+                <div class="abstract-date" title="Last updated: 2024/11/09">
                     <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2024/10/25</span>
                 </div>
                 <!-- tags -->
                     <div class="abstract-tags" >
-        <a class="post-tag" href="javascript:void(0);" data-tags="unity">unity</a>
+        <a class="post-tag" href="javascript:void(0);" data-tags="learn">learn</a>
 </div>
 
             </div>
         </article>
         <div class="index-post-divider"></div>
-            
         <article class="index-post">
             <a class="abstract-title" href="/2024/10/19/%E7%BC%96%E7%A8%8B%E7%BB%86%E8%8A%82%E8%AE%B0%E5%BD%95/">
                 <span class="abstract-title-text">编程细节记录</span>
             </a>
             <div class="abstract-content">
-                做逻辑判断相等时，习惯把常量写在前面防止在只敲了一个&#x3D;的时候无法发现错误但是在常量写在前面的时候会马上报错
-java-equals时要把常量写在前面e.g.(&quot;a&quot;).equals(a)equals函数会先对前一参数进行是否为NULL的判断，若为NULL则会报错
-123456789101112public class equalsTest &#123;     @SuppressWarnings(&quot;rawtypes&quot;)    public static void main(String args[]) &#123;        List...
+                <p>我要成为编程糕手！</p>
             </div>
             <!-- read more -->
             <div class="abstract-post-meta">
                 <!-- date -->
-                <div class="abstract-date" title="Last updated: 2024/10/20">
+                <div class="abstract-date" title="Last updated: 2024/11/09">
                     <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2024/10/19</span>
                 </div>
                 <!-- tags -->
@@ -475,20 +489,13 @@ java-equals时要把常量写在前面e.g.(&quot;a&quot;).equals(a)equals函数�
             </div>
         </article>
         <div class="index-post-divider"></div>
-            
         <article class="index-post">
             <a class="abstract-title" href="/2024/10/13/Java%E5%A4%9A%E7%BA%BF%E7%A8%8B/">
                 <span class="abstract-title-text">Java多线程</span>
             </a>
             <div class="abstract-content">
-                在此之前，发现了好东西
-基本概念进程&amp;线程进程：程序的基本执行实体线程：操作系统能够进行运算调度的最小单位，它被包含在进程之中，是进程中的实际运作单位。java默认有几个线程? 两个 main线程 gc线程
-多线程的应用场景
-拷贝、迁移大文件
-加载大量的资源文件
-
-并发和并行并发：在同一时刻，有多个指令在单个CPU上交替执行并行：在同一时刻，有多个指令在多个CPU上同时执行
-多线程的实现方式继承Thread类的方式进行实现1234567891011121314151617181920212223public class MultithreadThing extends Threa...
+                <p>话说async就是异步，本来以为异步就是多线程，不过在中途学untiy的时候发现并不是一个东西，多线程只是异步的一种实现方式，平时提到异步更多的是说另一种方式协程。<br>
+<a target="_blank" rel="noopener" href="https://blog.csdn.net/bwkair/article/details/112255765">详见</a></p>
             </div>
             <!-- read more -->
             <div class="abstract-post-meta">
@@ -514,11 +521,6 @@ java-equals时要把常量写在前面e.g.(&quot;a&quot;).equals(a)equals函数�
         <div class="social">
                             <a href="mailto:limiese0zen@gmail.com" class="iconfont-archer email" title="email" ></a>
                 <a href="//github.com/zennnj" class="iconfont-archer github" target="_blank" title="github"></a>
-                <span class="iconfont-archer wechat" title="wechat">
-                    <img class="profile-qr" src="/assets/example_qr.png" />
-                </span>
-                <a href="https://weibo.com/u/5717651025" class="iconfont-archer weibo" target="_blank" title="weibo"></a>
-                <a href="https://space.bilibili.com/100278128" class="iconfont-archer bilibili" target="_blank" title="bilibili"></a>
                 <a href="https://steamcommunity.com/profiles/76561199557415174" class="iconfont-archer steam" target="_blank" title="steam"></a>
 
         </div>
@@ -561,15 +563,20 @@ java-equals时要把常量写在前面e.g.(&quot;a&quot;).equals(a)equals函数�
         
         
         
+        
     <div class="total-and-search">
         <div class="total-archive">
-        Total : 16
+        Total : 17
         </div>
         <!-- search  -->
     </div>
     <div class="post-archive">
             <div class="archive-year"> 2024 </div>
             <ul class="year-list">
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/09</span>
+            <a class="archive-post-title" href="/2024/11/09/%E6%9C%AC%E7%AB%99%E4%BD%BF%E7%94%A8%E7%9A%84%E6%8F%92%E4%BB%B6/">本站使用的插件</a>
+        </li>
         <li class="archive-post-item">
             <span class="archive-post-date">11/03</span>
             <a class="archive-post-title" href="/2024/11/03/%E5%81%9A%E9%A2%98%E8%AE%B0%E5%BD%95%E4%B8%B2/">做题记录串</a>
@@ -592,11 +599,11 @@ java-equals时要把常量写在前面e.g.(&quot;a&quot;).equals(a)equals函数�
         </li>
         <li class="archive-post-item">
             <span class="archive-post-date">09/28</span>
-            <a class="archive-post-title" href="/2024/09/28/SpringBoot/">SpringBoot</a>
+            <a class="archive-post-title" href="/2024/09/28/JVM/">JVM</a>
         </li>
         <li class="archive-post-item">
             <span class="archive-post-date">09/28</span>
-            <a class="archive-post-title" href="/2024/09/28/JVM/">JVM</a>
+            <a class="archive-post-title" href="/2024/09/28/SpringBoot/">SpringBoot</a>
         </li>
         <li class="archive-post-item">
             <span class="archive-post-date">09/26</span>
@@ -640,21 +647,21 @@ java-equals时要把常量写在前面e.g.(&quot;a&quot;).equals(a)equals函数�
 
         <div class="sidebar-panel-tags">
     <div class="sidebar-tags-name">
-            <span class="sidebar-tag-name" data-tags="碎碎念">
+            <span class="sidebar-tag-name" data-tags="problems">
                 <span class="iconfont-archer">&#xe606;</span>
-                碎碎念
+                problems
             </span>
             <span class="sidebar-tag-name" data-tags="learn">
                 <span class="iconfont-archer">&#xe606;</span>
                 learn
             </span>
-            <span class="sidebar-tag-name" data-tags="unity">
-                <span class="iconfont-archer">&#xe606;</span>
-                unity
-            </span>
             <span class="sidebar-tag-name" data-tags="practice">
                 <span class="iconfont-archer">&#xe606;</span>
                 practice
+            </span>
+            <span class="sidebar-tag-name" data-tags="碎碎念">
+                <span class="iconfont-archer">&#xe606;</span>
+                碎碎念
             </span>
     </div>
     <div class="iconfont-archer sidebar-tags-empty">&#xe678;</div>
@@ -666,17 +673,41 @@ java-equals时要把常量写在前面e.g.(&quot;a&quot;).equals(a)equals函数�
 
         <div class="sidebar-panel-categories">
     <div class="sidebar-categories-name">
-        <span class="sidebar-category-name" data-categories="chat">
+        <span class="sidebar-category-name" data-categories="记录">
             <span class="iconfont-archer">&#xe60a;</span>
-            chat
+            记录
+        </span>
+        <span class="sidebar-category-name" data-categories="JAVA">
+            <span class="iconfont-archer">&#xe60a;</span>
+            JAVA
+        </span>
+        <span class="sidebar-category-name" data-categories="框架">
+            <span class="iconfont-archer">&#xe60a;</span>
+            框架
+        </span>
+        <span class="sidebar-category-name" data-categories="计算机">
+            <span class="iconfont-archer">&#xe60a;</span>
+            计算机
+        </span>
+        <span class="sidebar-category-name" data-categories="数据库">
+            <span class="iconfont-archer">&#xe60a;</span>
+            数据库
+        </span>
+        <span class="sidebar-category-name" data-categories="unity">
+            <span class="iconfont-archer">&#xe60a;</span>
+            unity
         </span>
         <span class="sidebar-category-name" data-categories="use">
             <span class="iconfont-archer">&#xe60a;</span>
             use
         </span>
-        <span class="sidebar-category-name" data-categories="后端">
+        <span class="sidebar-category-name" data-categories="secrets">
             <span class="iconfont-archer">&#xe60a;</span>
-            后端
+            secrets
+        </span>
+        <span class="sidebar-category-name" data-categories="chat">
+            <span class="iconfont-archer">&#xe60a;</span>
+            chat
         </span>
     </div>
     <div class="iconfont-archer sidebar-categories-empty">&#xe678;</div>

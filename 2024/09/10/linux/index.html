@@ -2,7 +2,7 @@
 <html lang="zh-CN">
     <!-- title -->
 <!-- keywords -->
-<head>
+<head><!-- hexo injector head_begin start --><link href="https://fastly.jsdelivr.net/npm/hexo-tag-common@0.2.0/css/index.css" rel="stylesheet"/><!-- hexo injector head_begin end -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="author" content="">
@@ -10,15 +10,15 @@
     <meta name="copyright" content="">
         <meta name="keywords" content="hexo,hexo-theme,hexo-blog">
     <meta name="description" content="">
-    <meta name="description" content="只是简单个人记录，没有多少调理我去，学Linux有很多是当运维的，我现在看见运维二字就想笑 windows subsystem for linux （WSL）神秘链接1WSL官方使用教程 基础命令ls list ls -l 每个文件的详细信息 longd&#x2F;-目录或普通文件rwxread&amp;write&amp;执行r-- r-xgroup用户权限r-x其他人权限ls -h 以人类可读的方式展示">
+    <meta name="description" content="只是简单个人记录，没有多少调理 我去，学Linux有很多是当运维的，我现在看见运维二字就想笑">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Linux">
 <meta property="og:url" content="http://example.com/2024/09/10/linux/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="只是简单个人记录，没有多少调理我去，学Linux有很多是当运维的，我现在看见运维二字就想笑 windows subsystem for linux （WSL）神秘链接1WSL官方使用教程 基础命令ls list ls -l 每个文件的详细信息 longd&#x2F;-目录或普通文件rwxread&amp;write&amp;执行r-- r-xgroup用户权限r-x其他人权限ls -h 以人类可读的方式展示">
+<meta property="og:description" content="只是简单个人记录，没有多少调理 我去，学Linux有很多是当运维的，我现在看见运维二字就想笑">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2024-09-10T11:03:02.000Z">
-<meta property="article:modified_time" content="2024-09-11T01:17:55.438Z">
+<meta property="article:modified_time" content="2024-11-09T10:00:21.959Z">
 <meta property="article:tag" content="learn">
 <meta name="twitter:card" content="summary">
     <meta http-equiv="Cache-control" content="no-cache">
@@ -203,7 +203,37 @@
     <!-- 百度统计  -->
     <!-- 谷歌统计  -->
     <!-- Google tag (gtag.js) -->
-<meta name="generator" content="Hexo 7.3.0"></head>
+<style type="text/css">
+.spoiler {
+  display: inline;
+}
+p.spoiler {
+  display: flex;
+}
+.spoiler a {
+  pointer-events: none;
+}
+.spoiler-blur, .spoiler-blur > * {
+  transition: text-shadow .5s ease;
+}
+.spoiler .spoiler-blur, .spoiler .spoiler-blur > * {
+  color: rgba(0, 0, 0, 0);
+  background-color: rgba(0, 0, 0, 0);
+  text-shadow: 0 0 10px grey;
+  cursor: pointer;
+}
+.spoiler .spoiler-blur:hover, .spoiler .spoiler-blur:hover > * {
+  text-shadow: 0 0 5px grey;
+}
+.spoiler-box, .spoiler-box > * {
+  transition: color .5s ease,
+  background-color .5s ease;
+}
+.spoiler .spoiler-box, .spoiler .spoiler-box > * {
+  color: black;
+  background-color: black;
+  text-shadow: none;
+}</style><meta name="generator" content="Hexo 7.3.0"></head>
 
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
     <script type="text/javascript">
@@ -465,45 +495,104 @@
             <div class="container container-unloaded">
                 <main class="main post-page">
     <article class="article-entry">
-        <p>只是简单个人记录，没有多少调理<br><del>我去，学Linux有很多是当运维的，我现在看见运维二字就想笑</del><br> windows subsystem for linux （WSL）<br><a target="_blank" rel="noopener" href="https://blog.csdn.net/Academiction/article/details/140902670" title="好像已经没用了">神秘链接1</a><br><a target="_blank" rel="noopener" href="https://learn.microsoft.com/zh-cn/windows/wsl/setup/environment" title="lookhere^^">WSL官方使用教程</a></p>
-<h1 id="基础命令"><a href="#基础命令" class="headerlink" title="基础命令"></a>基础命令</h1><h2 id="ls"><a href="#ls" class="headerlink" title="ls"></a>ls</h2><p> list</p>
-<p><code>ls -l</code> 每个文件的详细信息 <code>long</code><br><code>d/-</code>目录或普通文件<code>rwx</code>read&amp;write&amp;执行<code>r--</code> <code>r-x</code>group用户权限<code>r-x</code>其他人权限<br><code>ls -h</code> 以人类可读的方式展示列表 <code>human</code><br><code>ls -a</code><br><code>.</code>开头的文件是隐藏文件<br><code>ls -la</code>&#x3D;<code>ll</code>以详细的方式列出来</p>
-<h2 id="cd"><a href="#cd" class="headerlink" title="cd"></a>cd</h2><p><code>cd ..</code>进入上一层目录<br><code>cd .</code>进入当前目录（啥用<br><code>cd ../..</code>上层目录的上层目录<br><strong>在windows操作系统里是\，除了windows系统都是&#x2F;</strong><br><code>cd -</code>回到你刚才所在的目录</p>
-<h2 id="pwd"><a href="#pwd" class="headerlink" title="pwd"></a>pwd</h2><p>print working directory(打印当前路径)</p>
-<h2 id="cat-head-tail"><a href="#cat-head-tail" class="headerlink" title="cat&#x2F;head&#x2F;tail"></a>cat&#x2F;head&#x2F;tail</h2><p>看文件内容<br><code>head --lines=2 README.md</code>只看两行</p>
-<h2 id="less-more"><a href="#less-more" class="headerlink" title="less&#x2F;more"></a>less&#x2F;more</h2><p>看全文<br>按<code>Q</code>退出</p>
-<h2 id="nano-vim"><a href="#nano-vim" class="headerlink" title="nano&#x2F;vim"></a>nano&#x2F;vim</h2><p>文本编辑器<br>vim 按<code>I</code>进入insert模式后修改 <code>Esc</code> 退出Insert状态<br>按<code>:q</code>退出 <code>:q!</code>强制退出 <code>:wq</code>写后退出</p>
-<h2 id="file-where"><a href="#file-where" class="headerlink" title="file&#x2F;where"></a>file&#x2F;where</h2><p>file查看文件属性<br>where查找文件位置，可能是which，whereis</p>
-<h2 id="echo"><a href="#echo" class="headerlink" title="echo"></a>echo</h2><p>打印</p>
+        <link rel="stylesheet" type="text&#x2F;css" href="https://cdn.jsdelivr.net/npm/hexo-tag-hint@0.3.1/dist/hexo-tag-hint.min.css"><p>只是简单个人记录，没有多少调理<br>
+<s>我去，学Linux有很多是当运维的，我现在看见运维二字就想笑</s></p>
+<span id="more"></span>
+<p>windows subsystem for linux （WSL）<br>
+<a target="_blank" rel="noopener" href="https://blog.csdn.net/Academiction/article/details/140902670" title="好像已经没用了">神秘链接1</a><br>
+<a target="_blank" rel="noopener" href="https://learn.microsoft.com/zh-cn/windows/wsl/setup/environment" title="lookhere^^">WSL官方使用教程</a></p>
+<h1>基础命令</h1>
+<h2 id="ls">ls</h2>
+<p>list</p>
+<p><code>ls -l</code> 每个文件的详细信息 <code>long</code><br>
+<code>d/-</code>目录或普通文件<code>rwx</code>read&amp;write&amp;执行<code>r--</code> <code>r-x</code>group用户权限<code>r-x</code>其他人权限<br>
+<code>ls -h</code> 以人类可读的方式展示列表 <code>human</code><br>
+<code>ls -a</code><br>
+<code>.</code>开头的文件是隐藏文件<br>
+<code>ls -la</code>=<code>ll</code>以详细的方式列出来</p>
+<h2 id="cd">cd</h2>
+<p><code>cd ..</code>进入上一层目录<br>
+<code>cd .</code>进入当前目录（啥用<br>
+<code>cd ../..</code>上层目录的上层目录<br>
+<strong>在windows操作系统里是\，除了windows系统都是/</strong><br>
+<code>cd -</code>回到你刚才所在的目录</p>
+<h2 id="pwd">pwd</h2>
+<p>print working directory(打印当前路径)</p>
+<h2 id="cat-head-tail">cat/head/tail</h2>
+<p>看文件内容<br>
+<code>head --lines=2 README.md</code>只看两行</p>
+<h2 id="less-more">less/more</h2>
+<p>看全文<br>
+按<code>Q</code>退出</p>
+<h2 id="nano-vim">nano/vim</h2>
+<p>文本编辑器<br>
+vim 按<code>I</code>进入insert模式后修改 <code>Esc</code> 退出Insert状态<br>
+按<code>:q</code>退出 <code>:q!</code>强制退出 <code>:wq</code>写后退出</p>
+<h2 id="file-where">file/where</h2>
+<p>file查看文件属性<br>
+where查找文件位置，可能是which，whereis</p>
+<h2 id="echo">echo</h2>
+<p>打印</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">h=&quot;hello&quot;</span><br><span class="line">echo $h</span><br><span class="line">echo &quot;abc$h&quot;</span><br><span class="line">echo &quot;abc$&#123;h&#125;efg&quot;</span><br></pre></td></tr></table></figure>
 <p><strong>变量的使用要加<code>$</code>,可以自由连接<code>&#123;&#125;</code>防止歧义</strong></p>
-<h2 id="mv"><a href="#mv" class="headerlink" title="mv"></a>mv</h2><p>重命名<br>mv 文件名 新文件名</p>
-<h2 id="touch"><a href="#touch" class="headerlink" title="touch"></a>touch</h2><p>改变时间戳</p>
-<h2 id="mkdir-rmdir"><a href="#mkdir-rmdir" class="headerlink" title="mkdir&#x2F;rmdir"></a>mkdir&#x2F;rmdir</h2><p><code>make directory</code>目录创建指令<br><code>remove directory</code></p>
+<h2 id="mv">mv</h2>
+<p>重命名<br>
+mv 文件名 新文件名</p>
+<h2 id="touch">touch</h2>
+<p>改变时间戳</p>
+<h2 id="mkdir-rmdir">mkdir/rmdir</h2>
+<p><code>make directory</code>目录创建指令<br>
+<code>remove directory</code></p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mkdir -p dir/dir2/dir3</span><br><span class="line">tree dir #查看目录</span><br></pre></td></tr></table></figure>
 <p>创建递归目录</p>
-<h2 id="rm"><a href="#rm" class="headerlink" title="rm"></a>rm</h2><p>删除命令</p>
-<h2 id="cp"><a href="#cp" class="headerlink" title="cp"></a>cp</h2><p>复制命令</p>
-<h2 id="进程相关"><a href="#进程相关" class="headerlink" title="进程相关"></a>进程相关</h2><h3 id="top"><a href="#top" class="headerlink" title="top"></a>top</h3><p>进程查看<br><strong>快捷键</strong><br><code>C</code> 显示进程绝对路劲<br><code>P</code> 根据CPU使用率排序<br><code>M</code> 根据物理内存使用率排序<br><code>1</code> 显示每个核的CPU状况<br><em>这居然是大小写敏感的…</em></p>
-<p><code>top -c</code> 完整进程动态<br><code>top -d 5</code> 指定信息刷新时间5秒<br><code>top -p 1877</code> 指定监控进程1877的状态<br><code>top -n 2</code> 设置信息更新次数</p>
-<h3 id="ps"><a href="#ps" class="headerlink" title="ps"></a>ps</h3><p><code>process status</code> 进程管理</p>
+<h2 id="rm">rm</h2>
+<p>删除命令</p>
+<h2 id="cp">cp</h2>
+<p>复制命令</p>
+<h2 id="进程相关">进程相关</h2>
+<h3 id="top">top</h3>
+<p>进程查看<br>
+<strong>快捷键</strong><br>
+<code>C</code> 显示进程绝对路劲<br>
+<code>P</code> 根据CPU使用率排序<br>
+<code>M</code> 根据物理内存使用率排序<br>
+<code>1</code> 显示每个核的CPU状况<br>
+<em>这居然是大小写敏感的…</em></p>
+<p><code>top -c</code> 完整进程动态<br>
+<code>top -d 5</code> 指定信息刷新时间5秒<br>
+<code>top -p 1877</code> 指定监控进程1877的状态<br>
+<code>top -n 2</code> 设置信息更新次数</p>
+<h3 id="ps">ps</h3>
+<p><code>process status</code> 进程管理</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">ps -aux | less # 分页展示</span><br><span class="line">ps -A</span><br><span class="line">ps -ef</span><br><span class="line">ps -axf #树状展示</span><br><span class="line">ps aux | grep ssh #查看特定进程信息，这里查看的是ssh相关</span><br></pre></td></tr></table></figure>
 <p>这几个好像没什么区别（</p>
-<h2 id="查看服务运行日志"><a href="#查看服务运行日志" class="headerlink" title="查看服务运行日志"></a>查看服务运行日志</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nohup ping www.baidu.com &amp;</span><br></pre></td></tr></table></figure>
-<p>把ping <a target="_blank" rel="noopener" href="http://www.baidu.com/">www.baidu.com</a> 的日志放到 nohup.out里<br>后续可以使用<code>less</code>结合<code>-f</code>或<code>tail</code>结合<code>shift+f</code>实现日志的实时查看</p>
-<h3 id="排查系统日志"><a href="#排查系统日志" class="headerlink" title="排查系统日志"></a>排查系统日志</h3><p><code>latest</code> 显示所有用户的最近登录信息<br><code>maillog</code> 记录系统上的邮件运行信息</p>
-<h2 id="学习命令"><a href="#学习命令" class="headerlink" title="学习命令"></a>学习命令</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">-h</span><br><span class="line">--help</span><br><span class="line">ls --help </span><br></pre></td></tr></table></figure>
-<p> ls有快捷帮助 其他可能不行</p>
+<h2 id="查看服务运行日志">查看服务运行日志</h2>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nohup ping www.baidu.com &amp;</span><br></pre></td></tr></table></figure>
+<p>把ping <a target="_blank" rel="noopener" href="http://www.baidu.com">www.baidu.com</a> 的日志放到 nohup.out里<br>
+后续可以使用<code>less</code>结合<code>-f</code>或<code>tail</code>结合<code>shift+f</code>实现日志的实时查看</p>
+<h3 id="排查系统日志">排查系统日志</h3>
+<p><code>latest</code> 显示所有用户的最近登录信息<br>
+<code>maillog</code> 记录系统上的邮件运行信息</p>
+<h2 id="学习命令">学习命令</h2>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">-h</span><br><span class="line">--help</span><br><span class="line">ls --help </span><br></pre></td></tr></table></figure>
+<p>ls有快捷帮助 其他可能不行</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">man cd</span><br></pre></td></tr></table></figure>
-<p><code>man</code>+空格+<code>命令</code>来查找对应的命令<br>按<code>q</code>可以退出<br>不过也可能没有，比如 man cd</p>
+<p><code>man</code>+空格+<code>命令</code>来查找对应的命令<br>
+按<code>q</code>可以退出<br>
+不过也可能没有，比如 man cd</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">whatis ls</span><br></pre></td></tr></table></figure>
 <p>简单查看</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">info ls</span><br></pre></td></tr></table></figure>
 <p>好像是更详细的，操作也更麻烦</p>
-<h1 id="简单shell"><a href="#简单shell" class="headerlink" title="简单shell"></a>简单shell</h1><p>使用vim或nano创建修改.sh文件<br>后<code>chmod a+x 文件名</code>赋予执行权限<br><code>./文件名</code>执行文件</p>
-<h2 id="for循环"><a href="#for循环" class="headerlink" title="for循环"></a>for循环</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">for ff in week*  #以week开头的文件 ; week??(以week开头后有两个字符的文件)</span><br><span class="line">do</span><br><span class="line">echo $ff #循环体</span><br><span class="line">echo $&#123;ff#week&#125; #把week给掐掉</span><br><span class="line">echo chapter$&#123;ff#week&#125; #再把chapter加上</span><br><span class="line">mv $ff chapter$&#123;ff#week&#125; #这里前一个ff是不是$不加也行  </span><br><span class="line">done</span><br></pre></td></tr></table></figure>
-<p><strong>没有撤销机制^^</strong><br><strong>但是可以用git调回上一个版本</strong></p>
-
+<h1>简单shell</h1>
+<p>使用vim或nano创建修改.sh文件<br>
+后<code>chmod a+x 文件名</code>赋予执行权限<br>
+<code>./文件名</code>执行文件</p>
+<h2 id="for循环">for循环</h2>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">for ff in week*  #以week开头的文件 ; week??(以week开头后有两个字符的文件)</span><br><span class="line">do</span><br><span class="line">echo $ff #循环体</span><br><span class="line">echo $&#123;ff#week&#125; #把week给掐掉</span><br><span class="line">echo chapter$&#123;ff#week&#125; #再把chapter加上</span><br><span class="line">mv $ff chapter$&#123;ff#week&#125; #这里前一个ff是不是$不加也行  </span><br><span class="line">done</span><br></pre></td></tr></table></figure>
+<p><strong>没有撤销机制^^</strong><br>
+<strong>但是可以用git调回上一个版本</strong></p>
+<link rel="stylesheet" href="/css/folder.css" type="text/css"><script src="/js/folder.js" type="text/javascript" async></script>
     </article>
     <!-- license -->
     <!-- paginator -->
@@ -549,11 +638,6 @@
         <div class="social">
                             <a href="mailto:limiese0zen@gmail.com" class="iconfont-archer email" title="email" ></a>
                 <a href="//github.com/zennnj" class="iconfont-archer github" target="_blank" title="github"></a>
-                <span class="iconfont-archer wechat" title="wechat">
-                    <img class="profile-qr" src="/assets/example_qr.png" />
-                </span>
-                <a href="https://weibo.com/u/5717651025" class="iconfont-archer weibo" target="_blank" title="weibo"></a>
-                <a href="https://space.bilibili.com/100278128" class="iconfont-archer bilibili" target="_blank" title="bilibili"></a>
                 <a href="https://steamcommunity.com/profiles/76561199557415174" class="iconfont-archer steam" target="_blank" title="steam"></a>
 
         </div>
@@ -575,7 +659,7 @@
                 <div class="toc-catalog">
                     <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
                 </div>
-                <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%9F%BA%E7%A1%80%E5%91%BD%E4%BB%A4"><span class="toc-number">1.</span> <span class="toc-text">基础命令</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#ls"><span class="toc-number">1.1.</span> <span class="toc-text">ls</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#cd"><span class="toc-number">1.2.</span> <span class="toc-text">cd</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#pwd"><span class="toc-number">1.3.</span> <span class="toc-text">pwd</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#cat-head-tail"><span class="toc-number">1.4.</span> <span class="toc-text">cat&#x2F;head&#x2F;tail</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#less-more"><span class="toc-number">1.5.</span> <span class="toc-text">less&#x2F;more</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#nano-vim"><span class="toc-number">1.6.</span> <span class="toc-text">nano&#x2F;vim</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#file-where"><span class="toc-number">1.7.</span> <span class="toc-text">file&#x2F;where</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#echo"><span class="toc-number">1.8.</span> <span class="toc-text">echo</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#mv"><span class="toc-number">1.9.</span> <span class="toc-text">mv</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#touch"><span class="toc-number">1.10.</span> <span class="toc-text">touch</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#mkdir-rmdir"><span class="toc-number">1.11.</span> <span class="toc-text">mkdir&#x2F;rmdir</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#rm"><span class="toc-number">1.12.</span> <span class="toc-text">rm</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#cp"><span class="toc-number">1.13.</span> <span class="toc-text">cp</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%9B%E7%A8%8B%E7%9B%B8%E5%85%B3"><span class="toc-number">1.14.</span> <span class="toc-text">进程相关</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#top"><span class="toc-number">1.14.1.</span> <span class="toc-text">top</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ps"><span class="toc-number">1.14.2.</span> <span class="toc-text">ps</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9F%A5%E7%9C%8B%E6%9C%8D%E5%8A%A1%E8%BF%90%E8%A1%8C%E6%97%A5%E5%BF%97"><span class="toc-number">1.15.</span> <span class="toc-text">查看服务运行日志</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8E%92%E6%9F%A5%E7%B3%BB%E7%BB%9F%E6%97%A5%E5%BF%97"><span class="toc-number">1.15.1.</span> <span class="toc-text">排查系统日志</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AD%A6%E4%B9%A0%E5%91%BD%E4%BB%A4"><span class="toc-number">1.16.</span> <span class="toc-text">学习命令</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%AE%80%E5%8D%95shell"><span class="toc-number">2.</span> <span class="toc-text">简单shell</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#for%E5%BE%AA%E7%8E%AF"><span class="toc-number">2.1.</span> <span class="toc-text">for循环</span></a></li></ol></li></ol>
+                <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">1.</span> <span class="toc-text">基础命令</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#ls"><span class="toc-number">1.1.</span> <span class="toc-text">ls</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#cd"><span class="toc-number">1.2.</span> <span class="toc-text">cd</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#pwd"><span class="toc-number">1.3.</span> <span class="toc-text">pwd</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#cat-head-tail"><span class="toc-number">1.4.</span> <span class="toc-text">cat&#x2F;head&#x2F;tail</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#less-more"><span class="toc-number">1.5.</span> <span class="toc-text">less&#x2F;more</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#nano-vim"><span class="toc-number">1.6.</span> <span class="toc-text">nano&#x2F;vim</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#file-where"><span class="toc-number">1.7.</span> <span class="toc-text">file&#x2F;where</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#echo"><span class="toc-number">1.8.</span> <span class="toc-text">echo</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#mv"><span class="toc-number">1.9.</span> <span class="toc-text">mv</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#touch"><span class="toc-number">1.10.</span> <span class="toc-text">touch</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#mkdir-rmdir"><span class="toc-number">1.11.</span> <span class="toc-text">mkdir&#x2F;rmdir</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#rm"><span class="toc-number">1.12.</span> <span class="toc-text">rm</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#cp"><span class="toc-number">1.13.</span> <span class="toc-text">cp</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%9B%E7%A8%8B%E7%9B%B8%E5%85%B3"><span class="toc-number">1.14.</span> <span class="toc-text">进程相关</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#top"><span class="toc-number">1.14.1.</span> <span class="toc-text">top</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ps"><span class="toc-number">1.14.2.</span> <span class="toc-text">ps</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9F%A5%E7%9C%8B%E6%9C%8D%E5%8A%A1%E8%BF%90%E8%A1%8C%E6%97%A5%E5%BF%97"><span class="toc-number">1.15.</span> <span class="toc-text">查看服务运行日志</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8E%92%E6%9F%A5%E7%B3%BB%E7%BB%9F%E6%97%A5%E5%BF%97"><span class="toc-number">1.15.1.</span> <span class="toc-text">排查系统日志</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AD%A6%E4%B9%A0%E5%91%BD%E4%BB%A4"><span class="toc-number">1.16.</span> <span class="toc-text">学习命令</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">2.</span> <span class="toc-text">简单shell</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#for%E5%BE%AA%E7%8E%AF"><span class="toc-number">2.1.</span> <span class="toc-text">for循环</span></a></li></ol></li></ol>
             </div>
         <!-- sidebar -->
         <div class="sidebar sidebar-hide">
@@ -603,15 +687,20 @@
         
         
         
+        
     <div class="total-and-search">
         <div class="total-archive">
-        Total : 16
+        Total : 17
         </div>
         <!-- search  -->
     </div>
     <div class="post-archive">
             <div class="archive-year"> 2024 </div>
             <ul class="year-list">
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/09</span>
+            <a class="archive-post-title" href="/2024/11/09/%E6%9C%AC%E7%AB%99%E4%BD%BF%E7%94%A8%E7%9A%84%E6%8F%92%E4%BB%B6/">本站使用的插件</a>
+        </li>
         <li class="archive-post-item">
             <span class="archive-post-date">11/03</span>
             <a class="archive-post-title" href="/2024/11/03/%E5%81%9A%E9%A2%98%E8%AE%B0%E5%BD%95%E4%B8%B2/">做题记录串</a>
@@ -634,11 +723,11 @@
         </li>
         <li class="archive-post-item">
             <span class="archive-post-date">09/28</span>
-            <a class="archive-post-title" href="/2024/09/28/SpringBoot/">SpringBoot</a>
+            <a class="archive-post-title" href="/2024/09/28/JVM/">JVM</a>
         </li>
         <li class="archive-post-item">
             <span class="archive-post-date">09/28</span>
-            <a class="archive-post-title" href="/2024/09/28/JVM/">JVM</a>
+            <a class="archive-post-title" href="/2024/09/28/SpringBoot/">SpringBoot</a>
         </li>
         <li class="archive-post-item">
             <span class="archive-post-date">09/26</span>
@@ -682,21 +771,21 @@
 
         <div class="sidebar-panel-tags">
     <div class="sidebar-tags-name">
-            <span class="sidebar-tag-name" data-tags="碎碎念">
+            <span class="sidebar-tag-name" data-tags="problems">
                 <span class="iconfont-archer">&#xe606;</span>
-                碎碎念
+                problems
             </span>
             <span class="sidebar-tag-name" data-tags="learn">
                 <span class="iconfont-archer">&#xe606;</span>
                 learn
             </span>
-            <span class="sidebar-tag-name" data-tags="unity">
-                <span class="iconfont-archer">&#xe606;</span>
-                unity
-            </span>
             <span class="sidebar-tag-name" data-tags="practice">
                 <span class="iconfont-archer">&#xe606;</span>
                 practice
+            </span>
+            <span class="sidebar-tag-name" data-tags="碎碎念">
+                <span class="iconfont-archer">&#xe606;</span>
+                碎碎念
             </span>
     </div>
     <div class="iconfont-archer sidebar-tags-empty">&#xe678;</div>
@@ -708,17 +797,41 @@
 
         <div class="sidebar-panel-categories">
     <div class="sidebar-categories-name">
-        <span class="sidebar-category-name" data-categories="chat">
+        <span class="sidebar-category-name" data-categories="记录">
             <span class="iconfont-archer">&#xe60a;</span>
-            chat
+            记录
+        </span>
+        <span class="sidebar-category-name" data-categories="JAVA">
+            <span class="iconfont-archer">&#xe60a;</span>
+            JAVA
+        </span>
+        <span class="sidebar-category-name" data-categories="框架">
+            <span class="iconfont-archer">&#xe60a;</span>
+            框架
+        </span>
+        <span class="sidebar-category-name" data-categories="计算机">
+            <span class="iconfont-archer">&#xe60a;</span>
+            计算机
+        </span>
+        <span class="sidebar-category-name" data-categories="数据库">
+            <span class="iconfont-archer">&#xe60a;</span>
+            数据库
+        </span>
+        <span class="sidebar-category-name" data-categories="unity">
+            <span class="iconfont-archer">&#xe60a;</span>
+            unity
         </span>
         <span class="sidebar-category-name" data-categories="use">
             <span class="iconfont-archer">&#xe60a;</span>
             use
         </span>
-        <span class="sidebar-category-name" data-categories="后端">
+        <span class="sidebar-category-name" data-categories="secrets">
             <span class="iconfont-archer">&#xe60a;</span>
-            后端
+            secrets
+        </span>
+        <span class="sidebar-category-name" data-categories="chat">
+            <span class="iconfont-archer">&#xe60a;</span>
+            chat
         </span>
     </div>
     <div class="iconfont-archer sidebar-categories-empty">&#xe678;</div>
@@ -754,5 +867,5 @@
         <!-- async load share.js -->
             <script src="/scripts/share.js" async></script>
         <!-- mermaid -->
-    </body>
+    <!-- hexo injector body_end start --><script src="https://fastly.jsdelivr.net/npm/hexo-tag-common@0.2.0/js/index.js"></script><!-- hexo injector body_end end --></body>
 </html>
