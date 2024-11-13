@@ -2,7 +2,7 @@
 <html lang="zh-CN">
     <!-- title -->
 <!-- keywords -->
-<head>
+<head><!-- hexo injector head_begin start --><link href="https://fastly.jsdelivr.net/npm/hexo-tag-common@0.2.0/css/index.css" rel="stylesheet"/><!-- hexo injector head_begin end -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="author" content="">
@@ -10,16 +10,20 @@
     <meta name="copyright" content="">
         <meta name="keywords" content="hexo,hexo-theme,hexo-blog">
     <meta name="description" content="">
-    <meta property="og:type" content="website">
-<meta property="og:title" content="Hexo">
-<meta property="og:url" content="http://example.com/categories/chat/index.html">
+    <meta name="description" content="本站是个人站，并没有提交到任何搜索引擎中，如果你不知道以何种方式误入了本站，很遗憾，你只能看见一个大学生在这里自言自语😗">
+<meta property="og:type" content="article">
+<meta property="og:title" content="「置顶」">
+<meta property="og:url" content="http://example.com/posts/8c0da805.html">
 <meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="本站是个人站，并没有提交到任何搜索引擎中，如果你不知道以何种方式误入了本站，很遗憾，你只能看见一个大学生在这里自言自语😗">
 <meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2024-11-12T09:17:39.000Z">
+<meta property="article:modified_time" content="2024-11-12T12:42:49.334Z">
 <meta name="twitter:card" content="summary">
     <meta http-equiv="Cache-control" content="no-cache">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <link rel="icon" href="/assets/my.ico">
-    <title>Terminal 4</title>
+    <title>「置顶」 · Terminal 4</title>
     <!-- /*! loadCSS. [c]2017 Filament Group, Inc. MIT License */
 /* This file is meant as a standalone workflow for
 - testing support for link[rel=preload]
@@ -237,6 +241,7 @@ p.spoiler {
             document.write('<script src="/lib/jquery.min.js" />')
         }
     </script>
+        <body class="post-body">
         <!-- header -->
         <header class="header header-mobile">
     <!-- top read progress line -->
@@ -266,7 +271,7 @@ p.spoiler {
             <a href="/">Terminal 4.</a>
         </div>
         <div class="post-title header-element">
-            <a href="#" class="post-name"></a>
+            <a href="#" class="post-name">「置顶」</a>
         </div>
     </div>
 </header>
@@ -274,6 +279,31 @@ p.spoiler {
         <!-- fixed footer -->
         <footer class="footer-fixed">
     <!-- donate button -->
+    <div class="donate-popup donate-popup--hidden">
+    <div class="donate-popup__title">Buy Me A Milktea!</div>
+    <div class="donate-popup__content">
+        <div class="donate-popup__content-description">If this post helped you, please consider buying the author a cup of milktea 🥤!(Actually,I prefer fruit tea.🥳)</div>
+        <img
+            class="donate-popup__content-qrCode"
+            title="Wechat"
+            alt="Wechat"
+            src="/assets/donate-wechat.png"
+        ></img>
+        <img
+            class="donate-popup__content-qrCode"
+            title="Alipay"
+            alt="Alipay"
+            src="/assets/donate-alipay.jpg"
+        ></img>
+    </div>
+</div>
+
+    <div
+        title="Donate to the author"
+        class="footer-fixed-btn footer-fixed-btn--hidden donate-btn"
+    >
+        <i class="fas fa-donate"></i>
+    </div>
 
     <!-- back to top button -->
     <div class="footer-fixed-btn footer-fixed-btn--hidden back-top">
@@ -283,20 +313,56 @@ p.spoiler {
 
         <!-- wrapper -->
         <div class="wrapper">
-            <div class="site-intro" style="">
+            <div class="site-intro" style="    height:50vh;
+">
     <!-- 主页  -->
+    <!-- 404页  -->
     <div class="site-intro-placeholder"></div>
-    <div class="site-intro-img" style="background-image: url(/)"></div>
+    <div class="site-intro-img" style="background-image: url(/intro/post-bg.jpg)"></div>
     <div class="site-intro-meta">
         <!-- 标题  -->
         <h1 class="intro-title">
             <!-- 主页  -->
+                「置顶」
+            <!-- 404 -->
         </h1>
         <!-- 副标题 -->
         <p class="intro-subtitle">
             <!-- 主页副标题  -->
+            <!-- 404 -->
         </p>
         <!-- 文章页 meta -->
+            <div class="post-intros">
+                <!-- 文章页标签  -->
+                    <div class="post-intro-tags" >
+</div>
+
+                <!-- 文章字数统计 -->
+                <div class="post-intro-meta">
+                    <!-- 撰写日期 -->
+                    <span class="iconfont-archer post-intro-calander">&#xe676;</span>
+                    <span class="post-intro-time">2024/11/12</span>
+                    <!-- busuanzi -->
+                        <span id="busuanzi_container_page_pv" class="busuanzi-pv">
+                            <span class="iconfont-archer post-intro-busuanzi">&#xe602;</span>
+                            <span id="busuanzi_value_page_pv"></span>
+                        </span>
+                    <!-- 文章分享 -->
+                    <span class="share-wrapper">
+                        <span class="iconfont-archer share-icon">&#xe71d;</span>
+                        <span class="share-text">Share</span>
+                        <ul class="share-list">
+                            <li class="iconfont-archer share-qr" data-type="qr">&#xe75b;
+                                <div class="share-qrcode"></div>
+                            </li>
+                            <li class="iconfont-archer" data-type="weibo">&#xe619;</li>
+                            <li class="iconfont-archer" data-type="qzone">&#xe62e;</li>
+                            <li class="iconfont-archer" data-type="twitter">&#xe634;</li>
+                            <li class="iconfont-archer" data-type="facebook">&#xe67a;</li>
+                        </ul>
+                    </span>
+                </div>
+            </div>
     </div>
 </div>
 
@@ -425,29 +491,55 @@ p.spoiler {
 
             <img class="loading" src="/assets/loading.svg" style="display: block; margin: 6rem auto 0 auto; width: 6rem; height: 6rem;" alt="loading">
             <div class="container container-unloaded">
-                <main class="main index-page">
-        <article class="index-post">
-            <a class="abstract-title" href="/posts/12966.html">
-                <span class="abstract-title-text">上学前的遗言</span>
-            </a>
-            <div class="abstract-content">
-                <p>开学前随便写点东西回顾一下hexo怎么用</p>
-            </div>
-            <!-- read more -->
-            <div class="abstract-post-meta">
-                <!-- date -->
-                <div class="abstract-date" title="Last updated: 2024/11/09">
-                    <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2024/08/31</span>
-                </div>
-                <!-- tags -->
-                    <div class="abstract-tags" >
-        <a class="post-tag" href="javascript:void(0);" data-tags="碎碎念">碎碎念</a>
-</div>
+                <main class="main post-page">
+    <article class="article-entry">
+        <link rel="stylesheet" type="text&#x2F;css" href="https://cdn.jsdelivr.net/npm/hexo-tag-hint@0.3.1/dist/hexo-tag-hint.min.css"><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><p>本站是个人站，并没有提交到任何搜索引擎中，如果你不知道以何种方式误入了本站，很遗憾，你只能看见一个大学生在这里自言自语😗<br><span id="more"></span><br>大部分内容都是学习记录，<br>🎲除此之外，你还可能在本站看到：<br>二次元<br>单机游戏<br>生活黑泥<br>毫无调理的oc记录<br>没品的cp口嗨<br>支离破碎的迷思</p>
+<hr>
+<h3 id="🤖关于本站的名字"><a href="#🤖关于本站的名字" class="headerlink" title="🤖关于本站的名字"></a>🤖关于本站的名字</h3><p>灵感来源：</p>
+<blockquote>
+<p>列車は必ず次の駅へ<br>では舞台は？　あなたたちは？</p>
+</blockquote>
+<p>每个人都必须不断驶向下一站，<br>而terminal4就是一个暂时停歇的站台<br>在现在的互联网环境下拥有一个自己的个人小站就如同一片净土，似乎回到了十年前互相尊重、欣赏式的互联网人际关系，terminal4也包含了这样的含义<br>至于为什么是4号，没什么特别的原因！仅仅是因为博主对4这个数字看的很顺眼而已🐱</p>
+<h3 id="🦉本站使用的程式"><a href="#🦉本站使用的程式" class="headerlink" title="🦉本站使用的程式"></a>🦉本站使用的程式</h3><p>网站框架：<a target="_blank" rel="noopener" href="https://hexo.io/zh-cn/">hexo</a><br>主题模板：<a target="_blank" rel="noopener" href="https://github.com/fi3ework/hexo-theme-archer">archer</a><br>使用插件：<a target="_blank" rel="noopener" href="https://zennnj.github.io/posts/12634.html">👾</a></p>
+<h3 id="🎯未来打算加入的东西"><a href="#🎯未来打算加入的东西" class="headerlink" title="🎯未来打算加入的东西"></a>🎯未来打算加入的东西</h3><ul>
+<li>动态吐槽页</li>
+<li>时间线</li>
+</ul>
+<h3 id="🕵加密箱"><a href="#🕵加密箱" class="headerlink" title="🕵加密箱"></a>🕵加密箱</h3><p>因为这个主题和hexo-hidden不兼容，所以无法做到只在主页隐藏，依然在archive和category里显示，因此列总在这里<br><a target="_blank" rel="noopener" href="https://zennnj.github.io/posts/1567.html">你是强度党吗</a><br><a href=""></a><br><a href=""></a><br><a href=""></a></p>
+<hr>
+<link rel="stylesheet" href="/css/folder.css" type="text/css"><script src="/js/folder.js" type="text/javascript" async></script>
+    </article>
+    <!-- license -->
+    <!-- paginator -->
+    <ul class="post-paginator">
+        <li class="next">
+        </li>
+        <li class="previous">
+                <div class="prevSlogan">Previous Post</div>
+                <a href="/posts/33757.html" title="SSM">
+                    <div class="prevTitle">SSM</div>
+                </a>
+        </li>
+    </ul>
+    <!-- comment -->
+        <div class="post-comment">
+            <!-- 来必力 City 版安装代码 -->
 
-            </div>
-        </article>
-        <div class="index-post-divider"></div>
-    <!-- paginator  -->
+            
+            
+            
+            <!-- utteranc评论 -->
+
+            <!-- partial('_partial/comment/changyan') -->
+            <!--PC版-->
+
+            
+            
+            
+        </div>
+    <!-- timeliness note -->
+    <!-- idea from: https://hexo.fluid-dev.com/posts/hexo-injector/#%E6%96%87%E7%AB%A0%E6%97%B6%E6%95%88%E6%80%A7%E6%8F%90%E7%A4%BA -->
+    <!-- Mathjax -->
 </main>
 
                 <!-- profile -->
@@ -473,6 +565,13 @@ p.spoiler {
 
         </div>
         <!-- toc -->
+            <div class="toc-wrapper toc-wrapper-loding" style=    top:50vh;
+>
+                <div class="toc-catalog">
+                    <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
+                </div>
+                <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%F0%9F%A4%96%E5%85%B3%E4%BA%8E%E6%9C%AC%E7%AB%99%E7%9A%84%E5%90%8D%E5%AD%97"><span class="toc-number">1.</span> <span class="toc-text">🤖关于本站的名字</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%F0%9F%A6%89%E6%9C%AC%E7%AB%99%E4%BD%BF%E7%94%A8%E7%9A%84%E7%A8%8B%E5%BC%8F"><span class="toc-number">2.</span> <span class="toc-text">🦉本站使用的程式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%F0%9F%8E%AF%E6%9C%AA%E6%9D%A5%E6%89%93%E7%AE%97%E5%8A%A0%E5%85%A5%E7%9A%84%E4%B8%9C%E8%A5%BF"><span class="toc-number">3.</span> <span class="toc-text">🎯未来打算加入的东西</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%F0%9F%95%B5%E5%8A%A0%E5%AF%86%E7%AE%B1"><span class="toc-number">4.</span> <span class="toc-text">🕵加密箱</span></a></li></ol>
+            </div>
         <!-- sidebar -->
         <div class="sidebar sidebar-hide">
     <ul class="sidebar-tabs sidebar-tabs-active-0">
@@ -687,6 +786,7 @@ p.spoiler {
         <!-- busuanzi -->
             <script src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script>
         <!-- async load share.js -->
+            <script src="/scripts/share.js" async></script>
         <!-- mermaid -->
-    </body>
+    <!-- hexo injector body_end start --><script src="https://fastly.jsdelivr.net/npm/hexo-tag-common@0.2.0/js/index.js"></script><!-- hexo injector body_end end --></body>
 </html>
