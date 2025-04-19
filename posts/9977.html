@@ -19,8 +19,9 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://example.com/images/MySQL/image-5.png">
 <meta property="og:image" content="http://example.com/images/MySQL/image-4.png">
+<meta property="og:image" content="http://example.com/images/MySQL/image.png">
 <meta property="article:published_time" content="2024-09-26T08:32:33.000Z">
-<meta property="article:modified_time" content="2025-04-19T11:16:40.501Z">
+<meta property="article:modified_time" content="2025-04-19T12:42:17.795Z">
 <meta property="article:tag" content="learn">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="http://example.com/images/MySQL/image-5.png">
@@ -810,6 +811,7 @@ p.spoiler {
 <p>案例1：将tb_emp表中id为1的员工，姓名name字段更新为’张三’<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">update</span> tb_emp <span class="keyword">set</span> name<span class="operator">=</span><span class="string">&#x27;张三&#x27;</span>,update_time<span class="operator">=</span>now() <span class="keyword">where</span> id<span class="operator">=</span><span class="number">1</span>;</span><br></pre></td></tr></table></figure></p>
 <p>案例2：将tb_emp表的所有员工入职日期更新为’2010-01-01’<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">update</span> tb_emp <span class="keyword">set</span> entrydate<span class="operator">=</span><span class="string">&#x27;2010-01-01&#x27;</span>,update_time<span class="operator">=</span>now();</span><br></pre></td></tr></table></figure></p>
 </blockquote>
+<p><br></p>
 <h3 id="删除数据（DELETE）"><a href="#删除数据（DELETE）" class="headerlink" title="删除数据（DELETE）"></a>删除数据（DELETE）</h3><p>delete语法：</p>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">delete</span> <span class="keyword">from</span> 表名  [<span class="keyword">where</span>  条件] ;</span><br></pre></td></tr></table></figure>
 <blockquote>
@@ -823,6 +825,188 @@ p.spoiler {
 <p>查询操作是所有SQL语句当中最为常见，也是最为重要的操作。在一个正常的业务系统中，查询操作的使用频次是要远高于增删改操作的。</p>
 <h3 id="语法-1"><a href="#语法-1" class="headerlink" title="语法"></a>语法</h3><p>DQL查询语句，语法结构如下：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">SELECT</span><br><span class="line">	字段列表</span><br><span class="line">FROM</span><br><span class="line">	表名列表</span><br><span class="line">WHERE</span><br><span class="line">	条件列表</span><br><span class="line">GROUP  BY</span><br><span class="line">	分组字段列表</span><br><span class="line">HAVING</span><br><span class="line">	分组后条件列表</span><br><span class="line">ORDER BY</span><br><span class="line">	排序字段列表</span><br><span class="line">LIMIT</span><br><span class="line">	分页参数</span><br></pre></td></tr></table></figure>
+<p><br></p>
+<h3 id="基本查询"><a href="#基本查询" class="headerlink" title="基本查询"></a>基本查询</h3><p>在基本查询的DQL语句中，不带任何的查询条件，语法如下：</p>
+<ul>
+<li><p>查询多个字段</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select 字段1, 字段2, 字段3 from  表名;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>查询所有字段（通配符）</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select *  from  表名;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><code>*</code>号代表查询所有字段，在实际开发中尽量少用（不直观、影响效率）</p>
+</blockquote>
+</li>
+<li><p>设置别名</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select 字段1 [ as 别名1 ] , 字段2 [ as 别名2 ]  from  表名;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><img src="../images/MySQL/image.png" alt="alt text"></p>
+<p>别名中有特殊字符时，使用’’或””包含</p>
+</blockquote>
+</li>
+<li><p>去除重复记录</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select distinct 字段列表 from  表名;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p><br></p>
+<h3 id="条件查询"><a href="#条件查询" class="headerlink" title="条件查询"></a>条件查询</h3><p><strong>语法：</strong></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span>  字段列表  <span class="keyword">from</span>   表名   <span class="keyword">where</span>   条件列表 ; <span class="comment">-- 条件列表：意味着可以有多个条件</span></span><br></pre></td></tr></table></figure>
+<p>常用的比较运算符如下: </p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th><strong>比较运算符</strong></th>
+<th><strong>功能</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>&gt;</td>
+<td>大于</td>
+</tr>
+<tr>
+<td>&gt;=</td>
+<td>大于等于</td>
+</tr>
+<tr>
+<td>&lt;</td>
+<td>小于</td>
+</tr>
+<tr>
+<td>&lt;=</td>
+<td>小于等于</td>
+</tr>
+<tr>
+<td>=</td>
+<td>等于</td>
+</tr>
+<tr>
+<td>&lt;&gt; 或 !=</td>
+<td>不等于</td>
+</tr>
+<tr>
+<td>between …  and …</td>
+<td>在某个范围之内(含最小、最大值)</td>
+</tr>
+<tr>
+<td>in(…)</td>
+<td>在in之后的列表中的值，多选一</td>
+</tr>
+<tr>
+<td>like 占位符</td>
+<td>模糊匹配(_匹配单个字符, %匹配任意个字符)</td>
+</tr>
+<tr>
+<td>is null</td>
+<td>是null</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>常用的逻辑运算符如下:</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th><strong>逻辑运算符</strong></th>
+<th><strong>功能</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>and 或 &amp;&amp;</td>
+<td>并且 (多个条件同时成立)</td>
+</tr>
+<tr>
+<td>or 或 &brvbar;&brvbar;</td>
+<td>或者 (多个条件任意一个成立)</td>
+</tr>
+<tr>
+<td>not 或 !</td>
+<td>非 , 不是</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong><em>是<code>||</code>，但是这个hexo太小杯了一直显示<code>|/   |/  |</code>,受不了了</em></strong></p>
+<blockquote>
+<p>⚠️注意：查询为NULL的数据时，不能使用 <code>= null</code></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> id, username, password, name, gender, image, job, entrydate, create_time, update_time</span><br><span class="line"><span class="keyword">from</span> tb_emp</span><br><span class="line"><span class="keyword">where</span> job <span class="keyword">is</span> <span class="keyword">not</span> <span class="keyword">null</span> ; <span class="comment">-- where job is null ;</span></span><br></pre></td></tr></table></figure>
+<p><code>where entrydate&gt;=&#39;2000-01-01&#39; and entrydate&lt;=&#39;2010-01-01&#39;;</code><br>&lt;=&gt; <code>where entrydate between &#39;2000-01-01&#39; and &#39;2010-01-01&#39;;</code></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> id, username, password, name, gender, image, job, entrydate, create_time, update_time</span><br><span class="line"><span class="keyword">from</span> tb_emp</span><br><span class="line"><span class="keyword">where</span> name <span class="keyword">like</span> <span class="string">&#x27;__&#x27;</span>;  # 通配符 &quot;_&quot; 代表任意<span class="number">1</span>个字符</span><br><span class="line"># 这里表示名字有两个字的</span><br><span class="line">...</span><br><span class="line"><span class="keyword">where</span> name <span class="keyword">like</span> <span class="string">&#x27;张%&#x27;</span>; # 通配符 &quot;%&quot; 代表任意个字符（<span class="number">0</span>个 <span class="operator">~</span> 多个）</span><br></pre></td></tr></table></figure>
+</blockquote>
+<p><br></p>
+<h3 id="聚合函数"><a href="#聚合函数" class="headerlink" title="聚合函数"></a>聚合函数</h3><p>语法：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select  聚合函数(字段列表)  from  表名 ;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>注意 : 聚合函数会忽略空值，对NULL值不作为统计。</p>
+</blockquote>
+<p>常用聚合函数：</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th><strong>函数</strong></th>
+<th><strong>功能</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>count</td>
+<td>按照列去统计有多少行数据 (如果这一列中有null的行，该行不会被统计在其中。)</td>
+</tr>
+<tr>
+<td>max</td>
+<td>计算指定列的最大值</td>
+</tr>
+<tr>
+<td>min</td>
+<td>计算指定列的最小值</td>
+</tr>
+<tr>
+<td>avg</td>
+<td>计算指定列的平均值</td>
+</tr>
+<tr>
+<td>sum</td>
+<td>计算指定列的数值和，如果不是数值类型，那么计算结果为0</td>
+</tr>
+</tbody>
+</table>
+</div>
+<blockquote>
+<p>案例1：统计该企业员工数量</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"># count(字段)</span><br><span class="line">select count(id) from tb_emp;-- 结果：29</span><br><span class="line">select count(job) from tb_emp;-- 结果：28 （聚合函数对NULL值不做计算）</span><br><span class="line"></span><br><span class="line"># count(常量)</span><br><span class="line">select count(0) from tb_emp;</span><br><span class="line">select count(&#x27;A&#x27;) from tb_emp;</span><br><span class="line"></span><br><span class="line"># count(*)  推荐此写法（MySQL底层进行了优化）</span><br><span class="line">select count(*) from tb_emp;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<p><br></p>
+<h3 id="分组查询"><a href="#分组查询" class="headerlink" title="分组查询"></a>分组查询</h3><p>语法：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select  字段列表  from  表名  [where 条件]  group by 分组字段名  [having 分组后过滤条件];</span><br></pre></td></tr></table></figure>
+<p>案例：查询入职时间在 ‘2015-01-01’ (包含) 以前的员工 , 并对结果根据职位分组 , 获取员工数量大于等于2的职位</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">select job, count(*)</span><br><span class="line">from tb_emp</span><br><span class="line">where entrydate &lt;= &#x27;2015-01-01&#x27;   -- 分组前条件</span><br><span class="line">group by job                      -- 按照job字段分组</span><br><span class="line">having count(*) &gt;= 2;             -- 分组后条件</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>注意事项:</p>
+<p>​    • 分组之后，查询的字段一般为聚合函数和分组字段，查询其他字段无任何意义</p>
+<p>​    • 执行顺序：where &gt; 聚合函数 &gt; having </p>
+</blockquote>
+<p><strong>where与having区别</strong></p>
+<ul>
+<li>执行时机不同：where是分组之前进行过滤，不满足where条件，不参与分组；而having是分组之后对结果进行过滤。</li>
+<li>判断条件不同：<strong>where不能对聚合函数进行判断，而having可以。</strong></li>
+</ul>
+<p><br></p>
+<h3 id="排序查询"><a href="#排序查询" class="headerlink" title="排序查询"></a>排序查询</h3><p>语法：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">select  字段列表  </span><br><span class="line">from   表名   </span><br><span class="line">[where  条件列表] </span><br><span class="line">[group by  分组字段 ] </span><br><span class="line">order  by  字段1  排序方式1 , 字段2  排序方式2 … ;</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>排序方式：</p>
+<ul>
+<li><p>ASC ：升序（默认值）</p>
+</li>
+<li><p>DESC：降序</p>
+</li>
+</ul>
+</li>
+</ul>
 <h2 id="DCL"><a href="#DCL" class="headerlink" title="DCL"></a>DCL</h2><link rel="stylesheet" href="/css/folder.css" type="text/css"><script src="/js/folder.js" type="text/javascript" async></script>
     </article>
     <!-- license -->
@@ -890,7 +1074,7 @@ p.spoiler {
                 <div class="toc-catalog">
                     <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
                 </div>
-                <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Mysql%E5%BF%98%E8%AE%B0%E7%99%BB%E5%BD%95%E5%AF%86%E7%A0%81%E7%9A%84%E8%A7%A3%E5%86%B3%E6%AD%A5%E9%AA%A4%EF%BC%88%E5%AE%8C%E6%95%B4%E6%AD%A5%E9%AA%A4%EF%BC%89"><span class="toc-number">1.</span> <span class="toc-text">Mysql忘记登录密码的解决步骤（完整步骤）</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#VSCODE%E8%BF%9E%E6%8E%A5MySQL"><span class="toc-number">2.</span> <span class="toc-text">VSCODE连接MySQL</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85"><span class="toc-number">3.</span> <span class="toc-text">软件安装</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Navicat"><span class="toc-number">3.1.</span> <span class="toc-text">Navicat</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Mysql"><span class="toc-number">3.2.</span> <span class="toc-text">Mysql</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#MySQL%E5%90%AF%E5%8A%A8"><span class="toc-number">4.</span> <span class="toc-text">MySQL启动</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#SQL"><span class="toc-number">5.</span> <span class="toc-text">SQL</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#SQL%E7%9A%84%E9%80%9A%E7%94%A8%E8%AF%AD%E6%B3%95"><span class="toc-number">5.1.</span> <span class="toc-text">SQL的通用语法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#SQL%E5%88%86%E7%B1%BB"><span class="toc-number">5.2.</span> <span class="toc-text">SQL分类</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#DDL"><span class="toc-number">5.3.</span> <span class="toc-text">DDL</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9F%A5%E8%AF%A2%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="toc-number">5.3.1.</span> <span class="toc-text">查询数据库</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="toc-number">5.3.2.</span> <span class="toc-text">创建数据库</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="toc-number">5.3.3.</span> <span class="toc-text">使用数据库</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%A0%E9%99%A4%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="toc-number">5.3.4.</span> <span class="toc-text">删除数据库</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A1%A8%E5%88%9B%E5%BB%BA"><span class="toc-number">5.3.5.</span> <span class="toc-text">表创建</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%AF%AD%E6%B3%95"><span class="toc-number">5.3.5.1.</span> <span class="toc-text">语法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%BA%A6%E6%9D%9F"><span class="toc-number">5.3.5.2.</span> <span class="toc-text">约束</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%95%B0%E5%80%BC%E7%B1%BB%E5%9E%8B"><span class="toc-number">5.3.5.3.</span> <span class="toc-text">数值类型</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BF%AE%E6%94%B9"><span class="toc-number">5.3.6.</span> <span class="toc-text">修改</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%A0%E9%99%A4"><span class="toc-number">5.3.7.</span> <span class="toc-text">删除</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#DML"><span class="toc-number">5.4.</span> <span class="toc-text">DML</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B7%BB%E5%8A%A0%E6%95%B0%E6%8D%AE%EF%BC%88INSERT%EF%BC%89"><span class="toc-number">5.4.1.</span> <span class="toc-text">添加数据（INSERT）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BF%AE%E6%94%B9%E6%95%B0%E6%8D%AE%EF%BC%88UPDATE%EF%BC%89"><span class="toc-number">5.4.2.</span> <span class="toc-text">修改数据（UPDATE）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%A0%E9%99%A4%E6%95%B0%E6%8D%AE%EF%BC%88DELETE%EF%BC%89"><span class="toc-number">5.4.3.</span> <span class="toc-text">删除数据（DELETE）</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#DQL"><span class="toc-number">5.5.</span> <span class="toc-text">DQL</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AF%AD%E6%B3%95-1"><span class="toc-number">5.5.1.</span> <span class="toc-text">语法</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#DCL"><span class="toc-number">5.6.</span> <span class="toc-text">DCL</span></a></li></ol></li></ol>
+                <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Mysql%E5%BF%98%E8%AE%B0%E7%99%BB%E5%BD%95%E5%AF%86%E7%A0%81%E7%9A%84%E8%A7%A3%E5%86%B3%E6%AD%A5%E9%AA%A4%EF%BC%88%E5%AE%8C%E6%95%B4%E6%AD%A5%E9%AA%A4%EF%BC%89"><span class="toc-number">1.</span> <span class="toc-text">Mysql忘记登录密码的解决步骤（完整步骤）</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#VSCODE%E8%BF%9E%E6%8E%A5MySQL"><span class="toc-number">2.</span> <span class="toc-text">VSCODE连接MySQL</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85"><span class="toc-number">3.</span> <span class="toc-text">软件安装</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Navicat"><span class="toc-number">3.1.</span> <span class="toc-text">Navicat</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Mysql"><span class="toc-number">3.2.</span> <span class="toc-text">Mysql</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#MySQL%E5%90%AF%E5%8A%A8"><span class="toc-number">4.</span> <span class="toc-text">MySQL启动</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#SQL"><span class="toc-number">5.</span> <span class="toc-text">SQL</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#SQL%E7%9A%84%E9%80%9A%E7%94%A8%E8%AF%AD%E6%B3%95"><span class="toc-number">5.1.</span> <span class="toc-text">SQL的通用语法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#SQL%E5%88%86%E7%B1%BB"><span class="toc-number">5.2.</span> <span class="toc-text">SQL分类</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#DDL"><span class="toc-number">5.3.</span> <span class="toc-text">DDL</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9F%A5%E8%AF%A2%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="toc-number">5.3.1.</span> <span class="toc-text">查询数据库</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="toc-number">5.3.2.</span> <span class="toc-text">创建数据库</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="toc-number">5.3.3.</span> <span class="toc-text">使用数据库</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%A0%E9%99%A4%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="toc-number">5.3.4.</span> <span class="toc-text">删除数据库</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A1%A8%E5%88%9B%E5%BB%BA"><span class="toc-number">5.3.5.</span> <span class="toc-text">表创建</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%AF%AD%E6%B3%95"><span class="toc-number">5.3.5.1.</span> <span class="toc-text">语法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%BA%A6%E6%9D%9F"><span class="toc-number">5.3.5.2.</span> <span class="toc-text">约束</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%95%B0%E5%80%BC%E7%B1%BB%E5%9E%8B"><span class="toc-number">5.3.5.3.</span> <span class="toc-text">数值类型</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BF%AE%E6%94%B9"><span class="toc-number">5.3.6.</span> <span class="toc-text">修改</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%A0%E9%99%A4"><span class="toc-number">5.3.7.</span> <span class="toc-text">删除</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#DML"><span class="toc-number">5.4.</span> <span class="toc-text">DML</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B7%BB%E5%8A%A0%E6%95%B0%E6%8D%AE%EF%BC%88INSERT%EF%BC%89"><span class="toc-number">5.4.1.</span> <span class="toc-text">添加数据（INSERT）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BF%AE%E6%94%B9%E6%95%B0%E6%8D%AE%EF%BC%88UPDATE%EF%BC%89"><span class="toc-number">5.4.2.</span> <span class="toc-text">修改数据（UPDATE）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%A0%E9%99%A4%E6%95%B0%E6%8D%AE%EF%BC%88DELETE%EF%BC%89"><span class="toc-number">5.4.3.</span> <span class="toc-text">删除数据（DELETE）</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#DQL"><span class="toc-number">5.5.</span> <span class="toc-text">DQL</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AF%AD%E6%B3%95-1"><span class="toc-number">5.5.1.</span> <span class="toc-text">语法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9F%BA%E6%9C%AC%E6%9F%A5%E8%AF%A2"><span class="toc-number">5.5.2.</span> <span class="toc-text">基本查询</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9D%A1%E4%BB%B6%E6%9F%A5%E8%AF%A2"><span class="toc-number">5.5.3.</span> <span class="toc-text">条件查询</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%81%9A%E5%90%88%E5%87%BD%E6%95%B0"><span class="toc-number">5.5.4.</span> <span class="toc-text">聚合函数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%86%E7%BB%84%E6%9F%A5%E8%AF%A2"><span class="toc-number">5.5.5.</span> <span class="toc-text">分组查询</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8E%92%E5%BA%8F%E6%9F%A5%E8%AF%A2"><span class="toc-number">5.5.6.</span> <span class="toc-text">排序查询</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#DCL"><span class="toc-number">5.6.</span> <span class="toc-text">DCL</span></a></li></ol></li></ol>
             </div>
         <!-- sidebar -->
         <div class="sidebar sidebar-hide">
