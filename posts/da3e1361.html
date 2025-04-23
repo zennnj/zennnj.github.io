@@ -10,16 +10,16 @@
     <meta name="copyright" content="">
         <meta name="keywords" content="hexo,hexo-theme,hexo-blog">
     <meta name="description" content="">
-    <meta name="description" content="这是前言。">
+    <meta name="description" content="这是前言。 解决端口占用问题（port is already in use）">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Mybatis">
 <meta property="og:url" content="http://example.com/posts/da3e1361.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="这是前言。">
+<meta property="og:description" content="这是前言。 解决端口占用问题（port is already in use）">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://example.com/images/Mybatis/image-1.png">
 <meta property="article:published_time" content="2025-04-22T02:06:47.000Z">
-<meta property="article:modified_time" content="2025-04-23T01:52:58.733Z">
+<meta property="article:modified_time" content="2025-04-23T13:42:36.093Z">
 <meta property="article:tag" content="learn">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="http://example.com/images/Mybatis/image-1.png">
@@ -497,7 +497,9 @@ p.spoiler {
             <div class="container container-unloaded">
                 <main class="main post-page">
     <article class="article-entry">
-        <link rel="stylesheet" type="text&#x2F;css" href="https://cdn.jsdelivr.net/npm/hexo-tag-hint@0.3.1/dist/hexo-tag-hint.min.css"><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><p>这是前言。<br><span id="more"></span></p>
+        <link rel="stylesheet" type="text&#x2F;css" href="https://cdn.jsdelivr.net/npm/hexo-tag-hint@0.3.1/dist/hexo-tag-hint.min.css"><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><p>这是前言。</p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/zt15732625878/article/details/80904437">解决端口占用问题（port is already in use）</a></p>
+<span id="more"></span>
 <h1 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h1><p>MyBatis是一款优秀的 <strong>持久层</strong> <strong>框架</strong>，用于简化JDBC的开发。</p>
 <p>使用Mybatis操作数据库，就是在Mybatis中编写SQL查询代码，发送给数据库执行，数据库执行后返回结果。</p>
 <p>Mybatis会把数据库执行的查询结果，使用实体类封装起来（一行记录对应一个实体类对象）</p>
@@ -606,7 +608,77 @@ p.spoiler {
 <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- 在springboot的父工程中，已经集成了lombok并指定了版本号，故当前引入依赖时不需要指定version --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.projectlombok<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>lombok<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
 <p>在实体类上添加了@Data注解，那么这个类在编译时期，就会生成getter/setter、equals、hashcode、toString等方法。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> lombok.Data;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Data</span> <span class="comment">//getter方法、setter方法、toString方法、hashCode方法、equals方法</span></span><br><span class="line"><span class="meta">@NoArgsConstructor</span> <span class="comment">//无参构造</span></span><br><span class="line"><span class="meta">@AllArgsConstructor</span><span class="comment">//全参构造</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">User</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> Integer id;</span><br><span class="line">    <span class="keyword">private</span> String name;</span><br><span class="line">    <span class="keyword">private</span> Short age;</span><br><span class="line">    <span class="keyword">private</span> Short gender;</span><br><span class="line">    <span class="keyword">private</span> String phone;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h1 id="基础操作"><a href="#基础操作" class="headerlink" title="基础操作"></a>基础操作</h1><link rel="stylesheet" href="/css/folder.css" type="text/css"><script src="/js/folder.js" type="text/javascript" async></script>
+<h2 id="日志输入"><a href="#日志输入" class="headerlink" title="日志输入"></a>日志输入</h2><figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#指定mybatis输出日志的位置, 输出控制台</span></span><br><span class="line"><span class="attr">mybatis.configuration.log-impl</span>=<span class="string">org.apache.ibatis.logging.stdout.StdOutImpl</span></span><br></pre></td></tr></table></figure>
+<p>还可以通过某个注解，使用log.xx来写日志</p>
+<h1 id="预编译SQL"><a href="#预编译SQL" class="headerlink" title="预编译SQL"></a>预编译SQL</h1><p>预编译SQL有两个优势：</p>
+<ol>
+<li>性能更高</li>
+<li>更安全(防止SQL注入)</li>
+</ol>
+<h2 id="SQL注入"><a href="#SQL注入" class="headerlink" title="SQL注入"></a>SQL注入</h2><p>SQL注入：是通过操作输入的数据来修改事先定义好的SQL语句，以达到执行代码对服务器进行攻击的方法。</p>
+<blockquote>
+<p>由于没有对用户输入进行充分检查，而SQL又是拼接而成，在用户输入参数时，在参数中添加一些SQL关键字，达到改变SQL运行结果的目的，也可以完成恶意攻击。</p>
+</blockquote>
+<p>案列: 在存在sql注入的登录界面将密码填为<code>&#39; or &#39;1&#39; = &#39;1</code>，可以登陆成功</p>
+<p>相当于<code>select count(*) from emp where username = &#39;xxx&#39; and password = &#39;&#39; or &#39;1&#39; = &#39;1&#39;</code></p>
+<p>永远大于1，因此满足登录条件</p>
+<blockquote>
+<p> 使用预编译时：</p>
+<p>把整个<code>&#39; or &#39;1&#39;=&#39;1</code>作为一个完整的参数，赋值给第2个问号（<code>&#39; or &#39;1&#39;=&#39;1</code>进行了转义，只当做字符串使用）</p>
+<p>因此解决了注入问题</p>
+</blockquote>
+<h2 id="参数占位符"><a href="#参数占位符" class="headerlink" title="参数占位符"></a>参数占位符</h2><p>在Mybatis中提供的参数占位符有两种：${…} 、#{…}</p>
+<ul>
+<li><h1 id="…"><a href="#…" class="headerlink" title="{…}"></a>{…}</h1><ul>
+<li>执行SQL时，会将#{…}替换为?，生成预编译SQL，会自动设置参数值</li>
+<li>使用时机：参数传递，都使用#{…}</li>
+</ul>
+</li>
+<li><p>${…}</p>
+<ul>
+<li>拼接SQL。直接将参数拼接在SQL语句中，存在SQL注入问题</li>
+<li>使用时机：如果对表名、列表进行动态设置时使用</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>注意事项：在项目开发中，建议使用#{…}，生成预编译SQL，防止SQL注入安全。</p>
+</blockquote>
+<h1 id="基础操作"><a href="#基础操作" class="headerlink" title="基础操作"></a>基础操作</h1><h2 id="删除"><a href="#删除" class="headerlink" title="删除"></a>删除</h2><blockquote>
+<p>Mybatis框架让程序员更关注于SQL语句</p>
+</blockquote>
+<ul>
+<li>接口方法</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Mapper</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title class_">EmpMapper</span> &#123;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//@Delete(&quot;delete from emp where id = 17&quot;)</span></span><br><span class="line">    <span class="comment">//public void delete();</span></span><br><span class="line">    <span class="comment">//以上delete操作的SQL语句中的id值写成固定的17，就表示只能删除id=17的用户数据</span></span><br><span class="line">    <span class="comment">//SQL语句中的id值不能写成固定数值，需要变为动态的数值</span></span><br><span class="line">    <span class="comment">//解决方案：在delete方法中添加一个参数(用户id)，将方法中的参数，传给SQL语句</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 根据id删除数据</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> id    用户id</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@Delete(&quot;delete from emp where id = #&#123;id&#125;&quot;)</span><span class="comment">//使用#&#123;key&#125;方式获取方法中的参数值</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">delete</span><span class="params">(Integer id)</span>;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>@Delete注解：用于编写delete操作的SQL语句</p>
+<p>如果mapper接口方法形参只有一个普通类型的参数，#{…} 里面的属性名可以随便写，如：#{id}、#{value}。但是建议保持名字一致。</p>
+</blockquote>
+<p>测试：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@SpringBootTest</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">SpringbootMybatisCrudApplicationTests</span> &#123;</span><br><span class="line">    <span class="meta">@Autowired</span> <span class="comment">//从Spring的IOC容器中，获取类型是EmpMapper的对象并注入</span></span><br><span class="line">    <span class="keyword">private</span> EmpMapper empMapper;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Test</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">testDel</span><span class="params">()</span>&#123;</span><br><span class="line">        <span class="comment">//调用删除方法</span></span><br><span class="line">        empMapper.delete(<span class="number">16</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<div class='fold collapsed'>
+    <div class='fold-title'>
+        个人小结：
+    </div>
+    <div class='fold-content'>
+        <p>所以流程是根据数据库里的类型创建pojo类(成员名字应该和数据库字段名字相同？)，(好像不用相同？那第一个程序里也不用相同？)</p>
+<p>然后设置mapper类，此类用于查询，并用pojo类接收查询到的数据</p>
+<p>最后在test里从ioc中得到mapper的实例化对象，然后拿这个对象里的东西/调用对象里的方法。</p>
+
+    </div>
+</div>
+<h2 id="新增"><a href="#新增" class="headerlink" title="新增"></a>新增</h2><p>SQL语句：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> emp(username, name, gender, image, job, entrydate, dept_id, create_time, update_time) <span class="keyword">values</span> (<span class="string">&#x27;songyuanqiao&#x27;</span>,<span class="string">&#x27;宋远桥&#x27;</span>,<span class="number">1</span>,<span class="string">&#x27;1.jpg&#x27;</span>,<span class="number">2</span>,<span class="string">&#x27;2012-10-09&#x27;</span>,<span class="number">2</span>,<span class="string">&#x27;2022-10-01 10:00:00&#x27;</span>,<span class="string">&#x27;2022-10-01 10:00:00&#x27;</span>);</span><br></pre></td></tr></table></figure>
+<p>接口方法：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Mapper</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title class_">EmpMapper</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Insert(&quot;insert into emp(username, name, gender, image, job, entrydate, dept_id, create_time, update_time) values (#&#123;username&#125;, #&#123;name&#125;, #&#123;gender&#125;, #&#123;image&#125;, #&#123;job&#125;, #&#123;entrydate&#125;, #&#123;deptId&#125;, #&#123;createTime&#125;, #&#123;updateTime&#125;)&quot;)</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">insert</span><span class="params">(Emp emp)</span>;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>说明：#{…} 里面写的名称是对象的属性名</p>
+</blockquote>
+<p>测试类：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="meta">@SpringBootTest</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">SpringbootMybatisCrudApplicationTests</span> &#123;</span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> EmpMapper empMapper;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Test</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">testInsert</span><span class="params">()</span>&#123;</span><br><span class="line">        <span class="comment">//创建员工对象</span></span><br><span class="line">        <span class="type">Emp</span> <span class="variable">emp</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Emp</span>();</span><br><span class="line">        emp.setUsername(<span class="string">&quot;tom&quot;</span>);</span><br><span class="line">        emp.setName(<span class="string">&quot;汤姆&quot;</span>);</span><br><span class="line">        emp.setImage(<span class="string">&quot;1.jpg&quot;</span>);</span><br><span class="line">        emp.setGender((<span class="type">short</span>)<span class="number">1</span>);</span><br><span class="line">        emp.setJob((<span class="type">short</span>)<span class="number">1</span>);</span><br><span class="line">        emp.setEntrydate(LocalDate.of(<span class="number">2000</span>,<span class="number">1</span>,<span class="number">1</span>));</span><br><span class="line">        emp.setCreateTime(LocalDateTime.now());</span><br><span class="line">        emp.setUpdateTime(LocalDateTime.now());</span><br><span class="line">        emp.setDeptId(<span class="number">1</span>);</span><br><span class="line">        <span class="comment">//调用添加方法</span></span><br><span class="line">        empMapper.insert(emp);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="主键返回"><a href="#主键返回" class="headerlink" title="主键返回"></a>主键返回</h2><p>概念：在数据添加成功后，需要获取插入数据库数据的主键。</p>
+<link rel="stylesheet" href="/css/folder.css" type="text/css"><script src="/js/folder.js" type="text/javascript" async></script>
     </article>
     <!-- license -->
     <!-- paginator -->
@@ -673,7 +745,7 @@ p.spoiler {
                 <div class="toc-catalog">
                     <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
                 </div>
-                <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BB%8B%E7%BB%8D"><span class="toc-number">1.</span> <span class="toc-text">介绍</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE"><span class="toc-number">2.</span> <span class="toc-text">配置</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#JDBC%E4%BB%8B%E7%BB%8D"><span class="toc-number">3.</span> <span class="toc-text">JDBC介绍</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E5%BA%93%E8%BF%9E%E6%8E%A5%E6%B1%A0"><span class="toc-number">4.</span> <span class="toc-text">数据库连接池</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#lombok"><span class="toc-number">5.</span> <span class="toc-text">lombok</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%9F%BA%E7%A1%80%E6%93%8D%E4%BD%9C"><span class="toc-number">6.</span> <span class="toc-text">基础操作</span></a></li></ol>
+                <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BB%8B%E7%BB%8D"><span class="toc-number">1.</span> <span class="toc-text">介绍</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE"><span class="toc-number">2.</span> <span class="toc-text">配置</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#JDBC%E4%BB%8B%E7%BB%8D"><span class="toc-number">3.</span> <span class="toc-text">JDBC介绍</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E5%BA%93%E8%BF%9E%E6%8E%A5%E6%B1%A0"><span class="toc-number">4.</span> <span class="toc-text">数据库连接池</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#lombok"><span class="toc-number">5.</span> <span class="toc-text">lombok</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%97%A5%E5%BF%97%E8%BE%93%E5%85%A5"><span class="toc-number">5.1.</span> <span class="toc-text">日志输入</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%A2%84%E7%BC%96%E8%AF%91SQL"><span class="toc-number">6.</span> <span class="toc-text">预编译SQL</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#SQL%E6%B3%A8%E5%85%A5"><span class="toc-number">6.1.</span> <span class="toc-text">SQL注入</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E6%95%B0%E5%8D%A0%E4%BD%8D%E7%AC%A6"><span class="toc-number">6.2.</span> <span class="toc-text">参数占位符</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E2%80%A6"><span class="toc-number">7.</span> <span class="toc-text">{…}</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%9F%BA%E7%A1%80%E6%93%8D%E4%BD%9C"><span class="toc-number">8.</span> <span class="toc-text">基础操作</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%A0%E9%99%A4"><span class="toc-number">8.1.</span> <span class="toc-text">删除</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%96%B0%E5%A2%9E"><span class="toc-number">8.2.</span> <span class="toc-text">新增</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%BB%E9%94%AE%E8%BF%94%E5%9B%9E"><span class="toc-number">8.3.</span> <span class="toc-text">主键返回</span></a></li></ol></li></ol>
             </div>
         <!-- sidebar -->
         <div class="sidebar sidebar-hide">
