@@ -1,0 +1,1002 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <!-- title -->
+<!-- keywords -->
+<head><!-- hexo injector head_begin start --><link href="https://fastly.jsdelivr.net/npm/hexo-tag-common@0.2.0/css/index.css" rel="stylesheet"/><!-- hexo injector head_begin end -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="author" content="">
+    <meta name="renderer" content="webkit">
+    <meta name="copyright" content="">
+        <meta name="keywords" content="hexo,hexo-theme,hexo-blog">
+    <meta name="description" content="">
+    <meta name="description" content="编辑器vim &#x2F; nano 左转Linux vi game.sh  不需要.sh后缀，但是一般来说要加  echo $HOME 当前用户的目录 echo $PATH 存储系统的查找目录 echo $SHELL 当前系统默认的shell的路径 echo $0 当前执行脚本的名字 脚本基础123echo &quot;请输入您的姓名&quot;read nameecho &quot;您好，$name&amp;">
+<meta property="og:type" content="article">
+<meta property="og:title" content="简单shell脚本">
+<meta property="og:url" content="http://example.com/posts/26c51008.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="编辑器vim &#x2F; nano 左转Linux vi game.sh  不需要.sh后缀，但是一般来说要加  echo $HOME 当前用户的目录 echo $PATH 存储系统的查找目录 echo $SHELL 当前系统默认的shell的路径 echo $0 当前执行脚本的名字 脚本基础123echo &quot;请输入您的姓名&quot;read nameecho &quot;您好，$name&amp;">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-09-28T02:50:55.000Z">
+<meta property="article:modified_time" content="2025-10-15T14:29:59.205Z">
+<meta name="twitter:card" content="summary">
+    <meta http-equiv="Cache-control" content="no-cache">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <link rel="icon" href="/assets/my.ico">
+    <title>简单shell脚本 · Terminal 4</title>
+    <!-- /*! loadCSS. [c]2017 Filament Group, Inc. MIT License */
+/* This file is meant as a standalone workflow for
+- testing support for link[rel=preload]
+- enabling async CSS loading in browsers that do not support rel=preload
+- applying rel preload css once loaded, whether supported or not.
+*/ -->
+<script>
+    (function (w) {
+        'use strict'
+        // rel=preload support test
+        if (!w.loadCSS) {
+            w.loadCSS = function () {}
+        }
+        // define on the loadCSS obj
+        var rp = (loadCSS.relpreload = {})
+        // rel=preload feature support test
+        // runs once and returns a function for compat purposes
+        rp.support = (function () {
+            var ret
+            try {
+                ret = w.document.createElement('link').relList.supports('preload')
+            } catch (e) {
+                ret = false
+            }
+            return function () {
+                return ret
+            }
+        })()
+
+        // if preload isn't supported, get an asynchronous load by using a non-matching media attribute
+        // then change that media back to its intended value on load
+        rp.bindMediaToggle = function (link) {
+            // remember existing media attr for ultimate state, or default to 'all'
+            var finalMedia = link.media || 'all'
+
+            function enableStylesheet() {
+                link.media = finalMedia
+            }
+
+            // bind load handlers to enable media
+            if (link.addEventListener) {
+                link.addEventListener('load', enableStylesheet)
+            } else if (link.attachEvent) {
+                link.attachEvent('onload', enableStylesheet)
+            }
+
+            // Set rel and non-applicable media type to start an async request
+            // note: timeout allows this to happen async to let rendering continue in IE
+            setTimeout(function () {
+                link.rel = 'stylesheet'
+                link.media = 'only x'
+            })
+            // also enable media after 3 seconds,
+            // which will catch very old browsers (android 2.x, old firefox) that don't support onload on link
+            setTimeout(enableStylesheet, 3000)
+        }
+
+        // loop through link elements in DOM
+        rp.poly = function () {
+            // double check this to prevent external calls from running
+            if (rp.support()) {
+                return
+            }
+            var links = w.document.getElementsByTagName('link')
+            for (var i = 0; i < links.length; i++) {
+                var link = links[i]
+                // qualify links to those with rel=preload and as=style attrs
+                if (
+                    link.rel === 'preload' &&
+                    link.getAttribute('as') === 'style' &&
+                    !link.getAttribute('data-loadcss')
+                ) {
+                    // prevent rerunning on link
+                    link.setAttribute('data-loadcss', true)
+                    // bind listeners to toggle media back
+                    rp.bindMediaToggle(link)
+                }
+            }
+        }
+
+        // if unsupported, run the polyfill
+        if (!rp.support()) {
+            // run once at least
+            rp.poly()
+
+            // rerun poly on an interval until onload
+            var run = w.setInterval(rp.poly, 500)
+            if (w.addEventListener) {
+                w.addEventListener('load', function () {
+                    rp.poly()
+                    w.clearInterval(run)
+                })
+            } else if (w.attachEvent) {
+                w.attachEvent('onload', function () {
+                    rp.poly()
+                    w.clearInterval(run)
+                })
+            }
+        }
+
+        // commonjs
+        if (typeof exports !== 'undefined') {
+            exports.loadCSS = loadCSS
+        } else {
+            w.loadCSS = loadCSS
+        }
+    })(typeof global !== 'undefined' ? global : this)
+</script>
+
+    <style type="text/css">
+    @font-face {
+        font-family: 'Oswald-Regular';
+        src: url("/font/Oswald-Regular.ttf");
+    }
+
+    body {
+        margin: 0;
+    }
+
+    header,
+    footer,
+    .footer-fixed-btn,
+    .sidebar,
+    .container,
+    .site-intro-meta,
+    .toc-wrapper {
+        display: none;
+    }
+
+    .site-intro {
+        position: relative;
+        z-index: 3;
+        width: 100%;
+        /* height: 50vh; */
+        overflow: hidden;
+    }
+
+    .site-intro-placeholder {
+        position: absolute;
+        z-index: -2;
+        top: 0;
+        left: 0;
+        width: calc(100% + 300px);
+        height: 100%;
+        background: repeating-linear-gradient(
+            -45deg,
+            #444 0,
+            #444 80px,
+            #333 80px,
+            #333 160px
+        );
+        background-position: center center;
+        transform: translate3d(-226px, 0, 0);
+        animation: gradient-move 2.5s ease-out 0s infinite;
+    }
+
+    @keyframes gradient-move {
+        0% {
+            transform: translate3d(-226px, 0, 0);
+        }
+        100% {
+            transform: translate3d(0, 0, 0);
+        }
+    }
+</style>
+
+    <link id="stylesheet-fancybox" rel="preload" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.36/dist/fancybox/fancybox.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <link id="stylesheet-base" rel="preload" href="/css/style.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <link id="stylesheet-mobile" rel="preload" href="/css/mobile.css" as="style" onload="this.onload=null;this.rel='stylesheet';this.media='screen and (max-width: 960px)'">
+    <link id="stylesheet-theme-dark" rel="preload" href="/css/dark.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" as="script">
+    <link rel="preload" href="/scripts/main.js" as="script">
+    <link rel="preload" href="/font/Oswald-Regular.ttf" as="font" crossorigin>
+    <link rel="preload" href="https://at.alicdn.com/t/font_327081_1dta1rlogw17zaor.woff" as="font" crossorigin>
+    <!-- algolia -->
+    <!-- 百度统计  -->
+    <!-- 谷歌统计  -->
+    <!-- Google tag (gtag.js) -->
+<style type="text/css">
+.spoiler {
+  display: inline;
+}
+p.spoiler {
+  display: flex;
+}
+.spoiler a {
+  pointer-events: none;
+}
+.spoiler-blur, .spoiler-blur > * {
+  transition: text-shadow .5s ease;
+}
+.spoiler .spoiler-blur, .spoiler .spoiler-blur > * {
+  color: rgba(0, 0, 0, 0);
+  background-color: rgba(0, 0, 0, 0);
+  text-shadow: 0 0 10px grey;
+  cursor: pointer;
+}
+.spoiler .spoiler-blur:hover, .spoiler .spoiler-blur:hover > * {
+  text-shadow: 0 0 5px grey;
+}
+.spoiler-box, .spoiler-box > * {
+  transition: color .5s ease,
+  background-color .5s ease;
+}
+.spoiler .spoiler-box, .spoiler .spoiler-box > * {
+  color: black;
+  background-color: black;
+  text-shadow: none;
+}</style><meta name="generator" content="Hexo 7.3.0"></head>
+
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+    <script type="text/javascript">
+        if (typeof window.$ == undefined) {
+            console.warn('jquery load from jsdelivr failed, will load local script')
+            document.write('<script src="/lib/jquery.min.js" />')
+        }
+    </script>
+        <body class="post-body">
+        <!-- header -->
+        <header class="header header-mobile">
+    <!-- top read progress line -->
+    <div class="header-element">
+        <div class="read-progress"></div>
+    </div>
+    <!-- sidebar menu button -->
+    <div class="header-element">
+        <div class="header-sidebar-menu">
+            <div style="padding-left: 1px;">&#xe775;</div>
+        </div>
+    </div>
+    <!-- header actions -->
+    <div class="header-actions">
+        <!-- theme mode switch button -->
+        <span class="header-theme-btn header-element">
+            <i class="fas fa-adjust"></i>
+        </span>
+        <!-- back to home page text -->
+        <span class="home-link header-element">
+            <a href="/">Terminal 4.</a>
+        </span>
+    </div>
+    <!-- toggle banner -->
+    <div class="banner">
+        <div class="blog-title header-element">
+            <a href="/">Terminal 4.</a>
+        </div>
+        <div class="post-title header-element">
+            <a href="#" class="post-name">简单shell脚本</a>
+        </div>
+    </div>
+</header>
+
+        <!-- fixed footer -->
+        <footer class="footer-fixed">
+    <!-- donate button -->
+    <div class="donate-popup donate-popup--hidden">
+    <div class="donate-popup__title">Buy Me A Milktea!</div>
+    <div class="donate-popup__content">
+        <div class="donate-popup__content-description">If this post helped you, please consider buying the author a cup of milktea 🥤!(Actually,I prefer fruit tea.🥳)</div>
+        <img
+            class="donate-popup__content-qrCode"
+            title="Wechat"
+            alt="Wechat"
+            src="/assets/donate-wechat.png"
+        ></img>
+        <img
+            class="donate-popup__content-qrCode"
+            title="Alipay"
+            alt="Alipay"
+            src="/assets/donate-alipay.jpg"
+        ></img>
+    </div>
+</div>
+
+    <div
+        title="Donate to the author"
+        class="footer-fixed-btn footer-fixed-btn--hidden donate-btn"
+    >
+        <i class="fas fa-donate"></i>
+    </div>
+
+    <!-- back to top button -->
+    <div class="footer-fixed-btn footer-fixed-btn--hidden back-top">
+        <div>&#xe639;</div>
+    </div>
+</footer>
+
+        <!-- wrapper -->
+        <div class="wrapper">
+            <div class="site-intro" style="    height:50vh;
+">
+    <!-- 主页  -->
+    <!-- 404页  -->
+    <div class="site-intro-placeholder"></div>
+    <div class="site-intro-img" style="background-image: url(/intro/post-bg.jpg)"></div>
+    <div class="site-intro-meta">
+        <!-- 标题  -->
+        <h1 class="intro-title">
+            <!-- 主页  -->
+                简单shell脚本
+            <!-- 404 -->
+        </h1>
+        <!-- 副标题 -->
+        <p class="intro-subtitle">
+            <!-- 主页副标题  -->
+            <!-- 404 -->
+        </p>
+        <!-- 文章页 meta -->
+            <div class="post-intros">
+                <!-- 文章页标签  -->
+                    <div class="post-intro-tags" >
+</div>
+
+                <!-- 文章字数统计 -->
+                <div class="post-intro-meta">
+                    <!-- 撰写日期 -->
+                    <span class="iconfont-archer post-intro-calander">&#xe676;</span>
+                    <span class="post-intro-time">2025/09/28</span>
+                    <!-- busuanzi -->
+                        <span id="busuanzi_container_page_pv" class="busuanzi-pv">
+                            <span class="iconfont-archer post-intro-busuanzi">&#xe602;</span>
+                            <span id="busuanzi_value_page_pv"></span>
+                        </span>
+                    <!-- 文章分享 -->
+                    <span class="share-wrapper">
+                        <span class="iconfont-archer share-icon">&#xe71d;</span>
+                        <span class="share-text">Share</span>
+                        <ul class="share-list">
+                            <li class="iconfont-archer share-qr" data-type="qr">&#xe75b;
+                                <div class="share-qrcode"></div>
+                            </li>
+                            <li class="iconfont-archer" data-type="weibo">&#xe619;</li>
+                            <li class="iconfont-archer" data-type="qzone">&#xe62e;</li>
+                            <li class="iconfont-archer" data-type="twitter">&#xe634;</li>
+                            <li class="iconfont-archer" data-type="facebook">&#xe67a;</li>
+                        </ul>
+                    </span>
+                </div>
+            </div>
+    </div>
+</div>
+
+            <script>
+  // get user agent
+  function getBrowserVersions() {
+    var u = window.navigator.userAgent
+    return {
+      userAgent: u,
+      trident: u.indexOf('Trident') > -1, //IE内核
+      presto: u.indexOf('Presto') > -1, //opera内核
+      webKit: u.indexOf('AppleWebKit') > -1, //苹果、谷歌内核
+      gecko: u.indexOf('Gecko') > -1 && u.indexOf('KHTML') == -1, //火狐内核
+      mobile: !!u.match(/AppleWebKit.*Mobile.*/), //是否为移动终端
+      ios: !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/), //ios终端
+      android: u.indexOf('Android') > -1 || u.indexOf('Linux') > -1, //android终端或者uc浏览器
+      iPhone: u.indexOf('iPhone') > -1 || u.indexOf('Mac') > -1, //是否为iPhone或者安卓QQ浏览器
+      iPad: u.indexOf('iPad') > -1, //是否为iPad
+      webApp: u.indexOf('Safari') == -1, //是否为web应用程序，没有头部与底部
+      weixin: u.indexOf('MicroMessenger') == -1, //是否为微信浏览器
+      uc: u.indexOf('UCBrowser') > -1, //是否为android下的UC浏览器
+    }
+  }
+  var browser = {
+    versions: getBrowserVersions(),
+  }
+  console.log('userAgent: ' + browser.versions.userAgent)
+
+  // callback
+  function fontLoaded() {
+    console.log('font loaded')
+    if (document.getElementsByClassName('site-intro-meta')) {
+      document
+        .getElementsByClassName('intro-title')[0]
+        .classList.add('intro-fade-in')
+      document
+        .getElementsByClassName('intro-subtitle')[0]
+        .classList.add('intro-fade-in')
+      var postIntros = document.getElementsByClassName('post-intros')[0]
+      if (postIntros) {
+        postIntros.classList.add('post-fade-in')
+      }
+    }
+  }
+
+  // UC不支持跨域，所以直接显示
+  function asyncCb() {
+    if (browser.versions.uc) {
+      console.log('UCBrowser')
+      fontLoaded()
+    } else {
+      WebFont.load({
+        custom: {
+          families: ['Oswald-Regular'],
+        },
+        loading: function () {
+          // 所有字体开始加载
+          // console.log('font loading');
+        },
+        active: function () {
+          // 所有字体已渲染
+          fontLoaded()
+        },
+        inactive: function () {
+          // 字体预加载失败，无效字体或浏览器不支持加载
+          console.log('inactive: timeout')
+          fontLoaded()
+        },
+        timeout: 5000, // Set the timeout to two seconds
+      })
+    }
+  }
+
+  function asyncErr() {
+    console.warn('script load from CDN failed, will load local script')
+  }
+
+  // load webfont-loader async, and add callback function
+  function async(u, cb, err) {
+    var d = document,
+      t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0]
+    o.src = u
+    if (cb) {
+      o.addEventListener(
+        'load',
+        function (e) {
+          cb(null, e)
+        },
+        false
+      )
+    }
+    if (err) {
+      o.addEventListener(
+        'error',
+        function (e) {
+          err(null, e)
+        },
+        false
+      )
+    }
+    s.parentNode.insertBefore(o, s)
+  }
+
+  var asyncLoadWithFallBack = function (arr, success, reject) {
+    var currReject = function () {
+      reject()
+      arr.shift()
+      if (arr.length) async(arr[0], success, currReject)
+    }
+
+    async(arr[0], success, currReject)
+  }
+
+  asyncLoadWithFallBack(
+    [
+      'https://cdn.jsdelivr.net/npm/webfontloader@1.6.28/webfontloader.min.js',
+      'https://cdn.bootcss.com/webfont/1.6.28/webfontloader.js',
+      "/lib/webfontloader.min.js",
+    ],
+    asyncCb,
+    asyncErr
+  )
+</script>
+
+            <img class="loading" src="/assets/loading.svg" style="display: block; margin: 6rem auto 0 auto; width: 6rem; height: 6rem;" alt="loading">
+            <div class="container container-unloaded">
+                <main class="main post-page">
+    <article class="article-entry">
+        <link rel="stylesheet" type="text&#x2F;css" href="https://cdn.jsdelivr.net/npm/hexo-tag-hint@0.3.1/dist/hexo-tag-hint.min.css"><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><span id="more"></span>
+<p>编辑器<code>vim</code> / <code>nano</code> 左转Linux</p>
+<p>vi game.sh</p>
+<blockquote>
+<p>不需要.sh后缀，但是一般来说要加</p>
+</blockquote>
+<p><code>echo $HOME</code> 当前用户的目录</p>
+<p><code>echo $PATH</code> 存储系统的查找目录</p>
+<p><code>echo $SHELL</code> 当前系统默认的shell的路径</p>
+<p><code>echo $0</code> 当前执行脚本的名字</p>
+<h1 id="脚本基础"><a href="#脚本基础" class="headerlink" title="脚本基础"></a>脚本基础</h1><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">echo &quot;请输入您的姓名&quot;</span><br><span class="line">read name</span><br><span class="line">echo &quot;您好，$name&quot;</span><br></pre></td></tr></table></figure>
+<h2 id="执行文件"><a href="#执行文件" class="headerlink" title="执行文件"></a>执行文件</h2><ul>
+<li><code>bash  game.sh</code></li>
+<li><code>./game.sh</code><ul>
+<li>直接执行方式需要给予权限<code>chmod +x game.sh</code> 详见Linux</li>
+</ul>
+</li>
+<li><code>./game.sh param1 param2</code> 可以执行时传递参数</li>
+</ul>
+<h2 id="环境变量"><a href="#环境变量" class="headerlink" title="环境变量"></a>环境变量</h2><ul>
+<li><code>export name(变量名)=xxx</code><ul>
+<li>只在当前shell会话中有用</li>
+</ul>
+</li>
+<li>在配置文件中配置，bash的配置文件是.bashrc，配置后需要source重载或重进后生效</li>
+</ul>
+<p>生成随机数<code>number=$(shuf -i 1-10 -n 1 )</code></p>
+<p>让GPT生成了一个实例脚本</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br><span class="line">235</span><br><span class="line">236</span><br><span class="line">237</span><br><span class="line">238</span><br><span class="line">239</span><br><span class="line">240</span><br><span class="line">241</span><br><span class="line">242</span><br><span class="line">243</span><br><span class="line">244</span><br><span class="line">245</span><br><span class="line">246</span><br><span class="line">247</span><br><span class="line">248</span><br><span class="line">249</span><br><span class="line">250</span><br><span class="line">251</span><br><span class="line">252</span><br><span class="line">253</span><br><span class="line">254</span><br><span class="line">255</span><br><span class="line">256</span><br><span class="line">257</span><br><span class="line">258</span><br><span class="line">259</span><br><span class="line">260</span><br><span class="line">261</span><br><span class="line">262</span><br><span class="line">263</span><br><span class="line">264</span><br><span class="line">265</span><br><span class="line">266</span><br><span class="line">267</span><br><span class="line">268</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash">!/usr/bin/env bash</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">beginner_tutorial.sh</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">这是一个面向初学者的 shell 脚本示例。注释尽可能详细，方便学习。</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">运行: <span class="built_in">chmod</span> +x beginner_tutorial.sh</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">     ./beginner_tutorial.sh [可选的参数]</span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">---------- 基本信息 ----------</span></span><br><span class="line">SCRIPT_NAME=&quot;$(basename &quot;$0&quot;)&quot;   # 脚本名（basename 去掉路径）</span><br><span class="line">START_TIME=&quot;$(date &#x27;+%Y-%m-%d %H:%M:%S&#x27;)&quot;</span><br><span class="line"></span><br><span class="line">echo &quot;==== 欢迎使用 Shell 入门示例脚本 ====&quot;</span><br><span class="line">echo &quot;脚本: $SCRIPT_NAME  启动时间: $START_TIME&quot;</span><br><span class="line">echo</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">---------- 简单说明函数 ----------</span></span><br><span class="line">show_help() &#123;</span><br><span class="line"><span class="meta prompt_">  # </span><span class="language-bash">函数：打印帮助信息</span></span><br><span class="line">  cat &lt;&lt;&#x27;HELP&#x27;</span><br><span class="line">用法:</span><br><span class="line">  ./beginner_tutorial.sh [arg1 arg2 ...]</span><br><span class="line"></span><br><span class="line">脚本示例演示:</span><br><span class="line">  - 变量、读取输入、位置参数 ($1, $2 ...)</span><br><span class="line">  - if / case 条件判断</span><br><span class="line">  - for / while 循环</span><br><span class="line">  - 函数与返回值</span><br><span class="line">  - 数组、字符串操作</span><br><span class="line">  - 简单文本处理（grep）</span><br><span class="line">  - trap 捕捉 Ctrl+C 信号</span><br><span class="line"></span><br><span class="line">按数字选择菜单中的操作，或传入 &quot;auto&quot; 参数试运行几个示例。</span><br><span class="line">HELP</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">如果用户传入 -h 或 --<span class="built_in">help</span>，显示帮助并退出</span></span><br><span class="line">for a in &quot;$@&quot;; do</span><br><span class="line">  if [[ &quot;$a&quot; == &quot;-h&quot; || &quot;$a&quot; == &quot;--help&quot; ]]; then</span><br><span class="line">    show_help</span><br><span class="line">    exit 0</span><br><span class="line">  fi</span><br><span class="line">done</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">---------- 位置参数示例 ----------</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash"><span class="variable">$1</span> 是第一个参数，<span class="variable">$2</span> 第二个，<span class="variable">$@</span> 是所有参数的数组形式，<span class="variable">$#</span> 是参数个数</span></span><br><span class="line">echo &quot;传入的位置参数数量: $#&quot;</span><br><span class="line">if [[ $# -gt 0 ]]; then</span><br><span class="line">  echo &quot;位置参数内容（按顺序）: $@&quot;</span><br><span class="line">else</span><br><span class="line">  echo &quot;没有传入位置参数（可以试试 ./beginner_tutorial.sh 你好 世界）&quot;</span><br><span class="line">fi</span><br><span class="line">echo</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">---------- 变量与替换 ----------</span></span><br><span class="line">name=&quot;Alice&quot;            # 直接赋值：变量名不带 $，引用时带 $</span><br><span class="line">readonly GREETING=&quot;Hi&quot;  # readonly 使变量不可变（常量）</span><br><span class="line">echo &quot;示例变量 name=$name, GREETING=$GREETING&quot;</span><br><span class="line">echo</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">---------- 读取用户输入 ----------</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash"><span class="built_in">read</span> 用于从标准输入读取一行</span></span><br><span class="line">echo -n &quot;请输入你的名字（回车）: &quot;</span><br><span class="line">read user_name</span><br><span class="line">if [[ -z &quot;$user_name&quot; ]]; then</span><br><span class="line"><span class="meta prompt_">  # </span><span class="language-bash">-z 判断字符串是否为空</span></span><br><span class="line">  user_name=&quot;匿名用户&quot;</span><br><span class="line">fi</span><br><span class="line">echo &quot;你好, $user_name！&quot;</span><br><span class="line">echo</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">---------- <span class="keyword">if</span> / <span class="keyword">elif</span> / <span class="keyword">else</span> 条件示例 ----------</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">这里用一个数字判断演示条件分支</span></span><br><span class="line">echo -n &quot;输入一个整数（我会判断它是正/负/零）：&quot;</span><br><span class="line">read num_input</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">检查是否为整数（简单正则）</span></span><br><span class="line">if [[ &quot;$num_input&quot; =~ ^-?[0-9]+$ ]]; then</span><br><span class="line">  if [[ &quot;$num_input&quot; -gt 0 ]]; then</span><br><span class="line">    echo &quot;你输入的是正数：$num_input&quot;</span><br><span class="line">  elif [[ &quot;$num_input&quot; -lt 0 ]]; then</span><br><span class="line">    echo &quot;你输入的是负数：$num_input&quot;</span><br><span class="line">  else</span><br><span class="line">    echo &quot;你输入的是零&quot;</span><br><span class="line">  fi</span><br><span class="line">else</span><br><span class="line">  echo &quot;你输入的不是整数，跳过数字判断。&quot;</span><br><span class="line">fi</span><br><span class="line">echo</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">---------- <span class="keyword">case</span> 语句（类似 switch） ----------</span></span><br><span class="line">echo -n &quot;输入 yes/no/other：&quot;</span><br><span class="line">read yn</span><br><span class="line">case &quot;$yn&quot; in</span><br><span class="line">  y|Y|yes|Yes)</span><br><span class="line">    echo &quot;你选择了 yes&quot;</span><br><span class="line">    ;;</span><br><span class="line">  n|N|no|No)</span><br><span class="line">    echo &quot;你选择了 no&quot;</span><br><span class="line">    ;;</span><br><span class="line">  *)</span><br><span class="line">    echo &quot;选择了其他：$yn&quot;</span><br><span class="line">    ;;</span><br><span class="line">esac</span><br><span class="line">echo</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">---------- <span class="keyword">for</span> 循环（遍历列表） ----------</span></span><br><span class="line">echo &quot;for 循环示例：打印前三个传入的位置参数（如果有）&quot;</span><br><span class="line">i=1</span><br><span class="line">for p in &quot;$@&quot;; do</span><br><span class="line">  echo &quot; 参数 $i -&gt; $p&quot;</span><br><span class="line">  ((i++))  # (( )) 中可以做算术运算</span><br><span class="line">  if [[ $i -gt 3 ]]; then</span><br><span class="line">    break</span><br><span class="line">  fi</span><br><span class="line">done</span><br><span class="line">echo</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">---------- <span class="keyword">while</span> 循环 ----------</span></span><br><span class="line">echo &quot;while 循环示例：从 5 倒计时到 1（每秒）&quot;</span><br><span class="line">count=5</span><br><span class="line">while [[ $count -gt 0 ]]; do</span><br><span class="line">  echo &quot;倒计时：$count&quot;</span><br><span class="line">  sleep 1    # 暂停 1 秒钟（可以观察）</span><br><span class="line">  ((count--))</span><br><span class="line">done</span><br><span class="line">echo &quot;倒计时结束！&quot;</span><br><span class="line">echo</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">---------- 函数与返回值 ----------</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">定义一个函数用于计算两个整数的和并返回（通过 <span class="built_in">echo</span> 输出结果）</span></span><br><span class="line">add_numbers() &#123;</span><br><span class="line"><span class="meta prompt_">  # </span><span class="language-bash">参数: <span class="variable">$1</span> <span class="variable">$2</span></span></span><br><span class="line">  if ! [[ &quot;$1&quot; =~ ^-?[0-9]+$ &amp;&amp; &quot;$2&quot; =~ ^-?[0-9]+$ ]]; then</span><br><span class="line">    echo &quot;错误：add_numbers 需要两个整数参数&quot; &gt;&amp;2</span><br><span class="line">    return 1  # 函数退出码：1 表示失败</span><br><span class="line">  fi</span><br><span class="line">  local a=$1</span><br><span class="line">  local b=$2</span><br><span class="line">  local sum=$((a + b))   # 算术计算（注意：整数运算）</span><br><span class="line">  echo &quot;$sum&quot;            # 通过标准输出返回值（常见做法）</span><br><span class="line">  return 0               # 成功</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">echo &quot;函数示例：计算 7 + 13&quot;</span><br><span class="line">result=&quot;$(add_numbers 7 13)&quot; &amp;&amp; echo &quot;结果是：$result&quot; || echo &quot;计算失败&quot;</span><br><span class="line">echo</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">---------- 数组操作 ----------</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">定义数组（注意：数组索引从 0 开始）</span></span><br><span class="line">fruits=(&quot;apple&quot; &quot;banana&quot; &quot;cherry&quot;)</span><br><span class="line">echo &quot;数组示例：全部元素 -&gt; $&#123;fruits[@]&#125;&quot;</span><br><span class="line">echo &quot;第一个元素 -&gt; $&#123;fruits[0]&#125;&quot;</span><br><span class="line">echo &quot;数组长度 -&gt; $&#123;#fruits[@]&#125;&quot;</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">遍历数组（索引法）</span></span><br><span class="line">for idx in &quot;$&#123;!fruits[@]&#125;&quot;; do</span><br><span class="line">  echo &quot;fruits[$idx] = $&#123;fruits[$idx]&#125;&quot;</span><br><span class="line">done</span><br><span class="line">echo</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">---------- 字符串操作（常见） ----------</span></span><br><span class="line">s=&quot;Hello,Shell&quot;</span><br><span class="line">echo &quot;字符串示例：原始 -&gt; $s&quot;</span><br><span class="line">echo &quot;取子串（从索引 6 长度 5） -&gt; $&#123;s:6:5&#125;&quot;</span><br><span class="line">echo &quot;查找长度 -&gt; $&#123;#s&#125;&quot;</span><br><span class="line">echo &quot;替换（Hello -&gt; Hi） -&gt; $&#123;s/Hello/Hi&#125;&quot;</span><br><span class="line">echo</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">---------- 管道、重定向与简单文本处理 ----------</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">创建一个临时文件并写入若干行文本，演示 grep 管道</span></span><br><span class="line">tmpfile=&quot;$(mktemp)&quot;</span><br><span class="line">cat &gt; &quot;$tmpfile&quot; &lt;&lt;EOF</span><br><span class="line">apple</span><br><span class="line">banana</span><br><span class="line">apple pie</span><br><span class="line">grape</span><br><span class="line">pineapple</span><br><span class="line">EOF</span><br><span class="line"></span><br><span class="line">echo &quot;临时文件内容：&quot;</span><br><span class="line">cat &quot;$tmpfile&quot;</span><br><span class="line">echo &quot;使用 grep 搜索包含 &#x27;apple&#x27; 的行：&quot;</span><br><span class="line">grep &quot;apple&quot; &quot;$tmpfile&quot; || true  # grep 失败时会返回非零，使用 || true 避免脚本退出（如果启用了 errexit）</span><br><span class="line">echo</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">清理临时文件</span></span><br><span class="line">rm -f &quot;$tmpfile&quot;</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">---------- <span class="built_in">trap</span>：捕捉信号（比如 Ctrl+C） ----------</span></span><br><span class="line">on_interrupt() &#123;</span><br><span class="line">  echo</span><br><span class="line">  echo &quot;检测到中断（Ctrl+C），正在清理并退出...&quot;</span><br><span class="line"><span class="meta prompt_">  # </span><span class="language-bash">在这里可以做一些清理操作</span></span><br><span class="line">  exit 130   # 130 是常见的中断退出码</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash"><span class="built_in">trap</span> 将 SIGINT（Ctrl+C）和 EXIT 绑定到处理函数</span></span><br><span class="line">trap &#x27;on_interrupt&#x27; INT</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">---------- 小练习菜单（供你操作并熟悉） ----------</span></span><br><span class="line">menu() &#123;</span><br><span class="line">  cat &lt;&lt;MENU</span><br><span class="line"></span><br><span class="line">请选择下面的操作（输入编号并回车）：</span><br><span class="line"> 1) 显示当前目录和文件（ls -la）</span><br><span class="line"> 2) 显示当前环境变量（前 10 个）</span><br><span class="line"> 3) 创建并查看一个示例文件（temp_demo.txt）</span><br><span class="line"> 4) 显示当前登录用户信息（whoami）</span><br><span class="line"> 5) 退出菜单</span><br><span class="line"></span><br><span class="line">输入 q 也可以退出菜单。</span><br><span class="line"></span><br><span class="line">MENU</span><br><span class="line"></span><br><span class="line">  while true; do</span><br><span class="line">    echo -n &quot;你的选择: &quot;</span><br><span class="line">    read choice</span><br><span class="line">    case &quot;$choice&quot; in</span><br><span class="line">      1)</span><br><span class="line">        echo &quot;当前目录：$(pwd)&quot;</span><br><span class="line">        ls -la</span><br><span class="line">        ;;</span><br><span class="line">      2)</span><br><span class="line">        echo &quot;环境变量（前 10）：&quot;</span><br><span class="line">        # env 列出环境变量，head -n10 显示前 10 行</span><br><span class="line">        env | head -n 10</span><br><span class="line">        ;;</span><br><span class="line">      3)</span><br><span class="line">        echo &quot;创建示例文件 temp_demo.txt 并写入三行文本...&quot;</span><br><span class="line">        cat &gt; temp_demo.txt &lt;&lt;EOT</span><br><span class="line">这是示例文件第一行</span><br><span class="line">第二行：$(date)</span><br><span class="line">第三行：由 $USER 创建</span><br><span class="line">EOT</span><br><span class="line">        echo &quot;文件内容：&quot;</span><br><span class="line">        cat temp_demo.txt</span><br><span class="line">        ;;</span><br><span class="line">      4)</span><br><span class="line">        echo &quot;当前用户：$(whoami)&quot;</span><br><span class="line">        ;;</span><br><span class="line">      5|q|Q)</span><br><span class="line">        echo &quot;退出菜单。&quot;</span><br><span class="line">        break</span><br><span class="line">        ;;</span><br><span class="line">      *)</span><br><span class="line">        echo &quot;无效选择，请输入 1-5 或 q 退出。&quot;</span><br><span class="line">        ;;</span><br><span class="line">    esac</span><br><span class="line">    echo    # 空行分隔每次操作</span><br><span class="line">  done</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">如果第一个位置参数是 <span class="string">&quot;auto&quot;</span>，就自动执行示例（便于快速演示）</span></span><br><span class="line">if [[ &quot;$1&quot; == &quot;auto&quot; ]]; then</span><br><span class="line">  echo &quot;自动模式：将演示部分功能...&quot;</span><br><span class="line">  add_numbers 2 3</span><br><span class="line">  menu</span><br><span class="line">else</span><br><span class="line">  echo &quot;进入交互式菜单（可以试试输入 auto 参数自动运行一段演示）&quot;</span><br><span class="line">  menu</span><br><span class="line">fi</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">取消 <span class="built_in">trap</span>（可选）</span></span><br><span class="line">trap - INT</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">---------- 结尾与退出码 ----------</span></span><br><span class="line">END_TIME=&quot;$(date &#x27;+%Y-%m-%d %H:%M:%S&#x27;)&quot;</span><br><span class="line">echo</span><br><span class="line">echo &quot;脚本执行结束 时间: $END_TIME&quot;</span><br><span class="line">exit 0</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>然后又问了GPT：</p>
+<blockquote>
+<h2 id="🧩-1-cat-lt-lt-EOF-是什么？和-echo-有什么区别？"><a href="#🧩-1-cat-lt-lt-EOF-是什么？和-echo-有什么区别？" class="headerlink" title="🧩 1. cat &lt;&lt; EOF 是什么？和 echo 有什么区别？"></a>🧩 <strong>1. <code>cat &lt;&lt; EOF</code> 是什么？和 <code>echo</code> 有什么区别？</strong></h2><p>这叫做 <strong>Here Document（重定向输入块）</strong>，语法是：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">cat &lt;&lt;EOF</span><br><span class="line">这里的所有内容都会被当作 cat 的标准输入</span><br><span class="line">你可以写多行</span><br><span class="line">甚至写变量：$USER</span><br><span class="line">EOF</span><br></pre></td></tr></table></figure>
+<p>直接创建了一个带多行内容的文件，非常常用。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">cat &gt; myfile.txt &lt;&lt;EOF</span><br><span class="line">这是文件第一行</span><br><span class="line">第二行：$(date)</span><br><span class="line">第三行：当前用户是 $USER</span><br><span class="line">EOF</span><br></pre></td></tr></table></figure>
+<hr>
+<h2 id="🔢-2-quot-num-input-quot-0-9-是什么意思？"><a href="#🔢-2-quot-num-input-quot-0-9-是什么意思？" class="headerlink" title="🔢 2. &quot;$num_input&quot; =~ ^-?[0-9]+$ 是什么意思？"></a>🔢 <strong>2. <code>&quot;$num_input&quot; =~ ^-?[0-9]+$</code> 是什么意思？</strong></h2><p>这是 <strong>正则表达式匹配</strong>（regex match），完整语法是：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[[ &quot;$变量&quot; =~ 正则表达式 ]]</span><br></pre></td></tr></table></figure>
+<p>逐个解释：</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>元素</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>[[ ... ]]</code></td>
+<td>Bash 的“测试命令”，类似 <code>if</code> 判断语句里的条件块</td>
+</tr>
+<tr>
+<td><code>=~</code></td>
+<td>表示“正则匹配”运算符（不是等号）</td>
+</tr>
+<tr>
+<td><code>^-?[0-9]+$</code></td>
+<td>一段正则表达式，用来匹配整数</td>
+</tr>
+<tr>
+<td><code>^</code></td>
+<td>匹配字符串的开头</td>
+</tr>
+<tr>
+<td><code>-?</code></td>
+<td>表示一个可选的 <code>-</code>（负号）</td>
+</tr>
+<tr>
+<td><code>[0-9]+</code></td>
+<td>表示 1 个或多个数字</td>
+</tr>
+<tr>
+<td><code>$</code></td>
+<td>匹配字符串的结尾</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>所以：</p>
+<ul>
+<li><code>123</code> ✅ 匹配</li>
+<li><code>-45</code> ✅ 匹配</li>
+<li><code>3.14</code> ❌ 不匹配（因为有小数点）</li>
+<li><code>abc</code> ❌ 不匹配</li>
+</ul>
+<hr>
+<h2 id="🔄-3-case-语句"><a href="#🔄-3-case-语句" class="headerlink" title="🔄 3. case 语句"></a>🔄 <strong>3. <code>case</code> 语句</strong></h2><p><code>case</code> 是 Bash 里相当于 C/C++ 的 <code>switch</code>，但更灵活，<strong>可以用通配符、正则匹配字符串模式</strong>。</p>
+<h3 id="基本语法"><a href="#基本语法" class="headerlink" title="基本语法"></a>基本语法</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">case 变量名 in</span><br><span class="line">  模式1)</span><br><span class="line">    命令序列</span><br><span class="line">    ;;</span><br><span class="line">  模式2)</span><br><span class="line">    命令序列</span><br><span class="line">    ;;</span><br><span class="line">  *)</span><br><span class="line">    默认命令序列</span><br><span class="line">    ;;</span><br><span class="line">esac</span><br></pre></td></tr></table></figure>
+<p>特点：</p>
+<ul>
+<li>每个 <code>;;</code> 表示“结束这个分支”。</li>
+<li><code>*</code> 表示“默认情况”。</li>
+<li><code>|</code> 可以连接多个匹配模式。</li>
+<li>模式可以使用通配符（<code>*</code>, <code>?</code>, <code>[a-z]</code>），比 C/C++ 的 switch 灵活很多。</li>
+</ul>
+<hr>
+<h2 id="🧮-4-return-0-和-exit-0-的区别"><a href="#🧮-4-return-0-和-exit-0-的区别" class="headerlink" title="🧮 4. return 0 和 exit 0 的区别"></a>🧮 <strong>4. <code>return 0</code> 和 <code>exit 0</code> 的区别</strong></h2><div class="table-container">
+<table>
+<thead>
+<tr>
+<th>命令</th>
+<th>作用范围</th>
+<th>通常用法</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>return N</code></td>
+<td>仅在函数或被 <code>source</code> 的脚本中生效</td>
+<td>用于函数中返回状态码</td>
+</tr>
+<tr>
+<td><code>exit N</code></td>
+<td>结束整个脚本进程</td>
+<td>用于脚本结束时返回状态码</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h3 id="举例："><a href="#举例：" class="headerlink" title="举例："></a>举例：</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">add() &#123;</span><br><span class="line">  local sum=$(( $1 + $2 ))</span><br><span class="line">  echo &quot;$sum&quot;</span><br><span class="line">  return 0  # 函数执行成功</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">add 3 4   # 调用函数</span><br><span class="line">echo &quot;函数运行完脚本还在继续&quot;</span><br><span class="line"></span><br><span class="line">exit 0    # 整个脚本在这里终止</span><br><span class="line">echo &quot;这行不会执行&quot;</span><br></pre></td></tr></table></figure>
+<p>简而言之：</p>
+<ul>
+<li><strong><code>return</code></strong> 就像 C 函数里的 <code>return</code>，结束函数；</li>
+<li><strong><code>exit</code></strong> 就像 <code>exit()</code> 系统调用，整个程序结束。</li>
+</ul>
+<p><strong>退出码（Exit Code）约定：</strong></p>
+<ul>
+<li><code>0</code> = 成功</li>
+<li>非 0 = 失败（不同值代表不同错误类型）</li>
+</ul>
+<p>你可以在终端输入 <code>echo $?</code> 查看上一条命令的退出码。</p>
+<hr>
+<h2 id="⚙️-5-trap-是干嘛的？"><a href="#⚙️-5-trap-是干嘛的？" class="headerlink" title="⚙️ 5. trap 是干嘛的？"></a>⚙️ <strong>5. <code>trap</code> 是干嘛的？</strong></h2><p><code>trap</code> 用于<strong>捕捉信号（signal）</strong>，类似于 C 里的 <code>signal()</code> 或 <code>try...finally</code>。</p>
+<p>语法：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">trap &#x27;命令序列&#x27; 信号名</span><br></pre></td></tr></table></figure>
+<p>例如：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">cleanup() &#123;</span><br><span class="line">  echo &quot;捕获到 Ctrl+C，正在清理临时文件...&quot;</span><br><span class="line">  rm -f temp.txt</span><br><span class="line">  exit 130</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">trap cleanup INT   # INT 表示 Ctrl+C（SIGINT 信号）</span><br></pre></td></tr></table></figure>
+<p>这样，当用户在脚本运行时按下 Ctrl+C：</p>
+<ul>
+<li>程序不会立刻退出</li>
+<li>而是先执行 <code>cleanup</code> 函数，再退出</li>
+</ul>
+<h3 id="常见信号："><a href="#常见信号：" class="headerlink" title="常见信号："></a>常见信号：</h3><div class="table-container">
+<table>
+<thead>
+<tr>
+<th>信号名</th>
+<th>含义</th>
+<th>触发方式</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>INT</code></td>
+<td>Interrupt</td>
+<td>Ctrl + C</td>
+</tr>
+<tr>
+<td><code>TERM</code></td>
+<td>Terminate</td>
+<td>系统杀进程</td>
+</tr>
+<tr>
+<td><code>EXIT</code></td>
+<td>程序退出时触发</td>
+<td>无论正常或异常退出都会触发</td>
+</tr>
+<tr>
+<td><code>ERR</code></td>
+<td>命令出错时触发（结合 set -e 时有用）</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>例子：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">trap &#x27;echo &quot;脚本即将退出&quot;; rm -f temp.txt&#x27; EXIT</span><br></pre></td></tr></table></figure>
+<p>无论脚本怎么退出，都会执行这条清理命令，<strong>相当于“析构函数”或 C++ 的 RAII。</strong></p>
+</blockquote>
+<link rel="stylesheet" href="/css/folder.css" type="text/css"><script src="/js/folder.js" type="text/javascript" async></script>
+    </article>
+    <!-- license -->
+    <!-- paginator -->
+    <ul class="post-paginator">
+        <li class="next">
+                <div class="nextSlogan">Next Post</div>
+                <a href="/posts/8c0da805.html" title="「置顶」">
+                    <div class="nextTitle">「置顶」</div>
+                </a>
+        </li>
+        <li class="previous">
+                <div class="prevSlogan">Previous Post</div>
+                <a href="/posts/e6495409.html" title="寒假游乐小结">
+                    <div class="prevTitle">寒假游乐小结</div>
+                </a>
+        </li>
+    </ul>
+    <!-- comment -->
+        <div class="post-comment">
+            <!-- 来必力 City 版安装代码 -->
+
+            
+            
+            
+            <!-- utteranc评论 -->
+
+            <!-- partial('_partial/comment/changyan') -->
+            <!--PC版-->
+
+            
+            
+            
+        </div>
+    <!-- timeliness note -->
+    <!-- idea from: https://hexo.fluid-dev.com/posts/hexo-injector/#%E6%96%87%E7%AB%A0%E6%97%B6%E6%95%88%E6%80%A7%E6%8F%90%E7%A4%BA -->
+    <!-- Mathjax -->
+</main>
+
+                <!-- profile -->
+            </div>
+            <footer class="footer footer-unloaded">
+    <!-- social  -->
+        <div class="social">
+                            <a href="mailto:limiese0zen@gmail.com" class="iconfont-archer email" title="email" ></a>
+                <a href="//github.com/zennnj" class="iconfont-archer github" target="_blank" title="github"></a>
+                <a href="https://steamcommunity.com/profiles/76561199557415174" class="iconfont-archer steam" target="_blank" title="steam"></a>
+
+        </div>
+    <!-- powered by Hexo  -->
+    <div class="copyright">
+        <span id="hexo-power">Powered by <a href="https://hexo.io/" target="_blank">Hexo</a></span><span class="iconfont-archer power">&#xe635;</span><span id="theme-info">theme <a href="https://github.com/fi3ework/hexo-theme-archer" target="_blank">Archer</a></span>
+    </div>
+    <!-- website approve for Chinese user -->
+    <!-- 不蒜子  -->
+        <div class="busuanzi-container">
+                <span id="busuanzi_container_site_pv">PV: <span id="busuanzi_value_site_pv"></span> :)</span>
+        </div>
+</footer>
+
+        </div>
+        <!-- toc -->
+            <div class="toc-wrapper toc-wrapper-loding" style=    top:50vh;
+>
+                <div class="toc-catalog">
+                    <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
+                </div>
+                <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%84%9A%E6%9C%AC%E5%9F%BA%E7%A1%80"><span class="toc-number">1.</span> <span class="toc-text">脚本基础</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%89%A7%E8%A1%8C%E6%96%87%E4%BB%B6"><span class="toc-number">1.1.</span> <span class="toc-text">执行文件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F"><span class="toc-number">1.2.</span> <span class="toc-text">环境变量</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%F0%9F%A7%A9-1-cat-lt-lt-EOF-%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%9F%E5%92%8C-echo-%E6%9C%89%E4%BB%80%E4%B9%88%E5%8C%BA%E5%88%AB%EF%BC%9F"><span class="toc-number">1.3.</span> <span class="toc-text">🧩 1. cat &lt;&lt; EOF 是什么？和 echo 有什么区别？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%F0%9F%94%A2-2-quot-num-input-quot-0-9-%E6%98%AF%E4%BB%80%E4%B9%88%E6%84%8F%E6%80%9D%EF%BC%9F"><span class="toc-number">1.4.</span> <span class="toc-text">🔢 2. &quot;$num_input&quot; &#x3D;~ ^-?[0-9]+$ 是什么意思？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%F0%9F%94%84-3-case-%E8%AF%AD%E5%8F%A5"><span class="toc-number">1.5.</span> <span class="toc-text">🔄 3. case 语句</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9F%BA%E6%9C%AC%E8%AF%AD%E6%B3%95"><span class="toc-number">1.5.1.</span> <span class="toc-text">基本语法</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%F0%9F%A7%AE-4-return-0-%E5%92%8C-exit-0-%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-number">1.6.</span> <span class="toc-text">🧮 4. return 0 和 exit 0 的区别</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%BE%E4%BE%8B%EF%BC%9A"><span class="toc-number">1.6.1.</span> <span class="toc-text">举例：</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E2%9A%99%EF%B8%8F-5-trap-%E6%98%AF%E5%B9%B2%E5%98%9B%E7%9A%84%EF%BC%9F"><span class="toc-number">1.7.</span> <span class="toc-text">⚙️ 5. trap 是干嘛的？</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B8%B8%E8%A7%81%E4%BF%A1%E5%8F%B7%EF%BC%9A"><span class="toc-number">1.7.1.</span> <span class="toc-text">常见信号：</span></a></li></ol></li></ol></li></ol>
+            </div>
+        <!-- sidebar -->
+        <div class="sidebar sidebar-hide">
+    <ul class="sidebar-tabs sidebar-tabs-active-0">
+        <li class="sidebar-tab-archives"><span class="iconfont-archer">&#xe67d;</span><span class="tab-name">Archive</span></li>
+        <li class="sidebar-tab-tags"><span class="iconfont-archer">&#xe61b;</span><span class="tab-name">Tag</span></li>
+        <li class="sidebar-tab-categories"><span class="iconfont-archer">&#xe666;</span><span class="tab-name">Cate</span></li>
+    </ul>
+    <div class="sidebar-content sidebar-content-show-archive">
+        <div class="sidebar-panel-archives">
+    <!-- 在 ejs 中将 archive 按照时间排序 -->
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+    <div class="total-and-search">
+        <div class="total-archive">
+        Total : 26
+        </div>
+        <!-- search  -->
+    </div>
+    <div class="post-archive">
+            <div class="archive-year"> 2077 </div>
+            <ul class="year-list">
+        <li class="archive-post-item">
+            <span class="archive-post-date">01/01</span>
+            <a class="archive-post-title" href="/posts/8c0da805.html">「置顶」</a>
+        </li>
+                </ul>
+            <div class="archive-year"> 2025 </div>
+            <ul class="year-list">
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/28</span>
+            <a class="archive-post-title" href="/posts/26c51008.html">简单shell脚本</a>
+        </li>
+        <li class="archive-post-item">
+            <span class="archive-post-date">05/10</span>
+            <a class="archive-post-title" href="/posts/e6495409.html">寒假游乐小结</a>
+        </li>
+        <li class="archive-post-item">
+            <span class="archive-post-date">05/02</span>
+            <a class="archive-post-title" href="/posts/4ee3286d.html">Maven构建问题</a>
+        </li>
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/30</span>
+            <a class="archive-post-title" href="/posts/bae4ff13.html">Redis</a>
+        </li>
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/22</span>
+            <a class="archive-post-title" href="/posts/da3e1361.html">Mybatis</a>
+        </li>
+        <li class="archive-post-item">
+            <span class="archive-post-date">03/08</span>
+            <a class="archive-post-title" href="/posts/5751eea2.html">C++</a>
+        </li>
+                </ul>
+            <div class="archive-year"> 2024 </div>
+            <ul class="year-list">
+        <li class="archive-post-item">
+            <span class="archive-post-date">12/12</span>
+            <a class="archive-post-title" href="/posts/79666db.html">数据结构</a>
+        </li>
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/10</span>
+            <a class="archive-post-title" href="/posts/33757.html">SSM</a>
+        </li>
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/10</span>
+            <a class="archive-post-title" href="/posts/74add858.html">Git使用指南</a>
+        </li>
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/09</span>
+            <a class="archive-post-title" href="/posts/12634.html">本站使用的插件</a>
+        </li>
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/03</span>
+            <a class="archive-post-title" href="/posts/50460.html">做题记录串</a>
+        </li>
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/26</span>
+            <a class="archive-post-title" href="/posts/56743.html">unity</a>
+        </li>
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/25</span>
+            <a class="archive-post-title" href="/posts/59760.html">C#</a>
+        </li>
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/19</span>
+            <a class="archive-post-title" href="/posts/3629.html">编程细节记录</a>
+        </li>
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/13</span>
+            <a class="archive-post-title" href="/posts/58846.html">Java多线程</a>
+        </li>
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/28</span>
+            <a class="archive-post-title" href="/posts/17374.html">JVM</a>
+        </li>
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/26</span>
+            <a class="archive-post-title" href="/posts/9977.html">MySQL</a>
+        </li>
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/11</span>
+            <a class="archive-post-title" href="/posts/40121.html">JAVA</a>
+        </li>
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/11</span>
+            <a class="archive-post-title" href="/posts/41682.html">设计模式</a>
+        </li>
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/11</span>
+            <a class="archive-post-title" href="/posts/7165.html">Github访问连接失败问题</a>
+        </li>
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/11</span>
+            <a class="archive-post-title" href="/posts/28758.html">计算机网络</a>
+        </li>
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/10</span>
+            <a class="archive-post-title" href="/posts/15691.html">Linux</a>
+        </li>
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/10</span>
+            <a class="archive-post-title" href="/posts/31602.html">后端</a>
+        </li>
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/31</span>
+            <a class="archive-post-title" href="/posts/12966.html">上学前的遗言</a>
+        </li>
+        <li class="archive-post-item">
+            <span class="archive-post-date">07/24</span>
+            <a class="archive-post-title" href="/posts/37559.html">个人用使用指南</a>
+        </li>
+            </ul>
+    </div>
+</div>
+
+        <div class="sidebar-panel-tags">
+    <div class="sidebar-tags-name">
+            <span class="sidebar-tag-name" data-tags="learn">
+                <span class="iconfont-archer">&#xe606;</span>
+                learn
+            </span>
+            <span class="sidebar-tag-name" data-tags="problems">
+                <span class="iconfont-archer">&#xe606;</span>
+                problems
+            </span>
+            <span class="sidebar-tag-name" data-tags="practice">
+                <span class="iconfont-archer">&#xe606;</span>
+                practice
+            </span>
+            <span class="sidebar-tag-name" data-tags="碎碎念">
+                <span class="iconfont-archer">&#xe606;</span>
+                碎碎念
+            </span>
+    </div>
+    <div class="iconfont-archer sidebar-tags-empty">&#xe678;</div>
+    <div class="tag-load-fail" style="display: none; color: #ccc; font-size: 0.6rem;">
+        缺失模块，请参考主题文档进行安装配置：https://github.com/fi3ework/hexo-theme-archer#%E5%AE%89%E8%A3%85%E4%B8%BB%E9%A2%98
+    </div> 
+    <div class="sidebar-tags-list"></div>
+</div>
+
+        <div class="sidebar-panel-categories">
+    <div class="sidebar-categories-name">
+        <span class="sidebar-category-name" data-categories="JAVA">
+            <span class="iconfont-archer">&#xe60a;</span>
+            JAVA
+        </span>
+        <span class="sidebar-category-name" data-categories="记录">
+            <span class="iconfont-archer">&#xe60a;</span>
+            记录
+        </span>
+        <span class="sidebar-category-name" data-categories="数据库">
+            <span class="iconfont-archer">&#xe60a;</span>
+            数据库
+        </span>
+        <span class="sidebar-category-name" data-categories="unity">
+            <span class="iconfont-archer">&#xe60a;</span>
+            unity
+        </span>
+        <span class="sidebar-category-name" data-categories="框架">
+            <span class="iconfont-archer">&#xe60a;</span>
+            框架
+        </span>
+        <span class="sidebar-category-name" data-categories="计算机">
+            <span class="iconfont-archer">&#xe60a;</span>
+            计算机
+        </span>
+        <span class="sidebar-category-name" data-categories="secrets">
+            <span class="iconfont-archer">&#xe60a;</span>
+            secrets
+        </span>
+        <span class="sidebar-category-name" data-categories="use">
+            <span class="iconfont-archer">&#xe60a;</span>
+            use
+        </span>
+        <span class="sidebar-category-name" data-categories="chat">
+            <span class="iconfont-archer">&#xe60a;</span>
+            chat
+        </span>
+    </div>
+    <div class="iconfont-archer sidebar-categories-empty">&#xe678;</div>
+    <div class="sidebar-categories-list"></div>
+</div>
+
+    </div>
+</div>
+
+        <!-- site-meta -->
+        <script>
+    var siteMetaRoot = "/"
+    if (siteMetaRoot === "undefined") {
+        siteMetaRoot = '/'
+    }
+    var siteMeta = {
+        url: "http://example.com",
+        root: siteMetaRoot,
+        author: ""
+    }
+</script>
+
+        <!-- import experimental options here -->
+        <!-- Custom Font -->
+
+        <!-- main func -->
+        <script src="/scripts/main.js"></script>
+        <!-- fancybox -->
+        <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.36/dist/fancybox/fancybox.umd.js" onload="window.Fancybox.bind('[data-fancybox]')" defer></script>
+        <!-- algolia -->
+        <!-- busuanzi -->
+            <script src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script>
+        <!-- async load share.js -->
+            <script src="/scripts/share.js" async></script>
+        <!-- mermaid -->
+    <!-- hexo injector body_end start --><script src="https://fastly.jsdelivr.net/npm/hexo-tag-common@0.2.0/js/index.js"></script><!-- hexo injector body_end end --></body>
+</html>
