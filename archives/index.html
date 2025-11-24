@@ -558,22 +558,43 @@ bash  game.sh
                 <span class="abstract-title-text">Redis</span>
             </a>
             <div class="abstract-content">
-                安装配置如何在Windows的WSL2下载并配置Redis，并且通过配置端口转发，实现本地pycharm访问redis服务。一文详解。 - AlphaGeek - 博客园
-启动服务器redis-server
-启动客户端 redis-cli
-RedisInsight好像直接用window版就可以 wsl的redis直接占用那个端口的
-基本数据结构字符串stringset key value
-get key
-redis的key区分大小写
-redis默认使用string存储数据 而且是二进制安全的 -&gt;不支持中文
-del key
-exists key
-keys * key *me所有以m...
+                介绍
+基于内存存储，读写性能高
+
+适合存储热点数据（热点商品、资讯、新闻）
+
+企业应用广泛
+
+
+REDIS AND MYSQLRedis 只能补充数据库，而不能取代数据库。
+既然 Redis 很快，能不能把所有数据都存 Redis?
+看似合理，但实际上 完全不可行，原因非常多，下面按重要程度从强到弱解释：
+❗1. Redis 的数据不可靠，不能保证不丢Redis 是内存数据库，虽然支持持久化（RDB / AOF），但仍然存在数据丢失风险：
+
+
+
+
+机制
+风险
+
+
+
+
+RDB 快照
+崩溃后丢失最后一次快照后的数据
+
+
+AOF 日志
+速度变慢、损坏恢复困难
+
+
+断电/重启
+内存数据清空（没配...
             </div>
             <!-- read more -->
             <div class="abstract-post-meta">
                 <!-- date -->
-                <div class="abstract-date" title="Last updated: 2025/07/29">
+                <div class="abstract-date" title="Last updated: 2025/11/24">
                     <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2025/04/30</span>
                 </div>
                 <!-- tags -->
