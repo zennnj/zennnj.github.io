@@ -515,11 +515,11 @@ p.spoiler {
 <h1 id="文字遮盖效果-Spoiler"><a href="#文字遮盖效果-Spoiler" class="headerlink" title="文字遮盖效果 Spoiler"></a>文字遮盖效果 Spoiler</h1><p><a target="_blank" rel="noopener" href="https://github.com/unnamed42/hexo-spoiler/blob/master/README.md">hexo-spoiler</a><br><code>npm install hexo-spoiler --save</code><br><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;% spoiler 我喜欢你 %&#125;</span><br></pre></td></tr></table></figure><br><span class="spoiler" onclick="this.classList.toggle('spoiler')"><span class="spoiler-blur ">我喜欢你</span></span></p>
 <h1 id="分栏"><a href="#分栏" class="headerlink" title="分栏"></a>分栏</h1><p><a target="_blank" rel="noopener" href="https://github.com/YunYouJun/hexo-tag-common">hexo-tag-commom</a><br><a target="_blank" rel="noopener" href="https://theme-next.js.org/docs/tag-plugins/tabs.html">使用教程</a><br><code>npm install hexo-tag-common</code><br><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">&#123;% tabs 测试测试,1 %&#125;</span><br><span class="line">&lt;!-- tab 很遗憾 --&gt;</span><br><span class="line">**你的脑子太小**</span><br><span class="line">&lt;!-- endtab --&gt;</span><br><span class="line"></span><br><span class="line">&lt;!-- tab 经考核 --&gt;</span><br><span class="line">**只容得下爱恨**</span><br><span class="line">&lt;!-- endtab --&gt;</span><br><span class="line"></span><br><span class="line">&lt;!-- tab 不通过 --&gt;</span><br><span class="line">**容不下数学**</span><br><span class="line">&lt;!-- endtab --&gt;</span><br><span class="line">&#123;% endtabs %&#125;</span><br></pre></td></tr></table></figure><br><div class="tag-common tabs" id="测试测试"><ul class="nav-tabs"><li class="tab active"><a data-target="测试测试-1">很遗憾</a></li><li class="tab"><a data-target="测试测试-2">经考核</a></li><li class="tab"><a data-target="测试测试-3">不通过</a></li></ul><div class="tab-content"><div class="tab-pane active" id="测试测试-1"><p><strong>你的脑子太小</strong></p></div><div class="tab-pane" id="测试测试-2"><p><strong>只容得下爱恨</strong></p></div><div class="tab-pane" id="测试测试-3"><p><strong>容不下数学</strong></p></div></div></div></p>
 <h1 id="数据可视化工具"><a href="#数据可视化工具" class="headerlink" title="数据可视化工具"></a>数据可视化工具</h1><p><a target="_blank" rel="noopener" href="https://github.com/Shen-Yu/hexo-tag-chart">hexo-tag-chart</a><br><a target="_blank" rel="noopener" href="https://chartjs.bootcss.com/docs.html">官方文档</a><br><code>npm install hexo-tag-chart --save</code><br><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">&#123;% chart 80% 300 %&#125;</span><br><span class="line">&#123;</span><br><span class="line">    type: &#x27;line&#x27;,</span><br><span class="line">    data: &#123;</span><br><span class="line">        labels: [&#x27;January&#x27;, &#x27;February&#x27;, &#x27;March&#x27;, &#x27;April&#x27;, &#x27;May&#x27;, &#x27;June&#x27;, &#x27;July&#x27;],</span><br><span class="line">        datasets: [&#123;</span><br><span class="line">            label: &#x27;My First dataset&#x27;,</span><br><span class="line">            backgroundColor: &#x27;rgb(255, 99, 132)&#x27;,</span><br><span class="line">            borderColor: &#x27;rgb(255, 99, 132)&#x27;,</span><br><span class="line">            data: [0, 10, 5, 2, 20, 30, 45]</span><br><span class="line">        &#125;]</span><br><span class="line">    &#125;,</span><br><span class="line">    options: &#123;</span><br><span class="line">        responsive: true,</span><br><span class="line">        title: &#123;</span><br><span class="line">            display: true,</span><br><span class="line">            text: &#x27;Chart.js Line Chart&#x27;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line">&#123;% endchart %&#125;</span><br></pre></td></tr></table></figure><br><div style="width: 80%;margin: 0 auto">
-    <canvas id="chart2042" style="height: 300px"></canvas>
+    <canvas id="chart4543" style="height: 300px"></canvas>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
 <script type="text/javascript">
-    var ctx = document.getElementById('chart2042').getContext('2d');
+    var ctx = document.getElementById('chart4543').getContext('2d');
     var options = {
     type: 'line',
     data: {
@@ -560,12 +560,12 @@ p.spoiler {
 <h1 id="testing···"><a href="#testing···" class="headerlink" title="testing···"></a>testing···</h1><p><a target="_blank" rel="noopener" href="https://caczhtus.github.io/posts/51050/">https://caczhtus.github.io/posts/51050/</a><br><a target="_blank" rel="noopener" href="https://akilar.top/posts/615e2dec/">https://akilar.top/posts/615e2dec/</a><br>下次试试<br>我在考虑替换为butterfly主题，它支持的插件和功能实在太多了，但是主页又太花里胡哨了。。。</p>
 <p><a target="_blank" rel="noopener" href="https://yun.yunyoujun.cn/guide/">https://yun.yunyoujun.cn/guide/</a><br>不得不说，↑这个主题示例站点看起来很土 但是根据<a target="_blank" rel="noopener" href="https://www.nanoka.top/">这位</a>的修改之后变得相当好看<br>特别是文章显示部分，只能说不愧是做前端的能改成这样</p>
 
-        <div id="aplayer-QpGBSqxd" class="aplayer aplayer-tag-marker" style="margin-bottom: 20px;">
+        <div id="aplayer-fcSBOAYE" class="aplayer aplayer-tag-marker" style="margin-bottom: 20px;">
             <pre class="aplayer-lrc-content"></pre>
         </div>
         <script>
           var ap = new APlayer({
-            element: document.getElementById("aplayer-QpGBSqxd"),
+            element: document.getElementById("aplayer-fcSBOAYE"),
             narrow: false,
             autoplay: false,
             showlrc: false,
@@ -702,15 +702,20 @@ content<a href="#fnref:3" rev="footnote"> ↩</a></span></li><li id="fn:4"><span
         
         
         
+        
     <div class="total-and-search">
         <div class="total-archive">
-        Total : 28
+        Total : 29
         </div>
         <!-- search  -->
     </div>
     <div class="post-archive">
             <div class="archive-year"> 2025 </div>
             <ul class="year-list">
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/28</span>
+            <a class="archive-post-title" href="/posts/b5385ca.html">temp</a>
+        </li>
         <li class="archive-post-item">
             <span class="archive-post-date">11/27</span>
             <a class="archive-post-title" href="/posts/4ac3e81c.html">暑假小结</a>
@@ -840,13 +845,13 @@ content<a href="#fnref:3" rev="footnote"> ↩</a></span></li><li id="fn:4"><span
                 <span class="iconfont-archer">&#xe606;</span>
                 problems
             </span>
-            <span class="sidebar-tag-name" data-tags="practice">
-                <span class="iconfont-archer">&#xe606;</span>
-                practice
-            </span>
             <span class="sidebar-tag-name" data-tags="碎碎念">
                 <span class="iconfont-archer">&#xe606;</span>
                 碎碎念
+            </span>
+            <span class="sidebar-tag-name" data-tags="practice">
+                <span class="iconfont-archer">&#xe606;</span>
+                practice
             </span>
     </div>
     <div class="iconfont-archer sidebar-tags-empty">&#xe678;</div>
@@ -858,13 +863,13 @@ content<a href="#fnref:3" rev="footnote"> ↩</a></span></li><li id="fn:4"><span
 
         <div class="sidebar-panel-categories">
     <div class="sidebar-categories-name">
-        <span class="sidebar-category-name" data-categories="语言拓展">
-            <span class="iconfont-archer">&#xe60a;</span>
-            语言拓展
-        </span>
         <span class="sidebar-category-name" data-categories="unity">
             <span class="iconfont-archer">&#xe60a;</span>
             unity
+        </span>
+        <span class="sidebar-category-name" data-categories="语言拓展">
+            <span class="iconfont-archer">&#xe60a;</span>
+            语言拓展
         </span>
         <span class="sidebar-category-name" data-categories="系统技术">
             <span class="iconfont-archer">&#xe60a;</span>
@@ -882,17 +887,17 @@ content<a href="#fnref:3" rev="footnote"> ↩</a></span></li><li id="fn:4"><span
             <span class="iconfont-archer">&#xe60a;</span>
             数据库
         </span>
-        <span class="sidebar-category-name" data-categories="secrets">
+        <span class="sidebar-category-name" data-categories="chat">
             <span class="iconfont-archer">&#xe60a;</span>
-            secrets
+            chat
         </span>
         <span class="sidebar-category-name" data-categories="算法">
             <span class="iconfont-archer">&#xe60a;</span>
             算法
         </span>
-        <span class="sidebar-category-name" data-categories="chat">
+        <span class="sidebar-category-name" data-categories="secrets">
             <span class="iconfont-archer">&#xe60a;</span>
-            chat
+            secrets
         </span>
         <span class="sidebar-category-name" data-categories="前端">
             <span class="iconfont-archer">&#xe60a;</span>
