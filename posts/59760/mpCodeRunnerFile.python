@@ -1,0 +1,37 @@
+import numpy as np
+import matplotlib.pyplot as plt
+def poly(x):
+    y = x**3-2*x+1
+    return y
+def sigmoid(x):
+    y = 1.0/(1.0 + np.exp(-x))
+    return y
+def tanh(x):
+    y = (1.0-np.exp(-2*x))/(1.0+np.exp(-2*x))
+    return y
+def gauss(x,a,b,c):
+ y = a*np.exp(-(x-b)**2/2*c**2)
+ return y
+x = np.linspace(start=-10,stop=10,num=100)
+y_ploy=poly(x)
+y_sigmoid=sigmoid(x)
+y_tanh=tanh(x)
+y_gauss=gauss(x,1,0,1)
+plt.subplot(221)
+plt.title('poly')
+plt.plot(x,y_ploy)
+plt.grid()
+plt.subplot(222)
+plt.title('sigmoid')
+plt.plot(x,y_sigmoid)
+plt.grid()
+plt.subplot(223)
+plt.title('tanh')
+plt.plot(x,y_tanh)
+plt.grid()
+plt.subplot(224)
+plt.title('gauss')
+plt.plot(x,y_gauss)
+plt.grid()
+plt.subplots_adjust(top=0.92, bottom=0.08, left=0.1,right=0.95,hspace=0.5,wspace=0.35)
+plt.show()
