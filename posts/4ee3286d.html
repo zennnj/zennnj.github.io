@@ -18,7 +18,7 @@
 <meta property="og:description" content="哎呀我草这个maven怎么一直爆红啊，记录一下解决方案。。。 stackoverflow谢谢你….">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2025-05-02T13:05:30.000Z">
-<meta property="article:modified_time" content="2025-11-25T03:36:55.534Z">
+<meta property="article:modified_time" content="2025-12-03T05:32:54.196Z">
 <meta property="article:tag" content="problems">
 <meta name="twitter:card" content="summary">
     <meta http-equiv="Cache-control" content="no-cache">
@@ -511,6 +511,9 @@ p.spoiler {
 <h1 id="Lombok-log缺失"><a href="#Lombok-log缺失" class="headerlink" title="Lombok log缺失"></a>Lombok log缺失</h1><p>根据网上说法更换了Lombok版本、增加了注释说明，还是没有用！<br>最后看弹幕解决了…</p>
 <p> <strong>解决方案</strong>:</p>
 <p>在设置里面搜索注解处理器，把default和底下的都改成从项目类路径获取处理器</p>
+<h2 id="所有的log，constructor失效"><a href="#所有的log，constructor失效" class="headerlink" title="所有的log，constructor失效"></a>所有的log，constructor失效</h2><p>都是LOMBOK依赖问题：）</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;version&gt;$&#123;lombok.version&#125;&lt;/version&gt;</span><br></pre></td></tr></table></figure>
+<p>让他自动选版本吧。</p>
 <link rel="stylesheet" href="/css/folder.css" type="text/css"><script src="/js/folder.js" type="text/javascript" async></script>
     </article>
     <!-- license -->
@@ -578,7 +581,7 @@ p.spoiler {
                 <div class="toc-catalog">
                     <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
                 </div>
-                <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#pom-xml%E6%96%87%E4%BB%B6%E5%BC%80%E5%A4%B4-%E6%8A%A5%E7%BA%A2"><span class="toc-number">1.</span> <span class="toc-text">pom.xml文件开头\报红:</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Lombok-log%E7%BC%BA%E5%A4%B1"><span class="toc-number">2.</span> <span class="toc-text">Lombok log缺失</span></a></li></ol>
+                <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#pom-xml%E6%96%87%E4%BB%B6%E5%BC%80%E5%A4%B4-%E6%8A%A5%E7%BA%A2"><span class="toc-number">1.</span> <span class="toc-text">pom.xml文件开头\报红:</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Lombok-log%E7%BC%BA%E5%A4%B1"><span class="toc-number">2.</span> <span class="toc-text">Lombok log缺失</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%89%80%E6%9C%89%E7%9A%84log%EF%BC%8Cconstructor%E5%A4%B1%E6%95%88"><span class="toc-number">2.1.</span> <span class="toc-text">所有的log，constructor失效</span></a></li></ol></li></ol>
             </div>
         <!-- sidebar -->
         <div class="sidebar sidebar-hide">
@@ -620,15 +623,20 @@ p.spoiler {
         
         
         
+        
     <div class="total-and-search">
         <div class="total-archive">
-        Total : 30
+        Total : 31
         </div>
         <!-- search  -->
     </div>
     <div class="post-archive">
             <div class="archive-year"> 2025 </div>
             <ul class="year-list">
+        <li class="archive-post-item">
+            <span class="archive-post-date">12/03</span>
+            <a class="archive-post-title" href="/posts/a477be03.html">nginx</a>
+        </li>
         <li class="archive-post-item">
             <span class="archive-post-date">11/28</span>
             <a class="archive-post-title" href="/posts/b5385ca.html">temp</a>

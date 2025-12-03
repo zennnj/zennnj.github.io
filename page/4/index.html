@@ -12,7 +12,7 @@
     <meta name="description" content="">
     <meta property="og:type" content="website">
 <meta property="og:title" content="Hexo">
-<meta property="og:url" content="http://example.com/categories/unity/index.html">
+<meta property="og:url" content="http://example.com/page/4/index.html">
 <meta property="og:site_name" content="Hexo">
 <meta property="og:locale" content="zh_CN">
 <meta name="twitter:card" content="summary">
@@ -237,8 +237,9 @@ p.spoiler {
             document.write('<script src="/lib/jquery.min.js" />')
         }
     </script>
+        <body class="home-body">
         <!-- header -->
-        <header class="header header-mobile">
+        <header class="header header-mobile index-header">
     <!-- top read progress line -->
     <div class="header-element">
         <div class="read-progress"></div>
@@ -272,7 +273,7 @@ p.spoiler {
 </header>
 
         <!-- fixed footer -->
-        <footer class="footer-fixed">
+        <footer class="footer-fixed index-footer-fixed">
     <!-- donate button -->
 
     <!-- back to top button -->
@@ -283,18 +284,24 @@ p.spoiler {
 
         <!-- wrapper -->
         <div class="wrapper">
-            <div class="site-intro" style="">
+            <div class="site-intro" style="    height:50vh;
+">
     <!-- 主页  -->
+    <!-- 文章页  -->
     <div class="site-intro-placeholder"></div>
-    <div class="site-intro-img" style="background-image: url(/)"></div>
+    <div class="site-intro-img" style="background-image: url(/intro/index-bg.jpg)"></div>
     <div class="site-intro-meta">
         <!-- 标题  -->
         <h1 class="intro-title">
             <!-- 主页  -->
+                Terminal 4.
+            <!-- 文章页  -->
         </h1>
         <!-- 副标题 -->
         <p class="intro-subtitle">
             <!-- 主页副标题  -->
+                    The past is never dead.It's not even past.
+            <!-- 文章页  -->
         </p>
         <!-- 文章页 meta -->
     </div>
@@ -427,51 +434,48 @@ p.spoiler {
             <div class="container container-unloaded">
                 <main class="main index-page">
         <article class="index-post">
-            <a class="abstract-title" href="/posts/56743.html">
-                <span class="abstract-title-text">unity</span>
+            <a class="abstract-title" href="/posts/37559.html">
+                <span class="abstract-title-text">个人用使用指南</span>
             </a>
             <div class="abstract-content">
-                <p>前情提要：博主自愿被抓去做(玩)游戏，组内高手云集(真的吗)，令博主焦虑不安，坐在电脑前狂敲一千多行笔记，于是有了这篇文章<br>
+                <p>高考一年过后，博主的记忆力竟已退化到了今天学明天忘的地步<br>又因为不忍心删除hexo默认的文章，所以修改成为了给自己看的使用指南！<br>
             </div>
             <!-- read more -->
             <div class="abstract-post-meta">
                 <!-- date -->
-                <div class="abstract-date" title="Last updated: 2024/11/09">
-                    <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2024/10/26</span>
+                <div class="abstract-date" title="Last updated: 2025/11/25">
+                    <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2024/07/24</span>
                 </div>
                 <!-- tags -->
-                    <div class="abstract-tags" >
-        <a class="post-tag" href="javascript:void(0);" data-tags="learn">learn</a>
-</div>
-
-            </div>
-        </article>
-        <div class="index-post-divider"></div>
-        <article class="index-post">
-            <a class="abstract-title" href="/posts/59760.html">
-                <span class="abstract-title-text">C#</span>
-            </a>
-            <div class="abstract-content">
-                <p>总之来玩玩，感觉和java区别没有很大<br>
-            </div>
-            <!-- read more -->
-            <div class="abstract-post-meta">
-                <!-- date -->
-                <div class="abstract-date" title="Last updated: 2024/11/09">
-                    <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2024/10/25</span>
-                </div>
-                <!-- tags -->
-                    <div class="abstract-tags" >
-        <a class="post-tag" href="javascript:void(0);" data-tags="learn">learn</a>
-</div>
-
             </div>
         </article>
         <div class="index-post-divider"></div>
     <!-- paginator  -->
+        <nav class="page-nav">
+            <a class="extend prev" rel="prev" href="/page/3/">&lt; PREV</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span>
+        </nav>
 </main>
 
                 <!-- profile -->
+                    <div class="profile profile-sticky">
+    <img class="profile-avatar" alt="avatar" src="/avatar/axupQk5u-fv7zZcT3cSrr-sg.jpg.medium.jpg" >
+    <div class="profile-name">a3ync</div>
+        <div class="profile-signature">
+            上学就是死了，上班就是死了，活着就是死了，死了就是活着。
+        </div>
+        <div class="profile-social">
+                            <a href="mailto:limiese0zen@gmail.com" class="iconfont-archer email" title="email" ></a>
+                <a href="//github.com/zennnj" class="iconfont-archer github" target="_blank" title="github"></a>
+                <a href="https://steamcommunity.com/profiles/76561199557415174" class="iconfont-archer steam" target="_blank" title="steam"></a>
+
+        </div>
+        <div class="profile-link-item">
+            <a href="/about" class="about-me">
+                ABOUT ME
+            </a>
+        </div>
+</div>
+
             </div>
             <footer class="footer footer-unloaded">
     <!-- social  -->
