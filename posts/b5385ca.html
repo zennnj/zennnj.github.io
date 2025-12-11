@@ -18,7 +18,7 @@
 <meta property="og:description" content="未整理的文件">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2025-11-28T05:25:39.000Z">
-<meta property="article:modified_time" content="2025-12-03T08:05:44.062Z">
+<meta property="article:modified_time" content="2025-12-11T07:51:13.007Z">
 <meta property="article:tag" content="learn">
 <meta name="twitter:card" content="summary">
     <meta http-equiv="Cache-control" content="no-cache">
@@ -496,172 +496,56 @@ p.spoiler {
                 <main class="main post-page">
     <article class="article-entry">
         <link rel="stylesheet" type="text&#x2F;css" href="https://cdn.jsdelivr.net/npm/hexo-tag-hint@0.3.1/dist/hexo-tag-hint.min.css"><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><p>未整理的文件<br><span id="more"></span></p>
-<h1 id="AOP-再揭"><a href="#AOP-再揭" class="headerlink" title="AOP(再揭)"></a>AOP(再揭)</h1><p>标识需要拦截的注解</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 自定义注解，标识某个方法需要进行功能字段自动填充处理</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@Target(ElementType.METHOD)</span></span><br><span class="line"><span class="meta">@Retention(RetentionPolicy.RUNTIME)</span></span><br><span class="line"><span class="keyword">public</span> <span class="meta">@interface</span> AutoFill &#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 使用<span class="doctag">@Retention</span>必须要为value指定成员变量的值，</span></span><br><span class="line"><span class="comment">     * 该成员变量为一个容器注解，</span></span><br><span class="line"><span class="comment">     * 这个容器注解包含多个OperationType</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    OperationType <span class="title function_">value</span><span class="params">()</span>;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="meta">@Aspect</span></span><br><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="meta">@Slf4j</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">AutoFillAspect</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/*</span></span><br><span class="line"><span class="comment">    切入点</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@Pointcut(&quot;execution(* com.sky.mapper.*.*(..)) &quot; +</span></span><br><span class="line"><span class="meta">            &quot;&amp;&amp; @annotation(com.sky.annotation.AutoFill)&quot;)</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">autoFillPointCut</span><span class="params">()</span>&#123;&#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 前置通知</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@Before(&quot;autoFillPointCut()&quot;)</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">autoFill</span><span class="params">(JoinPoint joinPoint)</span>&#123;</span><br><span class="line">        log.info(<span class="string">&quot;自动填充&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<h2 id="🌟-先解释最关键的：-AutoFill-注解的-value"><a href="#🌟-先解释最关键的：-AutoFill-注解的-value" class="headerlink" title="🌟 先解释最关键的：@AutoFill 注解的 value()"></a>🌟 先解释最关键的：@AutoFill 注解的 value()</h2><p>你定义的自定义注解是：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">public @interface AutoFill &#123;</span><br><span class="line">    OperationType value();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>意思是：</p>
-<ul>
-<li>这个注解必须传一个参数</li>
-<li>参数类型是 OperationType（枚举）</li>
-<li>名字叫 value()</li>
+<h1 id="我草吓哭了"><a href="#我草吓哭了" class="headerlink" title="我草吓哭了"></a>我草吓哭了</h1><ul>
+<li>构建工具：后端（Maven、Gradle）、前端（Webpack、Vite）</li>
+<li>单元测试：<a target="_blank" rel="noopener" href="https://javabetter.cn/gongju/junit.html">Junit</a></li>
+<li>开发框架：SpringMVC、Spring、Spring Boot</li>
+<li>Web 服务器：Tomcat、Caddy、Nginx</li>
+<li>微服务：Spring Cloud</li>
+<li>数据层：JPA、MyBatis、MyBatis-Plus</li>
+<li>模板引擎：thymeleaf</li>
+<li>容器：Docker（镜像仓库服务 Harbor、图形化工具 Portainer）、k8s、Podman</li>
+<li>分布式 RPC 框架：Dubbo</li>
+<li>消息队列：Kafka（图形化工具 Eagle）、RocketMQ、RabbitMQ、Pulsar</li>
+<li>持续集成：Jenkins、Drone</li>
+<li>压力测试：Jmeter</li>
+<li>数据库：MySQL（数据库中间件 Gaea、同步数据 canal、数据库迁移工具 Flyway）</li>
+<li>缓存：Redis（增强模块 RedisMod、ORM 框架 RedisOM）</li>
+<li>nosql：MongoDB</li>
+<li>对象存储服务：minio</li>
+<li>日志：<a target="_blank" rel="noopener" href="https://javabetter.cn/gongju/log4j.html">Log4j</a>、<a target="_blank" rel="noopener" href="https://javabetter.cn/gongju/logback.html">Logback</a>、<a target="_blank" rel="noopener" href="https://javabetter.cn/gongju/slf4j.html">SF4J</a>、<a target="_blank" rel="noopener" href="https://javabetter.cn/gongju/log4j2.html">Log4j2</a></li>
+<li>搜索引擎：ES</li>
+<li>日志收集：ELK（日志采集器 Filebeat）、EFK（Fluentd）、LPG（Loki+Promtail+Grafana）</li>
+<li>大数据：Spark、Hadoop、HBase、Hive、Storm、Flink</li>
+<li>分布式应用程序协调：Zookeeper</li>
+<li>token 管理：jwt（nimbus-jose-jwt）</li>
+<li>诊断工具：arthas</li>
+<li>安全框架：Shiro、SpringSecurity</li>
+<li>权限框架：Keycloak、Sa-Token</li>
+<li>JSON 处理：fastjson2、<a target="_blank" rel="noopener" href="https://javabetter.cn/gongju/jackson.html">Jackson</a>、<a target="_blank" rel="noopener" href="https://javabetter.cn/gongju/gson.html">Gson</a></li>
+<li>office 文档操作：EasyPoi、EasyExcel</li>
+<li>文件预览：kkFileView</li>
+<li>属性映射：mapStruct</li>
+<li>Java 硬件信息库：oshi</li>
+<li>Java 连接 SSH 服务器：ganymed</li>
+<li>接口文档：Swagger-ui、Knife4j、Spring Doc、Torna、YApi</li>
+<li>任务调度框架：Spring Task、Quartz、PowerJob、XXL-Job</li>
+<li>Git 服务：Gogs</li>
+<li>低代码：LowCodeEngine、Yao、Erupt、magic-api</li>
+<li>API 网关：Gateway、Zuul、apisix</li>
+<li>数据可视化（Business Intelligence，也就是 BI）：DataEase、Metabase</li>
+<li>项目文档：Hexo、VuePress</li>
+<li>应用监控：SpringBoot Admin、Grafana、SkyWalking、Elastic APM</li>
+<li>注解：lombok</li>
+<li>jdbc 连接池：Druid</li>
+<li>Java 工具包：hutool、Guava</li>
+<li>数据检查：hibernate validator</li>
+<li>代码生成器：Mybatis generator</li>
+<li>Web 自动化测试：selenium</li>
+<li>HTTP 客户端工具：Retrofit</li>
+<li>脚手架：sa-plus</li>
 </ul>
-<p>为什么必须叫 value()？</p>
-<p>👉 在自定义注解中，如果只有一个参数，并且名字叫 value()，使用注解时可以直接写：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">@AutoFill(OperationType.UPDATE)</span><br></pre></td></tr></table></figure>
-<p>而不用：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">@AutoFill(value = OperationType.UPDATE)</span><br></pre></td></tr></table></figure>
-<p>所以：</p>
-<ul>
-<li><strong>value() 是注解唯一的参数</strong></li>
-<li><strong>表示方法的“类型”：是 INSERT 还是 UPDATE</strong></li>
-</ul>
-<h2 id="🌟-为什么不能直接在-Before-里写表达式？"><a href="#🌟-为什么不能直接在-Before-里写表达式？" class="headerlink" title="🌟 为什么不能直接在 @Before 里写表达式？"></a>🌟 为什么不能直接在 @Before 里写表达式？</h2><p>你完全可以：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">@Before(&quot;execution(* com.sky.mapper.*.*(..)) &amp;&amp; @annotation(com.sky.annotation.AutoFill)&quot;)</span><br></pre></td></tr></table></figure>
-<p>这是合法的！</p>
-<p>但是为什么不推荐？</p>
-<p>因为：</p>
-<h3 id="①-表达式可能很长，不利于维护"><a href="#①-表达式可能很长，不利于维护" class="headerlink" title="① 表达式可能很长，不利于维护"></a>① 表达式可能很长，不利于维护</h3><p>例如切点有几十行，写在每个 advice 里会崩溃。</p>
-<h3 id="②-多个通知共用切入点会重复"><a href="#②-多个通知共用切入点会重复" class="headerlink" title="② 多个通知共用切入点会重复"></a>② 多个通知共用切入点会重复</h3><p>比如：</p>
-<ul>
-<li>@Before</li>
-<li>@AfterReturning</li>
-<li>@Around</li>
-<li>@AfterThrowing</li>
-</ul>
-<p>它们都可能使用同一规则。</p>
-<p>使用 @Pointcut 之后：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">@Pointcut(&quot;xxx&quot;)</span><br><span class="line">public void pc()&#123;&#125;</span><br><span class="line"></span><br><span class="line">@Before(&quot;pc()&quot;)</span><br><span class="line">@After(&quot;pc()&quot;)</span><br><span class="line">@Around(&quot;pc()&quot;)</span><br></pre></td></tr></table></figure>
-<p>更优雅、可维护。</p>
-<h2 id="🌟-JoinPoint-是什么？"><a href="#🌟-JoinPoint-是什么？" class="headerlink" title="🌟 JoinPoint 是什么？"></a>🌟 JoinPoint 是什么？</h2><p>用于取得：</p>
-<ul>
-<li>目标方法名</li>
-<li>目标方法参数</li>
-<li>目标方法上的注解</li>
-</ul>
-<p>你可以这样取注解：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">MethodSignature signature = (MethodSignature) joinPoint.getSignature();</span><br><span class="line">Method method = signature.getMethod();</span><br><span class="line">AutoFill autoFill = method.getAnnotation(AutoFill.class);</span><br><span class="line">OperationType type = autoFill.value();</span><br></pre></td></tr></table></figure>
-<p>这样就能知道：</p>
-<ul>
-<li>是 INSERT 还是 UPDATE</li>
-<li>从参数对象中自动设置对应字段</li>
-</ul>
-<h1 id="ConfigurationProperties-prefix-“sky-alioss”"><a href="#ConfigurationProperties-prefix-“sky-alioss”" class="headerlink" title="@ConfigurationProperties(prefix = “sky.alioss”)"></a>@ConfigurationProperties(prefix = “sky.alioss”)</h1><p><code>@ConfigurationProperties(prefix = &quot;sky.alioss&quot;)</code> 是 <strong>Spring Boot 的配置绑定注解</strong>，作用非常关键：<br> 👉 <strong>它可以把 application.yml / application.properties 里的配置自动注入到一个 Java 类里。</strong></p>
-<p>假设你的 <code>application.yml</code> 里有这样一段：</p>
-<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">sky:</span></span><br><span class="line">  <span class="attr">alioss:</span></span><br><span class="line">    <span class="attr">endpoint:</span> <span class="string">xxx</span></span><br><span class="line">    <span class="attr">access-key-id:</span> <span class="string">xxx</span></span><br><span class="line">    <span class="attr">access-key-secret:</span> <span class="string">xxx</span></span><br><span class="line">    <span class="attr">bucket-name:</span> <span class="string">xxx</span></span><br></pre></td></tr></table></figure>
-<p>然后你有一个配置类：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="meta">@ConfigurationProperties(prefix = &quot;sky.alioss&quot;)</span></span><br><span class="line"><span class="meta">@Data</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">AliOssProperties</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> String endpoint;</span><br><span class="line">    <span class="keyword">private</span> String accessKeyId;</span><br><span class="line">    <span class="keyword">private</span> String accessKeySecret;</span><br><span class="line">    <span class="keyword">private</span> String bucketName;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>那么 Spring Boot 会自动做以下事情：</p>
-<h3 id="✔-把-sky-alioss-endpoint-注入到-endpoint"><a href="#✔-把-sky-alioss-endpoint-注入到-endpoint" class="headerlink" title="✔ 把 sky.alioss.endpoint 注入到 endpoint"></a>✔ 把 <code>sky.alioss.endpoint</code> 注入到 <code>endpoint</code></h3><h3 id="✔-把-sky-alioss-access-key-id-注入到-accessKeyId"><a href="#✔-把-sky-alioss-access-key-id-注入到-accessKeyId" class="headerlink" title="✔ 把 sky.alioss.access-key-id 注入到 accessKeyId"></a>✔ 把 <code>sky.alioss.access-key-id</code> 注入到 <code>accessKeyId</code></h3><h3 id="✔-把-sky-alioss-bucket-name-注入到-bucketName"><a href="#✔-把-sky-alioss-bucket-name-注入到-bucketName" class="headerlink" title="✔ 把 sky.alioss.bucket-name 注入到 bucketName"></a>✔ 把 <code>sky.alioss.bucket-name</code> 注入到 <code>bucketName</code></h3><p><strong>属性名自动匹配，不用你手写 @Value 注入！</strong></p>
-<h2 id="🔍-为什么要用-ConfigurationProperties？"><a href="#🔍-为什么要用-ConfigurationProperties？" class="headerlink" title="🔍 为什么要用 @ConfigurationProperties？"></a>🔍 为什么要用 <code>@ConfigurationProperties</code>？</h2><p>相比 <code>@Value</code> 有 3 个明显好处：</p>
-<h2 id="①-支持批量绑定，大量配置时更简洁"><a href="#①-支持批量绑定，大量配置时更简洁" class="headerlink" title="① 支持批量绑定，大量配置时更简洁"></a><strong>① 支持批量绑定，大量配置时更简洁</strong></h2><p>例：你需要读取 10 个配置项</p>
-<ul>
-<li>用 <code>@Value</code> 要写 10 行</li>
-<li>用 <code>@ConfigurationProperties</code> 只要一个类</li>
-</ul>
-<hr>
-<h2 id="②-支持类型安全（可绑定到-List、Map、自定义类等）"><a href="#②-支持类型安全（可绑定到-List、Map、自定义类等）" class="headerlink" title="② 支持类型安全（可绑定到 List、Map、自定义类等）"></a><strong>② 支持类型安全（可绑定到 List、Map、自定义类等）</strong></h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> Map&lt;String, String&gt; headers;</span><br><span class="line"><span class="keyword">private</span> List&lt;String&gt; whitelist;</span><br></pre></td></tr></table></figure>
-<p>这些 <code>@Value</code> 无法优雅处理。</p>
-<hr>
-<h2 id="③-IDE-自动提示、校验更容易"><a href="#③-IDE-自动提示、校验更容易" class="headerlink" title="③ IDE 自动提示、校验更容易"></a><strong>③ IDE 自动提示、校验更容易</strong></h2><p>Spring Boot 会自动根据前缀给你在 yml 里补全提示。</p>
-<h2 id="🔧-为什么要加-prefix-quot-sky-alioss-quot-？"><a href="#🔧-为什么要加-prefix-quot-sky-alioss-quot-？" class="headerlink" title="🔧 为什么要加 prefix = &quot;sky.alioss&quot;？"></a>🔧 为什么要加 <code>prefix = &quot;sky.alioss&quot;</code>？</h2><p>代表：</p>
-<p>➡ <strong>只绑定 yml 中 sky.alioss 下面的字段</strong><br> ➡ 避免绑定到不相关的配置</p>
-<p>如果不写 prefix，就不知道绑定哪一段了。</p>
-<h2 id="🔎-为什么通常还要加-Component-或-EnableConfigurationProperties"><a href="#🔎-为什么通常还要加-Component-或-EnableConfigurationProperties" class="headerlink" title="🔎 为什么通常还要加 @Component 或 @EnableConfigurationProperties"></a>🔎 为什么通常还要加 @Component 或 @EnableConfigurationProperties</h2><p><code>@ConfigurationProperties</code> <strong>只是配置绑定规则</strong>，<br> 必须让这个类成为 Spring Bean 才能使用。</p>
-<p>最常见的做法：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="meta">@ConfigurationProperties(prefix = &quot;sky.alioss&quot;)</span></span><br></pre></td></tr></table></figure>
-<p>或者用配置类统一启用：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@EnableConfigurationProperties(AliOssProperties.class)</span></span><br></pre></td></tr></table></figure>
-<h1 id="Bean"><a href="#Bean" class="headerlink" title="@Bean"></a>@Bean</h1><h3 id="●-Bean"><a href="#●-Bean" class="headerlink" title="● @Bean"></a>● <code>@Bean</code></h3><ul>
-<li>用在方法上</li>
-<li><strong>告诉 Spring：执行这个方法，把方法返回值作为一个 Bean 存入 IOC 容器。</strong></li>
-<li>用来“定义对象”。</li>
-<li>同时，这个方法的参数也会被自动注入</li>
-</ul>
-<p>就像你正在创建一个 <code>AliOssUtil</code>：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">@Bean</span><br><span class="line">public AliOssUtil aliOssUtil(AliOssProperties aliOssProperties) &#123;</span><br><span class="line">    return new AliOssUtil(...);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>Spring 调用这个方法，把返回的 <code>AliOssUtil</code> 加入 IOC。</p>
-<h2 id="ConditionalOnMissingBean-是什么？"><a href="#ConditionalOnMissingBean-是什么？" class="headerlink" title="@ConditionalOnMissingBean 是什么？"></a><code>@ConditionalOnMissingBean</code> 是什么？</h2><p>Spring Boot 的条件注解，意思是：</p>
-<blockquote>
-<p><strong>只有当容器中不存在某个 Bean 时，才执行当前方法创建 Bean。</strong></p>
-</blockquote>
-<h2 id="⛳-正确理解：-Configuration-Bean-才是一套组合拳"><a href="#⛳-正确理解：-Configuration-Bean-才是一套组合拳" class="headerlink" title="⛳ 正确理解：@Configuration + @Bean 才是一套组合拳"></a>⛳ 正确理解：<code>@Configuration</code> + <code>@Bean</code> 才是一套组合拳</h2><p>Spring Boot 推荐：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">@Configuration</span><br><span class="line">public class OssConfiguration &#123;</span><br><span class="line"></span><br><span class="line">    @Bean</span><br><span class="line">    public AliOssUtil aliOssUtil(AliOssProperties aliOssProperties) &#123;</span><br><span class="line">        return new AliOssUtil(...);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>作用：</p>
-<ul>
-<li><code>@Configuration</code> 告诉 Spring：“这是配置类，请处理其中的 @Bean 方法”</li>
-<li><code>@Bean</code> 把“方法返回值”注册到容器</li>
-</ul>
-<h2 id="🔥-为什么-Component-做不到？"><a href="#🔥-为什么-Component-做不到？" class="headerlink" title="🔥 为什么 @Component 做不到？"></a>🔥 为什么 <code>@Component</code> 做不到？</h2><p>简单说：<code>@Component</code> <strong>不能创建带参数的对象</strong>。</p>
-<p>更详细说：<br> 当你用 <code>@Component</code> 标注一个类时，Spring：</p>
-<ul>
-<li>会实例化这个类（调用默认构造函数）</li>
-<li>如果你的类必须要依赖配置参数（如 OSS 配置），默认构造器根本不够用</li>
-<li>所以你没办法通过 <code>@Component</code> 创建一个配置完善的 AliOssUtil</li>
-</ul>
-<h2 id="🧠-一个更容易理解的比喻"><a href="#🧠-一个更容易理解的比喻" class="headerlink" title="🧠 一个更容易理解的比喻"></a>🧠 一个更容易理解的比喻</h2><div class="table-container">
-<table>
-<thead>
-<tr>
-<th>注解</th>
-<th>相当于</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>@Component</code></td>
-<td>直接把整个类扔进 IoC 容器</td>
-</tr>
-<tr>
-<td><code>@Bean</code></td>
-<td>用一个工厂方法生产 Bean，然后把“生产出来的对象”放入 IoC 容器</td>
-</tr>
-<tr>
-<td><code>@Configuration</code></td>
-<td>声明：这是一个“Bean 工厂集合”</td>
-</tr>
-</tbody>
-</table>
-</div>
-<p>涉及到多个数据表的操作要注意原子性</p>
-<p>@Transanctional</p>
-<p>不用加？springboor自动包含？</p>
-<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_45649806/article/details/120840179">idea MySQL的Mapper映射xml文件里的sql语句提示_idea xml mapper映射提示-CSDN博客</a></p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">insert</span> <span class="attr">id</span>=<span class="string">&quot;insert&quot;</span> <span class="attr">useGeneratedKeys</span>=<span class="string">&quot;true&quot;</span> <span class="attr">keyProperty</span>=<span class="string">&quot;id&quot;</span>&gt;</span></span><br><span class="line">    insert into dish</span><br><span class="line">    (status, name, category_id, price, image, description, create_time, update_time, create_user,update_user)</span><br><span class="line">        values</span><br><span class="line">    (#&#123;status&#125;, #&#123;name&#125;, #&#123;categoryId&#125;, #&#123;price&#125;, #&#123;image&#125;, #&#123;description&#125;, #&#123;createTime&#125;, #&#123;updateTime&#125;,#&#123;createUser&#125;,</span><br><span class="line"><span class="tag">&lt;/<span class="name">insert</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<p>insert执行完之后，把主键返回给dish中的id成员</p>
-<p>SELECT d.* , c.name as categoryName FROM dish d LEFT JOIN category c on d.category_id=c.id</p>
-<p>字段名要和函数返回变量的值对应</p>
-<h1 id="Web-Socket"><a href="#Web-Socket" class="headerlink" title="Web Socket"></a>Web Socket</h1><p>WebSocket 是基于 TCP 的一种新的网络协议。它实现了浏览器与服务器全双工通信——浏览器和服务器只需要完成一次握手，两者之间就可以创建持久性的连接， 并进行双向数据传输。</p>
-<p>HTTP协议和WebSocket协议对比：</p>
-<ul>
-<li><p>HTTP是短连接</p>
-</li>
-<li><p>WebSocket是长连接</p>
-</li>
-<li>HTTP通信是单向的，基于请求响应模式</li>
-<li>WebSocket支持双向通信</li>
-<li>HTTP和WebSocket底层都是TCP连接</li>
-</ul>
-<p>应用场景：</p>
-<ul>
-<li>视频弹幕</li>
-<li>网页聊天</li>
-<li>体育实况更新</li>
-<li>股票基金报价实时更新</li>
-</ul>
-<h2 id="实现步骤："><a href="#实现步骤：" class="headerlink" title="实现步骤："></a>实现步骤：</h2><ol>
-<li>直接使用websocket.html页面作为WebSocket客户端</li>
-<li>导入WebSocket的maven坐标</li>
-<li>导入WebSocket服务端组件WebSocketServer，用于和客户端通信</li>
-<li>导入配置类WebSocketConfiguration，注册WebSocket的服务端组件</li>
-<li>导入定时任务类WebSocketTask，定时向客户端推送数据</li>
-</ol>
-<p>通过nginx配置可以吧websocket连接转发到后端</p>
-<h1 id="有感"><a href="#有感" class="headerlink" title="有感"></a>有感</h1><p>前端是选择tag的时候好像不用传id对应的name，不过要学前端才知道，蒽！</p>
-<p>controller只是针对路径来说的，service可以对应好几个mapper</p>
-<p>因此controller是每个路径请求都有一个，但是mapper要尽量做得有泛用性</p>
-<p>自己做的时候%90的错误都是sql错误，苦学sql！</p>
+<p>？</p>
 <link rel="stylesheet" href="/css/folder.css" type="text/css"><script src="/js/folder.js" type="text/javascript" async></script>
     </article>
     <!-- license -->
@@ -729,7 +613,7 @@ p.spoiler {
                 <div class="toc-catalog">
                     <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
                 </div>
-                <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#AOP-%E5%86%8D%E6%8F%AD"><span class="toc-number">1.</span> <span class="toc-text">AOP(再揭)</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%F0%9F%8C%9F-%E5%85%88%E8%A7%A3%E9%87%8A%E6%9C%80%E5%85%B3%E9%94%AE%E7%9A%84%EF%BC%9A-AutoFill-%E6%B3%A8%E8%A7%A3%E7%9A%84-value"><span class="toc-number">1.1.</span> <span class="toc-text">🌟 先解释最关键的：@AutoFill 注解的 value()</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%F0%9F%8C%9F-%E4%B8%BA%E4%BB%80%E4%B9%88%E4%B8%8D%E8%83%BD%E7%9B%B4%E6%8E%A5%E5%9C%A8-Before-%E9%87%8C%E5%86%99%E8%A1%A8%E8%BE%BE%E5%BC%8F%EF%BC%9F"><span class="toc-number">1.2.</span> <span class="toc-text">🌟 为什么不能直接在 @Before 里写表达式？</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E2%91%A0-%E8%A1%A8%E8%BE%BE%E5%BC%8F%E5%8F%AF%E8%83%BD%E5%BE%88%E9%95%BF%EF%BC%8C%E4%B8%8D%E5%88%A9%E4%BA%8E%E7%BB%B4%E6%8A%A4"><span class="toc-number">1.2.1.</span> <span class="toc-text">① 表达式可能很长，不利于维护</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E2%91%A1-%E5%A4%9A%E4%B8%AA%E9%80%9A%E7%9F%A5%E5%85%B1%E7%94%A8%E5%88%87%E5%85%A5%E7%82%B9%E4%BC%9A%E9%87%8D%E5%A4%8D"><span class="toc-number">1.2.2.</span> <span class="toc-text">② 多个通知共用切入点会重复</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%F0%9F%8C%9F-JoinPoint-%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%9F"><span class="toc-number">1.3.</span> <span class="toc-text">🌟 JoinPoint 是什么？</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#ConfigurationProperties-prefix-%E2%80%9Csky-alioss%E2%80%9D"><span class="toc-number">2.</span> <span class="toc-text">@ConfigurationProperties(prefix &#x3D; “sky.alioss”)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E2%9C%94-%E6%8A%8A-sky-alioss-endpoint-%E6%B3%A8%E5%85%A5%E5%88%B0-endpoint"><span class="toc-number">2.0.1.</span> <span class="toc-text">✔ 把 sky.alioss.endpoint 注入到 endpoint</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E2%9C%94-%E6%8A%8A-sky-alioss-access-key-id-%E6%B3%A8%E5%85%A5%E5%88%B0-accessKeyId"><span class="toc-number">2.0.2.</span> <span class="toc-text">✔ 把 sky.alioss.access-key-id 注入到 accessKeyId</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E2%9C%94-%E6%8A%8A-sky-alioss-bucket-name-%E6%B3%A8%E5%85%A5%E5%88%B0-bucketName"><span class="toc-number">2.0.3.</span> <span class="toc-text">✔ 把 sky.alioss.bucket-name 注入到 bucketName</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%F0%9F%94%8D-%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E7%94%A8-ConfigurationProperties%EF%BC%9F"><span class="toc-number">2.1.</span> <span class="toc-text">🔍 为什么要用 @ConfigurationProperties？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E2%91%A0-%E6%94%AF%E6%8C%81%E6%89%B9%E9%87%8F%E7%BB%91%E5%AE%9A%EF%BC%8C%E5%A4%A7%E9%87%8F%E9%85%8D%E7%BD%AE%E6%97%B6%E6%9B%B4%E7%AE%80%E6%B4%81"><span class="toc-number">2.2.</span> <span class="toc-text">① 支持批量绑定，大量配置时更简洁</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E2%91%A1-%E6%94%AF%E6%8C%81%E7%B1%BB%E5%9E%8B%E5%AE%89%E5%85%A8%EF%BC%88%E5%8F%AF%E7%BB%91%E5%AE%9A%E5%88%B0-List%E3%80%81Map%E3%80%81%E8%87%AA%E5%AE%9A%E4%B9%89%E7%B1%BB%E7%AD%89%EF%BC%89"><span class="toc-number">2.3.</span> <span class="toc-text">② 支持类型安全（可绑定到 List、Map、自定义类等）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E2%91%A2-IDE-%E8%87%AA%E5%8A%A8%E6%8F%90%E7%A4%BA%E3%80%81%E6%A0%A1%E9%AA%8C%E6%9B%B4%E5%AE%B9%E6%98%93"><span class="toc-number">2.4.</span> <span class="toc-text">③ IDE 自动提示、校验更容易</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%F0%9F%94%A7-%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E5%8A%A0-prefix-quot-sky-alioss-quot-%EF%BC%9F"><span class="toc-number">2.5.</span> <span class="toc-text">🔧 为什么要加 prefix &#x3D; &quot;sky.alioss&quot;？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%F0%9F%94%8E-%E4%B8%BA%E4%BB%80%E4%B9%88%E9%80%9A%E5%B8%B8%E8%BF%98%E8%A6%81%E5%8A%A0-Component-%E6%88%96-EnableConfigurationProperties"><span class="toc-number">2.6.</span> <span class="toc-text">🔎 为什么通常还要加 @Component 或 @EnableConfigurationProperties</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Bean"><span class="toc-number">3.</span> <span class="toc-text">@Bean</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E2%97%8F-Bean"><span class="toc-number">3.0.1.</span> <span class="toc-text">● @Bean</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ConditionalOnMissingBean-%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%9F"><span class="toc-number">3.1.</span> <span class="toc-text">@ConditionalOnMissingBean 是什么？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E2%9B%B3-%E6%AD%A3%E7%A1%AE%E7%90%86%E8%A7%A3%EF%BC%9A-Configuration-Bean-%E6%89%8D%E6%98%AF%E4%B8%80%E5%A5%97%E7%BB%84%E5%90%88%E6%8B%B3"><span class="toc-number">3.2.</span> <span class="toc-text">⛳ 正确理解：@Configuration + @Bean 才是一套组合拳</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%F0%9F%94%A5-%E4%B8%BA%E4%BB%80%E4%B9%88-Component-%E5%81%9A%E4%B8%8D%E5%88%B0%EF%BC%9F"><span class="toc-number">3.3.</span> <span class="toc-text">🔥 为什么 @Component 做不到？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%F0%9F%A7%A0-%E4%B8%80%E4%B8%AA%E6%9B%B4%E5%AE%B9%E6%98%93%E7%90%86%E8%A7%A3%E7%9A%84%E6%AF%94%E5%96%BB"><span class="toc-number">3.4.</span> <span class="toc-text">🧠 一个更容易理解的比喻</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Web-Socket"><span class="toc-number">4.</span> <span class="toc-text">Web Socket</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E7%8E%B0%E6%AD%A5%E9%AA%A4%EF%BC%9A"><span class="toc-number">4.1.</span> <span class="toc-text">实现步骤：</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%9C%89%E6%84%9F"><span class="toc-number">5.</span> <span class="toc-text">有感</span></a></li></ol>
+                <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%88%91%E8%8D%89%E5%90%93%E5%93%AD%E4%BA%86"><span class="toc-number">1.</span> <span class="toc-text">我草吓哭了</span></a></li></ol>
             </div>
         <!-- sidebar -->
         <div class="sidebar sidebar-hide">

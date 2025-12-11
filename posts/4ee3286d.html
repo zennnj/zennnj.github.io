@@ -18,7 +18,7 @@
 <meta property="og:description" content="哎呀我草这个maven怎么一直爆红啊，记录一下解决方案。。。 stackoverflow谢谢你….">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2025-05-02T13:05:30.000Z">
-<meta property="article:modified_time" content="2025-12-03T05:32:54.196Z">
+<meta property="article:modified_time" content="2025-12-07T12:30:47.087Z">
 <meta property="article:tag" content="problems">
 <meta name="twitter:card" content="summary">
     <meta http-equiv="Cache-control" content="no-cache">
@@ -514,6 +514,10 @@ p.spoiler {
 <h2 id="所有的log，constructor失效"><a href="#所有的log，constructor失效" class="headerlink" title="所有的log，constructor失效"></a>所有的log，constructor失效</h2><p>都是LOMBOK依赖问题：）</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;version&gt;$&#123;lombok.version&#125;&lt;/version&gt;</span><br></pre></td></tr></table></figure>
 <p>让他自动选版本吧。</p>
+<h2 id="Lombok-问题的终极答案"><a href="#Lombok-问题的终极答案" class="headerlink" title="Lombok 问题的终极答案"></a>Lombok 问题的终极答案</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Class com.sun.tools.javac.tree.JCTree$JCImport does not have member field ‘com.sun.tools.javac.tre</span><br></pre></td></tr></table></figure>
+<p><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/77171270/compilation-error-after-upgrading-to-jdk-21-nosuchfielderror-jcimport-does-n">spring boot - Compilation error after upgrading to JDK 21 - “NoSuchFieldError: JCImport does not have member field JCTree qualid” - Stack Overflow</a></p>
+<p>没错，还是jdk版本太高了，我把项目jdk设置为8后一切都解决了</p>
+<p>要么升级lombok版本 要么降级jdk版本，choose one！</p>
 <link rel="stylesheet" href="/css/folder.css" type="text/css"><script src="/js/folder.js" type="text/javascript" async></script>
     </article>
     <!-- license -->
@@ -581,7 +585,7 @@ p.spoiler {
                 <div class="toc-catalog">
                     <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
                 </div>
-                <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#pom-xml%E6%96%87%E4%BB%B6%E5%BC%80%E5%A4%B4-%E6%8A%A5%E7%BA%A2"><span class="toc-number">1.</span> <span class="toc-text">pom.xml文件开头\报红:</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Lombok-log%E7%BC%BA%E5%A4%B1"><span class="toc-number">2.</span> <span class="toc-text">Lombok log缺失</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%89%80%E6%9C%89%E7%9A%84log%EF%BC%8Cconstructor%E5%A4%B1%E6%95%88"><span class="toc-number">2.1.</span> <span class="toc-text">所有的log，constructor失效</span></a></li></ol></li></ol>
+                <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#pom-xml%E6%96%87%E4%BB%B6%E5%BC%80%E5%A4%B4-%E6%8A%A5%E7%BA%A2"><span class="toc-number">1.</span> <span class="toc-text">pom.xml文件开头\报红:</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Lombok-log%E7%BC%BA%E5%A4%B1"><span class="toc-number">2.</span> <span class="toc-text">Lombok log缺失</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%89%80%E6%9C%89%E7%9A%84log%EF%BC%8Cconstructor%E5%A4%B1%E6%95%88"><span class="toc-number">2.1.</span> <span class="toc-text">所有的log，constructor失效</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Lombok-%E9%97%AE%E9%A2%98%E7%9A%84%E7%BB%88%E6%9E%81%E7%AD%94%E6%A1%88"><span class="toc-number">2.2.</span> <span class="toc-text">Lombok 问题的终极答案</span></a></li></ol></li></ol>
             </div>
         <!-- sidebar -->
         <div class="sidebar sidebar-hide">
