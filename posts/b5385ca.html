@@ -18,7 +18,7 @@
 <meta property="og:description" content="未整理的文件">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2025-11-28T05:25:39.000Z">
-<meta property="article:modified_time" content="2025-12-11T07:51:13.007Z">
+<meta property="article:modified_time" content="2025-12-12T10:21:31.473Z">
 <meta property="article:tag" content="learn">
 <meta name="twitter:card" content="summary">
     <meta http-equiv="Cache-control" content="no-cache">
@@ -496,6 +496,128 @@ p.spoiler {
                 <main class="main post-page">
     <article class="article-entry">
         <link rel="stylesheet" type="text&#x2F;css" href="https://cdn.jsdelivr.net/npm/hexo-tag-hint@0.3.1/dist/hexo-tag-hint.min.css"><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><p>未整理的文件<br><span id="more"></span></p>
+<h1 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h1><h2 id="关于AOP"><a href="#关于AOP" class="headerlink" title="关于AOP"></a>关于AOP</h2><ol>
+<li><p>如果你在技术派的源码中搜 MdcUtil 的话，可以在 ReqRecordFilter 中找得到，顾名思义，该类是对请求的一个过滤器，会在每个请求中加上全链路的 traceid。</p>
+<p>项目中一整个MdcDot注解都被用来记录方法用时，那么reqrecord中的记录又是在干什么？他有一个.log文件的记录，同时还把这一次的请求时间输出了。</p>
+<p>我想一个适用于普通方法，而req的这个是在filter里专门记录请求的时间，可能和那个方法不兼容？</p>
+<p>还有一个问题，两个方法都用的mdcutil里的方法，这个traceid没有覆盖的可能吗？</p>
+<blockquote>
+<h1 id="1-MdcDot-与-ReqRecord-的区别？traceId-会不会互相覆盖？"><a href="#1-MdcDot-与-ReqRecord-的区别？traceId-会不会互相覆盖？" class="headerlink" title="1. MdcDot 与 ReqRecord 的区别？traceId 会不会互相覆盖？"></a>1. MdcDot 与 ReqRecord 的区别？traceId 会不会互相覆盖？</h1><p>你已经<strong>大致猜对</strong>了，但我帮你补充成一个完整逻辑：</p>
+<h2 id="1）MdcDot-用来记录方法执行耗时"><a href="#1）MdcDot-用来记录方法执行耗时" class="headerlink" title="1）MdcDot 用来记录方法执行耗时"></a>1）MdcDot 用来记录<strong>方法执行耗时</strong></h2><ul>
+<li>这是一个 AOP 注解（作用在某个方法上）</li>
+<li>AOP 拦截方法 → 进入前记录时间 → 退出后输出日志</li>
+<li>一般属于<strong>业务级别的方法耗时监控</strong>（精确到某个 service 方法）</li>
+</ul>
+<p>例如：<br> UserService.getUserById() 花了 230ms<br> OrderService.create() 花了 1.2s</p>
+<p>这些属于应用内部的性能监控。</p>
+<h2 id="2）ReqRecord（你看到的-req-处理）是-Filter-层的请求级日志"><a href="#2）ReqRecord（你看到的-req-处理）是-Filter-层的请求级日志" class="headerlink" title="2）ReqRecord（你看到的 req 处理）是 Filter 层的请求级日志"></a>2）ReqRecord（你看到的 req 处理）是 <strong>Filter 层的请求级日志</strong></h2><p>这段逻辑在 Filter 或 Interceptor 里：</p>
+<ul>
+<li>进入请求：建立 traceId、记录用户信息、记录路径、IP、UA</li>
+<li>完成请求：统一输出一次完整请求日志（写入 .log）</li>
+</ul>
+<p>这是<strong>每次 HTTP 请求的入口 / 出口监控</strong>。<br> 也就是“这次 API 调用持续了多久”。</p>
+<p>例如：<br> GET /api/user/info cost=156ms<br> POST /order/create cost=1220ms</p>
+<p>该日志是更偏向<strong>运维监控、流量统计、接口质量监控</strong>。</p>
+<h2 id="3）两个都用-MdcUtil，会不会覆盖-traceId？"><a href="#3）两个都用-MdcUtil，会不会覆盖-traceId？" class="headerlink" title="3）两个都用 MdcUtil，会不会覆盖 traceId？"></a>3）两个都用 MdcUtil，会不会覆盖 traceId？</h2><p>不会。</p>
+<p>原因：</p>
+<ul>
+<li>traceId 是在 filter 入口时统一设置的</li>
+<li>AOP 方法执行时只会使用这个 traceId，不会重新生成</li>
+<li>MdcUtil.addTraceId() 基本格式就是：“如果 MDC 中没有 traceId 才生成”</li>
+</ul>
+<p>所以一个请求有一个 traceId，所有方法耗时都共享它。</p>
+</blockquote>
+</li>
+<li><p>这个项目细分了好多类，他还有一个Dao，专门和service区分开来了。@Respository和@Service 的区别只是标记不一样吗</p>
+<blockquote>
+<h1 id="2-Repository-与-Service-的区别？什么时候分层？"><a href="#2-Repository-与-Service-的区别？什么时候分层？" class="headerlink" title="2. Repository 与 Service 的区别？什么时候分层？"></a>2. Repository 与 Service 的区别？什么时候分层？</h1><p>不是标签不同而已。</p>
+<h2 id="Repository（DAO）职责"><a href="#Repository（DAO）职责" class="headerlink" title="Repository（DAO）职责"></a>Repository（DAO）职责</h2><p><strong>只负责与数据库交互</strong>：</p>
+<ul>
+<li>CRUD</li>
+<li>自定义 SQL</li>
+<li>查询分页</li>
+<li>统计 SQL</li>
+</ul>
+<p>Repository/mapper 层不包含任何业务逻辑。</p>
+<h2 id="Service-的职责"><a href="#Service-的职责" class="headerlink" title="Service 的职责"></a>Service 的职责</h2><p><strong>封装业务逻辑</strong>：</p>
+<ul>
+<li>参数校验</li>
+<li>领域逻辑组合</li>
+<li>调用多个 DAO / RPC</li>
+<li>事务控制</li>
+<li>缓存控制</li>
+</ul>
+<h2 id="什么时候需要分？"><a href="#什么时候需要分？" class="headerlink" title="什么时候需要分？"></a>什么时候需要分？</h2><p>当你有以下需求时必须分：</p>
+<ul>
+<li>业务需要组合多个数据库表的操作</li>
+<li>一个请求涉及多个操作（比如先查用户再查订单）</li>
+<li>需要保证事务（@Transactional）</li>
+<li>需要隐藏数据库细节（controller 不应该直接写 SQL）</li>
+</ul>
+<p>你之前的项目没有 DAO 层，是因为<strong>业务太简单</strong>。</p>
+</blockquote>
+<p> 所以说，之前那个项目有service层用其他service的情况，这种情况其实应该使用dao吗？</p>
+</li>
+<li><p>用service CRUD 和Mapper CRUD 的区别在？本来serviceimpl这个继承的类里就要求mapper继承了basemapper的，那用哪个有说法吗？我想了想可能是因为：用service的肯定是controller 层 ，controller层不可能去调用mapper层的东西的，即使调用的service其实本质上还是mapper，而dao（service）层就可以做基本CURD做不到的事情？</p>
+<blockquote>
+<h1 id="3-为什么-MyBatis-Plus-要提供-Service-CRUD？和直接在-Service-调-Mapper-有什么区别？"><a href="#3-为什么-MyBatis-Plus-要提供-Service-CRUD？和直接在-Service-调-Mapper-有什么区别？" class="headerlink" title="3. 为什么 MyBatis-Plus 要提供 Service CRUD？和直接在 Service 调 Mapper 有什么区别？"></a>3. 为什么 MyBatis-Plus 要提供 Service CRUD？和直接在 Service 调 Mapper 有什么区别？</h1><p>你问的这个问题非常关键：<br> <strong>“既然 Controller 能调 Service，那为什么 Service 不自己写 CRUD，而要依赖 MP 提供的 ServiceImpl 的 CRUD？”</strong></p>
+<p>我拆成 3 点，你看了就懂了。</p>
+<hr>
+<h2 id="①-MyBatis-Plus-的-Service-CRUD-是通用业务服务层的模板"><a href="#①-MyBatis-Plus-的-Service-CRUD-是通用业务服务层的模板" class="headerlink" title="① MyBatis-Plus 的 Service CRUD 是通用业务服务层的模板"></a>① MyBatis-Plus 的 Service CRUD 是<strong>通用业务服务层的模板</strong></h2><p>MP 的设计理念：</p>
+<ul>
+<li>Mapper 层只负责数据库 CRUD（原子、低级别操作）</li>
+<li>Service 层需要在 Mapper 的基础上补充业务流程逻辑</li>
+<li>绝大多数业务都会需要标准化的 CRUD（分页、按条件查询、批量删除……）</li>
+</ul>
+<p>因此 MP 提供了 <strong>IService + ServiceImpl</strong>，目的是：</p>
+<ul>
+<li>你不用每个项目都重复写：list、getById、removeById、save、update……</li>
+<li>这些方法自动配合 MP 的 QueryWrapper、分页插件、自动填充等</li>
+<li>代码统一规范、减少重复性工作</li>
+</ul>
+<p>也就是说，它做的是“中间层简化”和“业务层能力增强”。</p>
+<hr>
+<h2 id="②-你完全可以不继承-IService，但你会多写大量重复代码"><a href="#②-你完全可以不继承-IService，但你会多写大量重复代码" class="headerlink" title="② 你完全可以不继承 IService，但你会多写大量重复代码"></a>② 你完全可以不继承 IService，但你会多写大量重复代码</h2><p>假设你不用 MyBatis-Plus 的 IService，你会写成这样：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">public class UserService &#123;</span><br><span class="line">    @Autowired</span><br><span class="line">    private UserMapper mapper;</span><br><span class="line"></span><br><span class="line">    public User getById(Long id) &#123;</span><br><span class="line">        return mapper.selectById(id);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public List&lt;User&gt; list() &#123;</span><br><span class="line">        return mapper.selectList(null);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void save(User u) &#123;</span><br><span class="line">        mapper.insert(u);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void update(User u) &#123;</span><br><span class="line">        mapper.updateById(u);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void delete(Long id) &#123;</span><br><span class="line">        mapper.deleteById(id);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这是一堆重复工作，而且不同开发者写出的接口风格可能完全不一致。</p>
+<p>MP 帮你统一成：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">@Service</span><br><span class="line">public class UserServiceImpl extends ServiceImpl&lt;UserMapper, User&gt; implements UserService &#123;&#125;</span><br></pre></td></tr></table></figure>
+<p>然后你可以直接用：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">userService.getById(id);</span><br><span class="line">userService.list();</span><br><span class="line">userService.save(entity);</span><br><span class="line">userService.removeById(id);</span><br></pre></td></tr></table></figure>
+<p>你几乎不用写额外代码，即可保证所有项目统一风格。</p>
+</blockquote>
+</li>
+<li><p>为什么这里要用@Param注释？不加不可以吗？这是mybtis就有的还是plus才有的？这样的话在yml设置里开启驼峰命名的意义在？</p>
+ <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title class_">UserMapper</span> <span class="keyword">extends</span> <span class="title class_">BaseMapper</span>&lt;UserDO&gt; &#123;</span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 根据三方唯一id进行查询</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> accountId</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@Select(&quot;select * from user where third_account_id = #&#123;account_id&#125; limit 1&quot;)</span></span><br><span class="line">UserDO <span class="title function_">getByThirdAccountId</span><span class="params">(<span class="meta">@Param(&quot;account_id&quot;)</span> String accountId)</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<h3 id="情况1：编译器保留了参数名（默认情况自-JDK8-后大多数-IDE-会开启）"><a href="#情况1：编译器保留了参数名（默认情况自-JDK8-后大多数-IDE-会开启）" class="headerlink" title="情况1：编译器保留了参数名（默认情况自 JDK8 后大多数 IDE 会开启）"></a>情况1：编译器保留了参数名（默认情况自 JDK8 后大多数 IDE 会开启）</h3><p>MyBatis 可以直接识别：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">UserDO getByThirdAccountId(String accountId);</span><br></pre></td></tr></table></figure>
+<p>此时可以写：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#&#123;accountId&#125;</span><br></pre></td></tr></table></figure>
+<p>无需 @Param。</p>
+<hr>
+<h3 id="情况2：项目没有启用参数名保留功能（某些环境未开启-parameters）"><a href="#情况2：项目没有启用参数名保留功能（某些环境未开启-parameters）" class="headerlink" title="情况2：项目没有启用参数名保留功能（某些环境未开启 -parameters）"></a>情况2：项目没有启用参数名保留功能（某些环境未开启 -parameters）</h3><p>MyBatis 拿到的参数名会变成：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">arg0, arg1, arg2...</span><br></pre></td></tr></table></figure>
+<p>你的方法：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">UserDO getByThirdAccountId(String accountId)</span><br></pre></td></tr></table></figure>
+<p>在运行期可能变成：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">arg0</span><br></pre></td></tr></table></figure>
+<p>这时你 SQL 写：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#&#123;accountId&#125;</span><br></pre></td></tr></table></figure>
+<p>就会报错：找不到 accountId。</p>
+<p>==&gt; <strong>因此为了防止环境不一致，团队规范通常建议：多参数和注解 SQL 要使用 @Param。</strong></p>
+</blockquote>
+</li>
+<li><p>TableId(type = IdType.AUTO)，在数据库本来就设置了自增的情况下，还用这个注解让他在插入的时候自增其实没什么意义吧？哦，等等，它的数据库都没有设置约束，约束全在mybatis里，这样的好处在？</p>
+<blockquote>
+<h1 id="5-TableId-type-IdType-AUTO-为何数据库不建约束？"><a href="#5-TableId-type-IdType-AUTO-为何数据库不建约束？" class="headerlink" title="5. @TableId(type = IdType.AUTO) 为何数据库不建约束？"></a>5. @TableId(type = IdType.AUTO) 为何数据库不建约束？</h1><p>MP 默认通过注解控制主键策略，数据库里不建约束有两个好处：</p>
+<h2 id="1）跨数据库兼容"><a href="#1）跨数据库兼容" class="headerlink" title="1）跨数据库兼容"></a>1）跨数据库兼容</h2><p>MySQL, PostgreSQL, Oracle 都有不同的自增写法<br> MP 用注解帮你屏蔽差异。</p>
+<h2 id="2）方便迁移（比如切换到雪花算法）"><a href="#2）方便迁移（比如切换到雪花算法）" class="headerlink" title="2）方便迁移（比如切换到雪花算法）"></a>2）方便迁移（比如切换到雪花算法）</h2><p>你只改 Java 注解，不需要改表结构。</p>
+<p>项目越大越喜欢用 Java 控制，而非 DBA 控制。</p>
+</blockquote>
+</li>
+<li></li>
+</ol>
 <h1 id="我草吓哭了"><a href="#我草吓哭了" class="headerlink" title="我草吓哭了"></a>我草吓哭了</h1><ul>
 <li>构建工具：后端（Maven、Gradle）、前端（Webpack、Vite）</li>
 <li>单元测试：<a target="_blank" rel="noopener" href="https://javabetter.cn/gongju/junit.html">Junit</a></li>
@@ -613,7 +735,7 @@ p.spoiler {
                 <div class="toc-catalog">
                     <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
                 </div>
-                <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%88%91%E8%8D%89%E5%90%93%E5%93%AD%E4%BA%86"><span class="toc-number">1.</span> <span class="toc-text">我草吓哭了</span></a></li></ol>
+                <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%97%AE%E9%A2%98"><span class="toc-number">1.</span> <span class="toc-text">问题</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%B3%E4%BA%8EAOP"><span class="toc-number">1.1.</span> <span class="toc-text">关于AOP</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#1-MdcDot-%E4%B8%8E-ReqRecord-%E7%9A%84%E5%8C%BA%E5%88%AB%EF%BC%9FtraceId-%E4%BC%9A%E4%B8%8D%E4%BC%9A%E4%BA%92%E7%9B%B8%E8%A6%86%E7%9B%96%EF%BC%9F"><span class="toc-number">2.</span> <span class="toc-text">1. MdcDot 与 ReqRecord 的区别？traceId 会不会互相覆盖？</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1%EF%BC%89MdcDot-%E7%94%A8%E6%9D%A5%E8%AE%B0%E5%BD%95%E6%96%B9%E6%B3%95%E6%89%A7%E8%A1%8C%E8%80%97%E6%97%B6"><span class="toc-number">2.1.</span> <span class="toc-text">1）MdcDot 用来记录方法执行耗时</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2%EF%BC%89ReqRecord%EF%BC%88%E4%BD%A0%E7%9C%8B%E5%88%B0%E7%9A%84-req-%E5%A4%84%E7%90%86%EF%BC%89%E6%98%AF-Filter-%E5%B1%82%E7%9A%84%E8%AF%B7%E6%B1%82%E7%BA%A7%E6%97%A5%E5%BF%97"><span class="toc-number">2.2.</span> <span class="toc-text">2）ReqRecord（你看到的 req 处理）是 Filter 层的请求级日志</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3%EF%BC%89%E4%B8%A4%E4%B8%AA%E9%83%BD%E7%94%A8-MdcUtil%EF%BC%8C%E4%BC%9A%E4%B8%8D%E4%BC%9A%E8%A6%86%E7%9B%96-traceId%EF%BC%9F"><span class="toc-number">2.3.</span> <span class="toc-text">3）两个都用 MdcUtil，会不会覆盖 traceId？</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-Repository-%E4%B8%8E-Service-%E7%9A%84%E5%8C%BA%E5%88%AB%EF%BC%9F%E4%BB%80%E4%B9%88%E6%97%B6%E5%80%99%E5%88%86%E5%B1%82%EF%BC%9F"><span class="toc-number">3.</span> <span class="toc-text">2. Repository 与 Service 的区别？什么时候分层？</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Repository%EF%BC%88DAO%EF%BC%89%E8%81%8C%E8%B4%A3"><span class="toc-number">3.1.</span> <span class="toc-text">Repository（DAO）职责</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Service-%E7%9A%84%E8%81%8C%E8%B4%A3"><span class="toc-number">3.2.</span> <span class="toc-text">Service 的职责</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%97%B6%E5%80%99%E9%9C%80%E8%A6%81%E5%88%86%EF%BC%9F"><span class="toc-number">3.3.</span> <span class="toc-text">什么时候需要分？</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-%E4%B8%BA%E4%BB%80%E4%B9%88-MyBatis-Plus-%E8%A6%81%E6%8F%90%E4%BE%9B-Service-CRUD%EF%BC%9F%E5%92%8C%E7%9B%B4%E6%8E%A5%E5%9C%A8-Service-%E8%B0%83-Mapper-%E6%9C%89%E4%BB%80%E4%B9%88%E5%8C%BA%E5%88%AB%EF%BC%9F"><span class="toc-number">4.</span> <span class="toc-text">3. 为什么 MyBatis-Plus 要提供 Service CRUD？和直接在 Service 调 Mapper 有什么区别？</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E2%91%A0-MyBatis-Plus-%E7%9A%84-Service-CRUD-%E6%98%AF%E9%80%9A%E7%94%A8%E4%B8%9A%E5%8A%A1%E6%9C%8D%E5%8A%A1%E5%B1%82%E7%9A%84%E6%A8%A1%E6%9D%BF"><span class="toc-number">4.1.</span> <span class="toc-text">① MyBatis-Plus 的 Service CRUD 是通用业务服务层的模板</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E2%91%A1-%E4%BD%A0%E5%AE%8C%E5%85%A8%E5%8F%AF%E4%BB%A5%E4%B8%8D%E7%BB%A7%E6%89%BF-IService%EF%BC%8C%E4%BD%86%E4%BD%A0%E4%BC%9A%E5%A4%9A%E5%86%99%E5%A4%A7%E9%87%8F%E9%87%8D%E5%A4%8D%E4%BB%A3%E7%A0%81"><span class="toc-number">4.2.</span> <span class="toc-text">② 你完全可以不继承 IService，但你会多写大量重复代码</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%83%85%E5%86%B51%EF%BC%9A%E7%BC%96%E8%AF%91%E5%99%A8%E4%BF%9D%E7%95%99%E4%BA%86%E5%8F%82%E6%95%B0%E5%90%8D%EF%BC%88%E9%BB%98%E8%AE%A4%E6%83%85%E5%86%B5%E8%87%AA-JDK8-%E5%90%8E%E5%A4%A7%E5%A4%9A%E6%95%B0-IDE-%E4%BC%9A%E5%BC%80%E5%90%AF%EF%BC%89"><span class="toc-number">4.2.1.</span> <span class="toc-text">情况1：编译器保留了参数名（默认情况自 JDK8 后大多数 IDE 会开启）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%83%85%E5%86%B52%EF%BC%9A%E9%A1%B9%E7%9B%AE%E6%B2%A1%E6%9C%89%E5%90%AF%E7%94%A8%E5%8F%82%E6%95%B0%E5%90%8D%E4%BF%9D%E7%95%99%E5%8A%9F%E8%83%BD%EF%BC%88%E6%9F%90%E4%BA%9B%E7%8E%AF%E5%A2%83%E6%9C%AA%E5%BC%80%E5%90%AF-parameters%EF%BC%89"><span class="toc-number">4.2.2.</span> <span class="toc-text">情况2：项目没有启用参数名保留功能（某些环境未开启 -parameters）</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#5-TableId-type-IdType-AUTO-%E4%B8%BA%E4%BD%95%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%8D%E5%BB%BA%E7%BA%A6%E6%9D%9F%EF%BC%9F"><span class="toc-number">5.</span> <span class="toc-text">5. @TableId(type &#x3D; IdType.AUTO) 为何数据库不建约束？</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1%EF%BC%89%E8%B7%A8%E6%95%B0%E6%8D%AE%E5%BA%93%E5%85%BC%E5%AE%B9"><span class="toc-number">5.1.</span> <span class="toc-text">1）跨数据库兼容</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2%EF%BC%89%E6%96%B9%E4%BE%BF%E8%BF%81%E7%A7%BB%EF%BC%88%E6%AF%94%E5%A6%82%E5%88%87%E6%8D%A2%E5%88%B0%E9%9B%AA%E8%8A%B1%E7%AE%97%E6%B3%95%EF%BC%89"><span class="toc-number">5.2.</span> <span class="toc-text">2）方便迁移（比如切换到雪花算法）</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%88%91%E8%8D%89%E5%90%93%E5%93%AD%E4%BA%86"><span class="toc-number">6.</span> <span class="toc-text">我草吓哭了</span></a></li></ol>
             </div>
         <!-- sidebar -->
         <div class="sidebar sidebar-hide">
@@ -656,15 +778,20 @@ p.spoiler {
         
         
         
+        
     <div class="total-and-search">
         <div class="total-archive">
-        Total : 31
+        Total : 32
         </div>
         <!-- search  -->
     </div>
     <div class="post-archive">
             <div class="archive-year"> 2025 </div>
             <ul class="year-list">
+        <li class="archive-post-item">
+            <span class="archive-post-date">12/11</span>
+            <a class="archive-post-title" href="/posts/5d2bcff8.html">Mybatis-Plus</a>
+        </li>
         <li class="archive-post-item">
             <span class="archive-post-date">12/03</span>
             <a class="archive-post-title" href="/posts/a477be03.html">nginx</a>
