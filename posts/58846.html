@@ -10,12 +10,12 @@
     <meta name="copyright" content="">
         <meta name="keywords" content="hexo,hexo-theme,hexo-blog">
     <meta name="description" content="">
-    <meta name="description" content="话说async就是异步，本来以为异步就是多线程，不过在中途学untiy的时候发现并不是一个东西，多线程只是异步的一种实现方式，平时提到异步更多的是说另一种方式协程。详见">
+    <meta name="description" content="本来以为异步就是多线程，后来发现多线程只是异步的一种实现方式，平时提到异步更多的是说另一种方式协程。神秘链接">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Java多线程">
 <meta property="og:url" content="http://example.com/posts/58846.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="话说async就是异步，本来以为异步就是多线程，不过在中途学untiy的时候发现并不是一个东西，多线程只是异步的一种实现方式，平时提到异步更多的是说另一种方式协程。详见">
+<meta property="og:description" content="本来以为异步就是多线程，后来发现多线程只是异步的一种实现方式，平时提到异步更多的是说另一种方式协程。神秘链接">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://example.com/images/Java%E5%A4%9A%E7%BA%BF%E7%A8%8B/1.png">
 <meta property="og:image" content="http://example.com/images/Java%E5%A4%9A%E7%BA%BF%E7%A8%8B/2.png">
@@ -24,7 +24,7 @@
 <meta property="og:image" content="http://example.com/images/Java%E5%A4%9A%E7%BA%BF%E7%A8%8B/5.png">
 <meta property="og:image" content="http://example.com/images/Java%E5%A4%9A%E7%BA%BF%E7%A8%8B/7.png">
 <meta property="article:published_time" content="2024-10-13T08:07:42.000Z">
-<meta property="article:modified_time" content="2025-12-03T06:07:45.126Z">
+<meta property="article:modified_time" content="2025-12-28T10:44:39.122Z">
 <meta property="article:tag" content="learn">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="http://example.com/images/Java%E5%A4%9A%E7%BA%BF%E7%A8%8B/1.png">
@@ -502,7 +502,7 @@ p.spoiler {
             <div class="container container-unloaded">
                 <main class="main post-page">
     <article class="article-entry">
-        <link rel="stylesheet" type="text&#x2F;css" href="https://cdn.jsdelivr.net/npm/hexo-tag-hint@0.3.1/dist/hexo-tag-hint.min.css"><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><p>话说async就是异步，本来以为异步就是多线程，不过在中途学untiy的时候发现并不是一个东西，多线程只是异步的一种实现方式，平时提到异步更多的是说另一种方式协程。<br><a target="_blank" rel="noopener" href="https://blog.csdn.net/bwkair/article/details/112255765">详见</a><br><span id="more"></span></p>
+        <link rel="stylesheet" type="text&#x2F;css" href="https://cdn.jsdelivr.net/npm/hexo-tag-hint@0.3.1/dist/hexo-tag-hint.min.css"><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><p>本来以为异步就是多线程，后来发现多线程只是异步的一种实现方式，平时提到异步更多的是说另一种方式协程。<br><a target="_blank" rel="noopener" href="https://blog.csdn.net/bwkair/article/details/112255765">神秘链接</a><br><span id="more"></span></p>
 <h1 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h1><h2 id="进程-amp-线程"><a href="#进程-amp-线程" class="headerlink" title="进程&amp;线程"></a>进程&amp;线程</h2><p>进程：程序的基本执行实体<br>线程：操作系统能够进行运算调度的最小单位，它被包含在进程之中，是进程中的实际运作单位。<br><strong>java默认有几个线程? 两个 main线程 gc线程</strong></p>
 <h2 id="多线程的应用场景"><a href="#多线程的应用场景" class="headerlink" title="多线程的应用场景"></a>多线程的应用场景</h2><ul>
 <li>拷贝、迁移大文件</li>
@@ -777,15 +777,20 @@ p.spoiler {
         
         
         
+        
     <div class="total-and-search">
         <div class="total-archive">
-        Total : 32
+        Total : 33
         </div>
         <!-- search  -->
     </div>
     <div class="post-archive">
             <div class="archive-year"> 2025 </div>
             <ul class="year-list">
+        <li class="archive-post-item">
+            <span class="archive-post-date">12/28</span>
+            <a class="archive-post-title" href="/posts/808644e3.html">Cache</a>
+        </li>
         <li class="archive-post-item">
             <span class="archive-post-date">12/11</span>
             <a class="archive-post-title" href="/posts/5d2bcff8.html">Mybatis-Plus</a>
@@ -949,13 +954,13 @@ p.spoiler {
 
         <div class="sidebar-panel-categories">
     <div class="sidebar-categories-name">
-        <span class="sidebar-category-name" data-categories="语言拓展">
-            <span class="iconfont-archer">&#xe60a;</span>
-            语言拓展
-        </span>
         <span class="sidebar-category-name" data-categories="unity">
             <span class="iconfont-archer">&#xe60a;</span>
             unity
+        </span>
+        <span class="sidebar-category-name" data-categories="语言拓展">
+            <span class="iconfont-archer">&#xe60a;</span>
+            语言拓展
         </span>
         <span class="sidebar-category-name" data-categories="系统技术">
             <span class="iconfont-archer">&#xe60a;</span>
@@ -977,13 +982,13 @@ p.spoiler {
             <span class="iconfont-archer">&#xe60a;</span>
             前端
         </span>
-        <span class="sidebar-category-name" data-categories="chat">
-            <span class="iconfont-archer">&#xe60a;</span>
-            chat
-        </span>
         <span class="sidebar-category-name" data-categories="secrets">
             <span class="iconfont-archer">&#xe60a;</span>
             secrets
+        </span>
+        <span class="sidebar-category-name" data-categories="chat">
+            <span class="iconfont-archer">&#xe60a;</span>
+            chat
         </span>
         <span class="sidebar-category-name" data-categories="算法">
             <span class="iconfont-archer">&#xe60a;</span>

@@ -18,7 +18,7 @@
 <meta property="og:description" content="未整理的文件">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2025-11-28T05:25:39.000Z">
-<meta property="article:modified_time" content="2025-12-12T10:21:31.473Z">
+<meta property="article:modified_time" content="2025-12-28T08:47:25.938Z">
 <meta property="article:tag" content="learn">
 <meta name="twitter:card" content="summary">
     <meta http-equiv="Cache-control" content="no-cache">
@@ -616,7 +616,40 @@ p.spoiler {
 <p>项目越大越喜欢用 Java 控制，而非 DBA 控制。</p>
 </blockquote>
 </li>
-<li></li>
+<li><p>为何这个是用的传统渲染页面？</p>
+</li>
+<li><p>```java<br> @Controller<br> public class IndexController extends BaseViewController {</p>
+<pre><code> @Autowired
+ private IndexRecommendHelper indexRecommendHelper;
+
+ @GetMapping(path = &#123;&quot;/&quot;, &quot;&quot;, &quot;/index&quot;, &quot;/login&quot;&#125;)
+ public String index(Model model, HttpServletRequest request) &#123;
+     String activeTab = request.getParameter(&quot;category&quot;);
+     IndexVo vo = indexRecommendHelper.buildIndexVo(activeTab);
+     model.addAttribute(&quot;vo&quot;, vo);
+     return &quot;views/home/index&quot;;
+ &#125;
+</code></pre><p> }</p>
+ <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&gt; ## 为什么不直接在 Controller 调 Service？</span><br><span class="line">&gt;</span><br><span class="line">&gt; 这是你问得最**专业**的点。</span><br><span class="line">&gt;</span><br><span class="line">&gt; ### ❌ 反模式（Controller 直接堆 Service）</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>ArticleService<br>TagService<br>UserService<br>RecommendService<br>…</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">Controller 会变成：</span><br><span class="line"></span><br><span class="line">- 巨大</span><br><span class="line">- 难维护</span><br><span class="line">- 逻辑混乱</span><br><span class="line">- 改一处牵一堆</span><br><span class="line"></span><br><span class="line">------</span><br><span class="line"></span><br><span class="line">### ✅ 这里采用的是「Helper / Facade 层」</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>Controller<br>   ↓<br>IndexRecommendHelper   ← 聚合逻辑<br>   ↓<br>多个 Service</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">`IndexRecommendHelper` 的职责是：</span><br><span class="line"></span><br><span class="line">&gt; **“为某一个页面 / 场景，组装完整的业务数据”**</span><br><span class="line"></span><br><span class="line">------</span><br><span class="line"></span><br><span class="line">## 五、这样设计的好处（非常重要）</span><br><span class="line"></span><br><span class="line">### 1️⃣ Controller 极度干净</span><br><span class="line"></span><br><span class="line">Controller 只做 3 件事：</span><br><span class="line"></span><br><span class="line">1. 接收请求</span><br><span class="line">2. 调用场景服务</span><br><span class="line">3. 返回视图</span><br><span class="line"></span><br><span class="line">------</span><br><span class="line"></span><br><span class="line">### 2️⃣ Service 保持“单一业务职责”</span><br><span class="line"></span><br><span class="line">- ArticleService：文章</span><br><span class="line">- TagService：标签</span><br><span class="line">- UserService：用户</span><br><span class="line"></span><br><span class="line">不污染 Service 层</span><br><span class="line"></span><br><span class="line">------</span><br><span class="line"></span><br><span class="line">### 3️⃣ 页面级逻辑可以复用</span><br><span class="line"></span><br><span class="line">今天是：</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>buildIndexVo()</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">明天可能是：</span><br><span class="line"></span><br><span class="line">- PC 首页</span><br><span class="line">- 移动端首页</span><br><span class="line">- 小程序首页</span><br><span class="line"></span><br><span class="line">**Helper 可以复用，Controller 各自不同**</span><br><span class="line"></span><br><span class="line">------</span><br><span class="line"></span><br><span class="line">### 4️⃣ 非常适合「复杂页面」</span><br><span class="line"></span><br><span class="line">首页通常是：</span><br><span class="line"></span><br><span class="line">- 数据多</span><br><span class="line">- 来源多</span><br><span class="line">- 规则多</span><br><span class="line">- 经常改</span><br><span class="line"></span><br><span class="line">Helper / Facade 是最合理的位置。</span><br><span class="line"></span><br><span class="line">------</span><br><span class="line"></span><br><span class="line">## 六、你可以这样理解它的角色</span><br><span class="line"></span><br><span class="line">| 层级            | 角色               |</span><br><span class="line">| --------------- | ------------------ |</span><br><span class="line">| Controller      | HTTP + 路由 + 视图 |</span><br><span class="line">| Helper / Facade | 页面级业务编排     |</span><br><span class="line">| Service         | 单一领域业务       |</span><br><span class="line">| VO              | 页面数据模型       |</span><br><span class="line"></span><br><span class="line">------</span><br><span class="line"></span><br><span class="line">## 七、一句话总结（面试级）</span><br><span class="line"></span><br><span class="line">&gt; 这段代码是一个 **MVC 页面 Controller**，</span><br><span class="line">&gt;  它不直接调用 Service，而是通过 Helper 聚合首页所需的业务数据，</span><br><span class="line">&gt;  最终将 VO 注入 Model 并返回视图路径。</span><br><span class="line">&gt;  这种设计降低了 Controller 复杂度，提高了页面逻辑的可维护性和复用性。</span><br><span class="line"></span><br><span class="line">Spring MVC 的流程是：</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>Controller<br>  ↓ 返回 “views/home/index”<br>ViewResolver<br>  ↓ 拼接前缀 + 后缀<br>模板引擎（Thymeleaf / JSP）<br>  ↓ 渲染 HTML<br>浏览器收到 HTML</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">例如（常见配置）：</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>spring.thymeleaf.prefix=classpath:/templates/<br>spring.thymeleaf.suffix=.html</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">那么：</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>return “views/home/index”;</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">最终渲染的是：</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>classpath:/templates/views/home/index.html</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">## 1️⃣ template.execute(...) —— 为什么要这么写？</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>return template.execute(new RedisCallback<List<ImmutablePair<String, Double>&gt;&gt;() {</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">### 这是在干什么？</span><br><span class="line"></span><br><span class="line">- `template` 是 `RedisTemplate`</span><br><span class="line">- `execute` 允许你：</span><br><span class="line">  - **直接拿到底层 RedisConnection**</span><br><span class="line">  - 使用 Redis 的原生命令（性能更好、功能更全）</span><br><span class="line"></span><br><span class="line">### 为什么不用 `redisTemplate.opsForZSet()`？</span><br><span class="line"></span><br><span class="line">因为：</span><br><span class="line"></span><br><span class="line">- `zRangeWithScores` 在某些版本/泛型下不好用</span><br><span class="line">- 直接用 `RedisConnection` **最稳定、最贴近 Redis 原生命令**</span><br><span class="line"></span><br><span class="line">👉 **这是偏“底层工具类”的写法**</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">| 数据结构 | 核心能力    | 最典型用途     |</span><br><span class="line">| -------- | ----------- | -------------- |</span><br><span class="line">| String   | 单值 / 计数 | 缓存、计数、锁 |</span><br><span class="line">| List     | 有序        | 队列、历史     |</span><br><span class="line">| Set      | 去重        | 白名单、点赞   |</span><br><span class="line">| ZSet     | 排序        | 排行榜         |</span><br><span class="line">| Hash     | 结构化      | 对象缓存       |</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">```java</span><br><span class="line">@Test</span><br><span class="line">public void testExecute() &#123;</span><br><span class="line">   // 使用 execute 方法执行 Redis 命令</span><br><span class="line">   redisTemplate.execute(new RedisCallback&lt;Object&gt;() &#123;</span><br><span class="line">       @Override</span><br><span class="line">       public Object doInRedis(RedisConnection connection) throws DataAccessException &#123;</span><br><span class="line">           // 执行 Redis 命令，例如 set 和 get 命令</span><br><span class="line">           connection.set(&quot;itwanger&quot;.getBytes(), &quot;沉默王二&quot;.getBytes());</span><br><span class="line">           byte[] value = connection.get(&quot;itwanger&quot;.getBytes());</span><br><span class="line">           String strValue = new String(value);</span><br><span class="line">           // 输出获取到的值</span><br><span class="line">           System.out.println(strValue);</span><br><span class="line">           return null;</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</blockquote>
+</li>
 </ol>
 <h1 id="我草吓哭了"><a href="#我草吓哭了" class="headerlink" title="我草吓哭了"></a>我草吓哭了</h1><ul>
 <li>构建工具：后端（Maven、Gradle）、前端（Webpack、Vite）</li>
@@ -779,15 +812,20 @@ p.spoiler {
         
         
         
+        
     <div class="total-and-search">
         <div class="total-archive">
-        Total : 32
+        Total : 33
         </div>
         <!-- search  -->
     </div>
     <div class="post-archive">
             <div class="archive-year"> 2025 </div>
             <ul class="year-list">
+        <li class="archive-post-item">
+            <span class="archive-post-date">12/28</span>
+            <a class="archive-post-title" href="/posts/808644e3.html">Cache</a>
+        </li>
         <li class="archive-post-item">
             <span class="archive-post-date">12/11</span>
             <a class="archive-post-title" href="/posts/5d2bcff8.html">Mybatis-Plus</a>
@@ -951,13 +989,13 @@ p.spoiler {
 
         <div class="sidebar-panel-categories">
     <div class="sidebar-categories-name">
-        <span class="sidebar-category-name" data-categories="语言拓展">
-            <span class="iconfont-archer">&#xe60a;</span>
-            语言拓展
-        </span>
         <span class="sidebar-category-name" data-categories="unity">
             <span class="iconfont-archer">&#xe60a;</span>
             unity
+        </span>
+        <span class="sidebar-category-name" data-categories="语言拓展">
+            <span class="iconfont-archer">&#xe60a;</span>
+            语言拓展
         </span>
         <span class="sidebar-category-name" data-categories="系统技术">
             <span class="iconfont-archer">&#xe60a;</span>
@@ -979,13 +1017,13 @@ p.spoiler {
             <span class="iconfont-archer">&#xe60a;</span>
             前端
         </span>
-        <span class="sidebar-category-name" data-categories="chat">
-            <span class="iconfont-archer">&#xe60a;</span>
-            chat
-        </span>
         <span class="sidebar-category-name" data-categories="secrets">
             <span class="iconfont-archer">&#xe60a;</span>
             secrets
+        </span>
+        <span class="sidebar-category-name" data-categories="chat">
+            <span class="iconfont-archer">&#xe60a;</span>
+            chat
         </span>
         <span class="sidebar-category-name" data-categories="算法">
             <span class="iconfont-archer">&#xe60a;</span>
