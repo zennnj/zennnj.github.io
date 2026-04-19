@@ -18,7 +18,7 @@
 <meta property="og:description" content="cache，cash">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2025-12-28T08:47:13.000Z">
-<meta property="article:modified_time" content="2025-12-28T10:43:51.113Z">
+<meta property="article:modified_time" content="2026-03-18T08:15:55.460Z">
 <meta property="article:tag" content="learn">
 <meta name="twitter:card" content="summary">
     <meta http-equiv="Cache-control" content="no-cache">
@@ -535,12 +535,78 @@ p.spoiler {
 <p>该方法用于创建和返回一个新的缓存实例。在调用该方法之前，需要进行一些其他的配置，比如设置缓存的最大大小、过期时间等。</p>
 </li>
 </ol>
+<p>这几个问题非常有深度，直指 Spring Cache 在生产环境中的细节坑点。我们一个一个来拆解。</p>
+<hr>
+<h2 id="1-CacheEvict-异常时，缓存会被失效吗？"><a href="#1-CacheEvict-异常时，缓存会被失效吗？" class="headerlink" title="1. @CacheEvict 异常时，缓存会被失效吗？"></a>1. @CacheEvict 异常时，缓存会被失效吗？</h2><p><strong>结论：默认情况下，先执行方法，后删缓存。如果方法抛出异常，缓存不会被失效。</strong></p>
+<ul>
+<li><p><strong>执行顺序</strong>：Spring 默认在方法<strong>成功返回后</strong>才触发清理逻辑。如果方法内部报错，清理逻辑就不会执行。</p>
+</li>
+<li><p><strong>如何改变？</strong>：如果你想在方法执行前就删掉缓存（无论成功失败），需要设置 <code>beforeInvocation = true</code>。</p>
+<blockquote>
+<p><strong>应用场景</strong>：比如你非常看重数据的实时性，宁可错杀（删了缓存让后面的人去查库）也不愿让用户看到旧数据，就用 <code>beforeInvocation = true</code>。</p>
+</blockquote>
+</li>
+</ul>
+<hr>
+<h2 id="2-一个方法放多个缓存注解可行吗？（多级缓存方案）"><a href="#2-一个方法放多个缓存注解可行吗？（多级缓存方案）" class="headerlink" title="2. 一个方法放多个缓存注解可行吗？（多级缓存方案）"></a>2. 一个方法放多个缓存注解可行吗？（多级缓存方案）</h2><p><strong>结论：直接放两个 <code>@Cacheable</code> 是不行的，Java 语法不支持重复注解。但可以使用 <code>@Caching</code> 包装。</strong></p>
+<ul>
+<li><strong>可行性</strong>：使用 <code>@Caching(cacheable = &#123; @Cacheable(name=&quot;L1&quot;), @Cacheable(name=&quot;L2&quot;) &#125;)</code>。</li>
+<li><strong>读取顺序</strong>：Spring 会按照注解定义的顺序依次查找。<ul>
+<li>先找 L1（Caffeine），找到了直接返回。</li>
+<li>L1 没找到，找 L2（Redis），找到了就把结果存入 L1 并返回。</li>
+<li>都没找到，执行方法，然后把结果同时存入 L1 和 L2。</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="3-sync-属性是支持“异步写入”吗？"><a href="#3-sync-属性是支持“异步写入”吗？" class="headerlink" title="3. sync 属性是支持“异步写入”吗？"></a>3. sync 属性是支持“异步写入”吗？</h2><p><strong>结论：不是。<code>sync = true</code> 是为了解决“缓存击穿”问题的同步锁，它是同步的，不是异步的。</strong></p>
+<ul>
+<li><strong>它的作用</strong>：当缓存失效的一瞬间，有 1000 个请求进来。<ul>
+<li><code>sync = false</code>（默认）：1000 个请求发现没缓存，全都冲向数据库。</li>
+<li><code>sync = true</code>：这 1000 个请求会排队，只放 1 个去查库，剩下的等它查完直接拿结果。</li>
+</ul>
+</li>
+<li><strong>验证方法</strong>：<ol>
+<li>在方法内部写个 <code>Thread.sleep(2000)</code> 模拟慢查询。</li>
+<li>用 JMeter 同时发 10 个并发请求。</li>
+<li>看日志，如果方法只被调用了 1 次，说明 <code>sync</code> 生效了；如果调用了 10 次，说明没生效。</li>
+</ol>
+</li>
+</ul>
+<hr>
+<h2 id="4-不同类型缓存，过期时间不一致怎么处理？"><a href="#4-不同类型缓存，过期时间不一致怎么处理？" class="headerlink" title="4. 不同类型缓存，过期时间不一致怎么处理？"></a>4. 不同类型缓存，过期时间不一致怎么处理？</h2><p><strong>结论：不能共用一个配置。有两种主流处理方案：</strong></p>
+<ul>
+<li><p><strong>方案 A：声明多个 CacheManager</strong>。</p>
+<p>在 <code>ForumCoreAutoConfig</code> 里定义 <code>manager5Min</code> 和 <code>manager1Hour</code>，然后在注解里手动指定 <code>cacheManager = &quot;manager5Min&quot;</code>。</p>
+</li>
+<li><p><strong>方案 B：自定义缓存解析器</strong>。</p>
+<p>在 <code>cacheNames</code> 里带上过期时间（如 <code>cacheNames = &quot;article#3600&quot;</code>），然后重写 <code>CacheManager</code>，让它解析这个 <code>#</code> 后面的数字来动态设置过期时间。</p>
+</li>
+</ul>
+<hr>
+<h2 id="5-如何直接使用-Caffeine-体现它的魅力？"><a href="#5-如何直接使用-Caffeine-体现它的魅力？" class="headerlink" title="5. 如何直接使用 Caffeine 体现它的魅力？"></a>5. 如何直接使用 Caffeine 体现它的魅力？</h2><p><strong>直接使用 Caffeine 的魅力在于“精细化控制”和“高性能响应”。</strong></p>
+<p>相比于 Spring 注解的“全自动”，手动调用（如你看到的 <code>ProxyCenter</code> 里的做法）可以实现以下高级功能：</p>
+<ul>
+<li><strong>权重置换</strong>：不是根据条数限制，而是根据对象占用的内存大小来踢出缓存。</li>
+<li><strong>监控统计</strong>：调用 <code>.stats()</code> 可以看到缓存命中率、加载耗时、被踢出的次数。</li>
+<li><strong>软引用/弱引用</strong>：当 JVM 内存不足时，自动回收缓存对象，防止 OOM。</li>
+</ul>
+<p><strong>代码示例：</strong></p>
+<p>Java</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">Cache&lt;String, Object&gt; manualCache = Caffeine.newBuilder()</span><br><span class="line">    .expireAfterWrite(10, TimeUnit.MINUTES)</span><br><span class="line">    .maximumSize(10_000)</span><br><span class="line">    .recordStats() // 开启监控</span><br><span class="line">    .build();</span><br><span class="line"></span><br><span class="line">// 手动存取</span><br><span class="line">Object value = manualCache.get(key, k -&gt; &quot;从数据库查出来的值&quot;);</span><br><span class="line">System.out.println(manualCache.stats()); // 查看命中率</span><br></pre></td></tr></table></figure>
+<hr>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>Spring Cache 是为了<strong>开发效率</strong>，它牺牲了一些灵活性（如不同过期时间的配置比较麻烦）。而直接使用 Caffeine 是为了<strong>运行效率和掌控力</strong>。</p>
+<p><strong>既然聊到了缓存失效和异常，你想看看如何通过 <code>@CacheEvict</code> 配合特定的参数（比如只根据文章 ID 删缓存，不看作者）来实现精准的缓存清理吗？</strong></p>
 <link rel="stylesheet" href="/css/folder.css" type="text/css"><script src="/js/folder.js" type="text/javascript" async></script>
     </article>
     <!-- license -->
     <!-- paginator -->
     <ul class="post-paginator">
         <li class="next">
+                <div class="nextSlogan">Next Post</div>
+                <a href="/posts/9f62ea8d.html" title="AI相关">
+                    <div class="nextTitle">AI相关</div>
+                </a>
         </li>
         <li class="previous">
                 <div class="prevSlogan">Previous Post</div>
@@ -598,7 +664,7 @@ p.spoiler {
                 <div class="toc-catalog">
                     <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
                 </div>
-                <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Spring-Cache"><span class="toc-number">1.</span> <span class="toc-text">Spring Cache</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Caching"><span class="toc-number">1.1.</span> <span class="toc-text">@Caching</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#CacheConfig"><span class="toc-number">1.2.</span> <span class="toc-text">@CacheConfig</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Gauva"><span class="toc-number">2.</span> <span class="toc-text">Gauva</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Cache-Builder"><span class="toc-number">2.1.</span> <span class="toc-text">Cache Builder</span></a></li></ol></li></ol>
+                <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Spring-Cache"><span class="toc-number">1.</span> <span class="toc-text">Spring Cache</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Caching"><span class="toc-number">1.1.</span> <span class="toc-text">@Caching</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#CacheConfig"><span class="toc-number">1.2.</span> <span class="toc-text">@CacheConfig</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Gauva"><span class="toc-number">2.</span> <span class="toc-text">Gauva</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Cache-Builder"><span class="toc-number">2.1.</span> <span class="toc-text">Cache Builder</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-CacheEvict-%E5%BC%82%E5%B8%B8%E6%97%B6%EF%BC%8C%E7%BC%93%E5%AD%98%E4%BC%9A%E8%A2%AB%E5%A4%B1%E6%95%88%E5%90%97%EF%BC%9F"><span class="toc-number">2.2.</span> <span class="toc-text">1. @CacheEvict 异常时，缓存会被失效吗？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E4%B8%80%E4%B8%AA%E6%96%B9%E6%B3%95%E6%94%BE%E5%A4%9A%E4%B8%AA%E7%BC%93%E5%AD%98%E6%B3%A8%E8%A7%A3%E5%8F%AF%E8%A1%8C%E5%90%97%EF%BC%9F%EF%BC%88%E5%A4%9A%E7%BA%A7%E7%BC%93%E5%AD%98%E6%96%B9%E6%A1%88%EF%BC%89"><span class="toc-number">2.3.</span> <span class="toc-text">2. 一个方法放多个缓存注解可行吗？（多级缓存方案）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-sync-%E5%B1%9E%E6%80%A7%E6%98%AF%E6%94%AF%E6%8C%81%E2%80%9C%E5%BC%82%E6%AD%A5%E5%86%99%E5%85%A5%E2%80%9D%E5%90%97%EF%BC%9F"><span class="toc-number">2.4.</span> <span class="toc-text">3. sync 属性是支持“异步写入”吗？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E4%B8%8D%E5%90%8C%E7%B1%BB%E5%9E%8B%E7%BC%93%E5%AD%98%EF%BC%8C%E8%BF%87%E6%9C%9F%E6%97%B6%E9%97%B4%E4%B8%8D%E4%B8%80%E8%87%B4%E6%80%8E%E4%B9%88%E5%A4%84%E7%90%86%EF%BC%9F"><span class="toc-number">2.5.</span> <span class="toc-text">4. 不同类型缓存，过期时间不一致怎么处理？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-%E5%A6%82%E4%BD%95%E7%9B%B4%E6%8E%A5%E4%BD%BF%E7%94%A8-Caffeine-%E4%BD%93%E7%8E%B0%E5%AE%83%E7%9A%84%E9%AD%85%E5%8A%9B%EF%BC%9F"><span class="toc-number">2.6.</span> <span class="toc-text">5. 如何直接使用 Caffeine 体现它的魅力？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-number">2.7.</span> <span class="toc-text">总结</span></a></li></ol></li></ol>
             </div>
         <!-- sidebar -->
         <div class="sidebar sidebar-hide">
@@ -643,13 +709,31 @@ p.spoiler {
         
         
         
+        
+        
+        
     <div class="total-and-search">
         <div class="total-archive">
-        Total : 33
+        Total : 36
         </div>
         <!-- search  -->
     </div>
     <div class="post-archive">
+            <div class="archive-year"> 2026 </div>
+            <ul class="year-list">
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/14</span>
+            <a class="archive-post-title" href="/posts/ad13f2a0.html">复盘</a>
+        </li>
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/13</span>
+            <a class="archive-post-title" href="/posts/d48132d3.html">ElasticSearch</a>
+        </li>
+        <li class="archive-post-item">
+            <span class="archive-post-date">03/15</span>
+            <a class="archive-post-title" href="/posts/9f62ea8d.html">AI相关</a>
+        </li>
+                </ul>
             <div class="archive-year"> 2025 </div>
             <ul class="year-list">
         <li class="archive-post-item">
@@ -682,7 +766,7 @@ p.spoiler {
         </li>
         <li class="archive-post-item">
             <span class="archive-post-date">10/16</span>
-            <a class="archive-post-title" href="/posts/9a7d5a13.html">Kafka</a>
+            <a class="archive-post-title" href="/posts/9a7d5a13.html">Kafka & RabbitMQ</a>
         </li>
         <li class="archive-post-item">
             <span class="archive-post-date">09/28</span>

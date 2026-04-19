@@ -17,10 +17,12 @@
 <meta property="og:site_name" content="Hexo">
 <meta property="og:description" content="未整理的文件">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="d:\blog\source\images\temp\image-20260325203052156.png">
 <meta property="article:published_time" content="2025-11-28T05:25:39.000Z">
-<meta property="article:modified_time" content="2025-12-28T08:47:25.938Z">
+<meta property="article:modified_time" content="2026-04-19T13:31:05.083Z">
 <meta property="article:tag" content="learn">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="d:\blog\source\images\temp\image-20260325203052156.png">
     <meta http-equiv="Cache-control" content="no-cache">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <link rel="icon" href="/assets/my.ico">
@@ -496,6 +498,188 @@ p.spoiler {
                 <main class="main post-page">
     <article class="article-entry">
         <link rel="stylesheet" type="text&#x2F;css" href="https://cdn.jsdelivr.net/npm/hexo-tag-hint@0.3.1/dist/hexo-tag-hint.min.css"><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><p>未整理的文件<br><span id="more"></span></p>
+<h2 id="在登录拦截器中封装全局上下文，基于ThreadLocal实现线程级用户身份共享，减少重复查询"><a href="#在登录拦截器中封装全局上下文，基于ThreadLocal实现线程级用户身份共享，减少重复查询" class="headerlink" title="在登录拦截器中封装全局上下文，基于ThreadLocal实现线程级用户身份共享，减少重复查询"></a>在登录拦截器中封装全局上下文，基于ThreadLocal实现线程级用户身份共享，减少重复查询</h2><ul>
+<li><strong>为什么要用 ThreadLocal？</strong> 不用它会有什么问题？（回答重点：线程隔离、减少参数透传）</li>
+<li><strong>ThreadLocal 的底层原理是什么？</strong>（回答重点：Thread 内部的 <code>ThreadLocalMap</code>，Key 是弱引用）</li>
+</ul>
+<ul>
+<li><p><strong>ThreadLocal 为什么会内存泄露？</strong> 你在项目中是怎么处理的？</p>
+</li>
+<li><p><strong>为什么 Key 要设计成弱引用？</strong> 如果是强引用会怎样？</p>
+<blockquote>
+<p> 如果 Key 是强引用，即使业务代码里已经把 <code>ThreadLocal</code> 变量设为 <code>null</code>（不再使用了），但因为当前线程的 <code>ThreadLocalMap</code> 还持有它的强引用，这个 <code>ThreadLocal</code> 对象就永远无法被回收，导致内存泄露。</p>
+<p>Value 是业务真正需要的数据。如果 Value 也是弱引用，可能你刚存进去，还没来得及用，就被 GC 回收了。</p>
+</blockquote>
+</li>
+<li><p><strong>拦截器中 <code>afterCompletion</code> 的作用是什么？</strong> 为什么必须在这里调用 <code>.remove()</code>？</p>
+</li>
+</ul>
+<ul>
+<li><p><strong>如果是异步编排（CompletableFuture）或开启了新线程，上下文还能拿到吗？</strong>（ 阿里开源的 <code>TransmittableThreadLocal</code>）</p>
+</li>
+<li><p><strong>在高并发下，如果使用线程池，ThreadLocal 会有什么坑？</strong>（回答重点：线程复用导致数据错乱）</p>
+<blockquote>
+<p>线程池中的线程是<strong>复用</strong>的。如果线程 A 完成了请求但没有清理 <code>ThreadLocal</code>，当请求 B 进来复用了这个线程时，<code>ReqInfoContext.getReqInfo()</code> 拿到的可能是线程 A 的用户信息。</p>
+</blockquote>
+</li>
+</ul>
+<p>确认以下细节：</p>
+<ol>
+<li><strong>拦截器的注册顺序：</strong> 确认你的 <code>LoginInterceptor</code> 是否在其他需要用户信息的拦截器之前执行。</li>
+<li><strong>ThreadLocal 的封装：</strong> 是否定义了一个 <code>UserHolder</code> 或 <code>BaseContext</code> 工具类？里面是否有 <code>remove()</code> 方法？</li>
+<li><strong>remove() 的调用时机：</strong> 确认 <code>remove()</code> 是写在拦截器的 <code>afterCompletion</code>（视图渲染后）还是 <code>postHandle</code>（方法执行后）？（正确做法是 <code>afterCompletion</code>，确保异常情况下也能释放）。</li>
+<li><strong>用户信息字段：</strong> 你存的是完整的 <code>UserDTO</code> 还是仅仅一个 <code>UserId</code>？（建议存精简后的 DTO，减少内存占用）。</li>
+</ol>
+<p>“在项目中，很多业务模块（如订单、收藏、评论）都需要获取当前登录用户的信息。如果每次都从 Session 或 Redis 里查，或者在 Controller 到 Service 的每一层都手动传 <code>userId</code> 参数，代码会非常臃肿且增加数据库压力。所以我设计了一个<strong>登录拦截器+ThreadLocal</strong>的方案。”</p>
+<p>“具体流程是：当请求到达后端，拦截器会先校验 Token。校验通过后，解析出用户信息，并存入自定义的 <code>UserContext</code> 容器中。</p>
+<p>这样在整个请求的下游（Service、Mapper、甚至工具类）中，只需要通过 <code>UserContext.getUser()</code> 就能直接获取当前线程绑定的用户信息，实现了<strong>线程级隔离</strong>。”</p>
+<p>“在使用过程中我也重点考虑了<strong>内存泄露</strong>问题。因为 Web 服务器通常使用<strong>线程池</strong>，线程是循环利用的。如果请求结束后不手动清理，该线程被复用时不仅会造成数据错乱，还会导致 <code>Entry</code> 对象无法被回收。</p>
+<p>因此，我利用拦截器的 <code>afterCompletion</code> 回调，在请求结束后的最后阶段强制调用 <code>threadLocal.remove()</code>，确保及时清理内存。”</p>
+<hr>
+<h2 id="构建Caffeine-Redis-多级缓存体系，提升首页流媒体、专栏等高频热点数据的访问吞吐能力，首页响-应耗时降低至80ms以内"><a href="#构建Caffeine-Redis-多级缓存体系，提升首页流媒体、专栏等高频热点数据的访问吞吐能力，首页响-应耗时降低至80ms以内" class="headerlink" title="构建Caffeine+Redis 多级缓存体系，提升首页流媒体、专栏等高频热点数据的访问吞吐能力，首页响 应耗时降低至80ms以内"></a>构建Caffeine+Redis 多级缓存体系，提升首页流媒体、专栏等高频热点数据的访问吞吐能力，首页响 应耗时降低至80ms以内</h2><ul>
+<li><strong>你是如何保证 Caffeine、Redis 和数据库三者数据一致的？</strong>（先删缓存还是后删？本地缓存怎么同步更新？）</li>
+<li><strong>如果某个节点修改了数据，其他服务器节点的本地缓存（Caffeine）如何失效？</strong>（回答重点：引入消息队列如 Redis Pub/Sub 或 RocketMQ 进行广播）。</li>
+</ul>
+<ul>
+<li><p><strong>为什么要用 Caffeine 而不是直接用 Guava 或 HashMap？</strong></p>
+<ul>
+<li><strong>HashMap</strong> 没有淘汰策略，会撑爆内存；</li>
+<li><strong>Guava</strong> 采用的是 LRU（最近最少使用）算法，容易被突发性的‘冷数据扫库’污染。</li>
+<li><strong>Caffeine 使用了 W-TinyLFU 算法</strong>：它不仅看数据是不是刚被访问（Recency），还会记录数据访问的频次（Frequency）。</li>
+</ul>
+<p>简单说：它能精准识别出哪些是真正的‘热数据’，哪些是‘偶尔被看一次’的干扰数据。这让首页这种热点集中的场景，<strong>命中率比 Guava 高出一截</strong>。”(踢人的时候先踢最不热的数据)</p>
+</li>
+<li><p><strong>你的多级缓存查询流程是怎样的？</strong>（本地 -&gt; 分布式 -&gt; DB）。</p>
+</li>
+<li><p><strong>本地缓存设多大？过期策略是什么？</strong>（回答重点：根据热点数据量和内存监控来定）。</p>
+</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 定义缓存管理器，配合Spring的 <span class="doctag">@Cache</span> 来使用</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@Bean(&quot;caffeineCacheManager&quot;)</span></span><br><span class="line">    <span class="keyword">public</span> CacheManager <span class="title function_">cacheManager</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="type">CaffeineCacheManager</span> <span class="variable">cacheManager</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">CaffeineCacheManager</span>();</span><br><span class="line">        cacheManager.setCaffeine(Caffeine.newBuilder().</span><br><span class="line">                <span class="comment">// 设置过期时间，写入后五分钟国企</span></span><br><span class="line">                        expireAfterWrite(<span class="number">5</span>, TimeUnit.MINUTES)</span><br><span class="line">                <span class="comment">// 初始化缓存空间大小</span></span><br><span class="line">                .initialCapacity(<span class="number">100</span>)</span><br><span class="line">                <span class="comment">// 最大的缓存条数</span></span><br><span class="line">                .maximumSize(<span class="number">200</span>)</span><br><span class="line">        );</span><br><span class="line">        <span class="keyword">return</span> cacheManager;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@PostConstruct</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">init</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="comment">// 这里借助手动解析配置信息，并实例化为Java POJO对象，来实现代理池的初始化</span></span><br><span class="line">        ProxyCenter.initProxyPool(proxyProperties.getProxy());</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p><strong>什么是“缓存击穿”？</strong> 如果首页某个热点专栏突然失效，大量请求压向 DB 怎么办？（回答重点：逻辑过期、互斥锁/双检锁）。</p>
+</li>
+<li><p><strong>如何防止本地缓存把内存撑爆？</strong>（</p>
+<blockquote>
+<p><strong>Hard Limit（硬限制）：</strong> 通过 <code>maximumSize</code> 或 <code>maximumWeight</code> 严格限制缓存个数/字节大小。一旦触达，立即触发淘汰。</p>
+<p><strong>Soft Values（软引用）：</strong> 配置 Caffeine 使用 <code>softValues()</code>。这意味着当 JVM 内存极其紧张、即将发生 OOM 之前，GC 会强行回收这些缓存对象来保命。</p>
+</blockquote>
+</li>
+</ul>
+<ul>
+<li><p><strong>80ms 是怎么测出来的？</strong> 优化前是多少？</p>
+<blockquote>
+<p>除了 F12 查看 Network 面板的响应时间，我还使用了 <strong>JMeter</strong> 进行压测，对比优化前后的 <strong>P99（99% 的请求耗时）</strong>。</p>
+<p><strong>优化前后的对比（建议数值）：</strong></p>
+<ul>
+<li><p><strong>优化前：</strong> 大约在 <strong>300ms - 500ms</strong> 左右。因为首页侧边栏、推荐位需要多次查询数据库，涉及多次网络 IO。</p>
+</li>
+<li><p><strong>优化后：</strong> 稳定在 <strong>80ms 以内</strong>。因为侧边栏等高频数据直接命中本地内存，几乎是零 IO 开销。</p>
+</li>
+</ul>
+</blockquote>
+</li>
+</ul>
+<p><strong>Caffeine 配置类：</strong> 看一下你设置的 <code>initialCapacity</code>（初始容量）、<code>maximumSize</code>（最大容量）和 <code>expireAfterWrite</code>（过期时间）的具体数值。</p>
+<p><strong>查询逻辑代码：</strong> 确认是否使用了 <code>Cache.get(key, k -&gt; value)</code> 这种<strong>自动回源</strong>的写法，还是手动写的 <code>if(null) &#123; ... &#125;</code>。</p>
+<p><strong>消息通知机制：</strong> 检查项目中是否有处理“缓存同步”的代码。如果没有，面试时要准备好“如果需要同步，我会怎么做”的方案。</p>
+<p><strong>序列化方式：</strong> Redis 存的是 JSON 还是 JDK 序列化？这直接影响到响应耗时。</p>
+<p>“首页流媒体和专栏属于<strong>高频热点</strong>且<strong>读多写少</strong>的数据。单纯依赖 Redis 仍会有网络 IO 开销和反序列化耗时。为了极致提升吞吐量，我采用了 <strong>L1（本地缓存 Caffeine）+ L2（分布式缓存 Redis）</strong> 的架构。</p>
+<p>这样，绝大部分请求在 JVM 进程内就能直接返回，避免了网络波动对响应耗时的影响。”</p>
+<p>“在查询时，程序先尝试从 Caffeine 中读取。如果缺失，再穿透到 Redis。如果 Redis 也没有，则加锁查询数据库并双写回缓存。 为了保证‘80ms’的指标，我对首页数据做了精简（DTO 瘦身），并使用 Protobuf 或 Jackson 优化了序列化性能。通过 JMeter 压测，在高并发下响应耗时从原来的 300ms+ 稳定下降到了 80ms 以内。”</p>
+<p>“多级缓存最大的挑战是<strong>数据一致性</strong>。在我的方案中，对于一致性要求极高的数据，我采用了 <strong>Redis Pub/Sub</strong> 机制：当某个实例更新了 DB，会向特定的 Channel 发送通知，其他所有服务实例收到通知后立即失效本地的 Caffeine 缓存，从而确保用户看到的是最新数据。”</p>
+<hr>
+<h2 id="通过Redis-的-zset-实现用户活跃度排行，并通过幂等防止重复添加活跃度，通过Spring的Event和-Listenter-来触发活跃度更新。"><a href="#通过Redis-的-zset-实现用户活跃度排行，并通过幂等防止重复添加活跃度，通过Spring的Event和-Listenter-来触发活跃度更新。" class="headerlink" title="通过Redis 的 zset 实现用户活跃度排行，并通过幂等防止重复添加活跃度，通过Spring的Event和 Listenter 来触发活跃度更新。"></a>通过Redis 的 zset 实现用户活跃度排行，并通过幂等防止重复添加活跃度，通过Spring的Event和 Listenter 来触发活跃度更新。</h2><p>你可以直接背这一版，比较自然：</p>
+<blockquote>
+<p>我们项目里用户活跃度排行是用 Redis 的 ZSet 做的。<br>设计上把 <code>userId</code> 作为 ZSet 的 member，把活跃分作为 score，然后分别维护了日榜和月榜两个 key，比如当天一个 key、当月一个 key。</p>
+<p>当用户发生访问、点赞、收藏、评论、发文章、关注这类行为时，服务层会先把这次行为抽象成一个 <code>ActivityScoreBo</code>，根据行为类型算出本次应该加多少分或减多少分，然后调用 Redis 的 <code>ZINCRBY</code> 去更新该用户在日榜和月榜中的分值。</p>
+<p>另外项目里不是直接裸写 ZSet，而是又用 Redis Hash 做了一层幂等控制。Hash 里会记录“这个用户今天这个动作有没有加过分”，比如某篇文章是否已经点赞加分过。这样可以避免重复点击、重复请求导致分数被重复累计。</p>
+<p>查询排行榜时，就是从对应的 ZSet 里拿 TopN 用户和分数，再批量查用户的昵称头像等信息做组装。查询单个用户排名也是直接从 ZSet 里查 rank 和 score。</p>
+<p>这个方案的优点是更新快、查询快、实时性强，很适合排行榜场景。<br>如果要继续优化的话，我会关注幂等逻辑的原子性问题，因为现在是先查 Hash 再写 Hash 再更新 ZSet，极端并发下可能有竞态，比较好的做法是用 Lua 脚本把这几个 Redis 操作做成原子执行。</p>
+</blockquote>
+<h3 id="如果问：为什么不用-MySQL-排行？"><a href="#如果问：为什么不用-MySQL-排行？" class="headerlink" title="如果问：为什么不用 MySQL 排行？"></a>如果问：为什么不用 MySQL 排行？</h3><p>你答：</p>
+<blockquote>
+<p>MySQL 更适合持久化和复杂查询，但不适合高频实时排序。活跃度这种持续变动的实时排行榜，用 Redis ZSet 的增量更新和按分值排序会更高效。</p>
+</blockquote>
+<h3 id="如果问：为什么还要-Hash，不直接-ZSet-就行？"><a href="#如果问：为什么还要-Hash，不直接-ZSet-就行？" class="headerlink" title="如果问：为什么还要 Hash，不直接 ZSet 就行？"></a>如果问：为什么还要 Hash，不直接 ZSet 就行？</h3><p>你答：</p>
+<blockquote>
+<p>ZSet 只解决“排序”和“累加分数”，不解决“同一个动作是否重复记分”的问题，所以需要额外用 Hash 做幂等控制。</p>
+</blockquote>
+<h3 id="如果问：为什么同时维护日榜和月榜，不临时聚合？"><a href="#如果问：为什么同时维护日榜和月榜，不临时聚合？" class="headerlink" title="如果问：为什么同时维护日榜和月榜，不临时聚合？"></a>如果问：为什么同时维护日榜和月榜，不临时聚合？</h3><p>你答：</p>
+<blockquote>
+<p>临时聚合成本高，而且会增加查询延迟。提前维护两套榜单，查询时可以直接返回，适合高并发读场景。</p>
+</blockquote>
+<p>我去临时聚合是什么。</p>
+<hr>
+<h2 id="利用AOP切面监听点赞、评论等用户行为事件，异步将通知消息写入RabbitMQ消息队列，消费者服-务再将通知消息写入"><a href="#利用AOP切面监听点赞、评论等用户行为事件，异步将通知消息写入RabbitMQ消息队列，消费者服-务再将通知消息写入" class="headerlink" title="利用AOP切面监听点赞、评论等用户行为事件，异步将通知消息写入RabbitMQ消息队列，消费者服 务再将通知消息写入"></a>利用AOP切面监听点赞、评论等用户行为事件，异步将通知消息写入RabbitMQ消息队列，消费者服 务再将通知消息写入</h2><p>坏了，这里感觉没有用aop，用的应该是监听事件吧。。。</p>
+<ul>
+<li><strong>为什么用 AOP 而不是直接在 Service 里写发送代码？</strong>（回答重点：解耦、非侵入性、代码复用）。</li>
+<li><strong>切面是怎么定义的？</strong>（用的是 <code>@Around</code> 还是 <code>@AfterReturning</code>？建议用 <code>AfterReturning</code>，只有操作成功了才发通知）。</li>
+<li><strong>如果点赞成功了，但消息发送 RabbitMQ 失败了怎么办？</strong>（<strong>高频考点</strong>：分布式事务一致性）。</li>
+</ul>
+<h3 id=""><a href="#" class="headerlink" title=" "></a> </h3><ul>
+<li><strong>如何保证消息不丢失？</strong>（回答重点：生产者确认 <code>confirm</code>、交换机/队列持久化、消费者手动 <code>ACK</code>）。</li>
+<li><strong>如果 RabbitMQ 挂了，点赞功能还能用吗？</strong>（回答重点：降级策略，异步发送不能影响主业务流）。</li>
+<li><strong>如何防止重复消费（幂等性）？</strong>（如果网络波动导致消息重发，用户会不会收到两条一样的通知？）。</li>
+</ul>
+<h3 id="-1"><a href="#-1" class="headerlink" title=" "></a> </h3><ul>
+<li><strong>为什么要异步？同步写数据库不行吗？</strong>（回答重点：点赞、评论属于高频操作，同步写通知库会拖慢主逻辑响应速度）。</li>
+<li><strong>消费者服务压力太大处理不过来怎么办？</strong>（回答重点：限流、削峰填谷、增加消费者节点）。</li>
+</ul>
+<p><strong>AOP 切面类：</strong> 找一下 <code>@Pointcut</code> 表达式，你是切在具体的注解上（如 <code>@NotifyUpdate</code>）还是切在特定的方法名上？</p>
+<p><strong>消息体格式：</strong> 存入 RabbitMQ 的是 JSON 字符串还是对象序列化？（建议是 JSON，跨语言且易排查）。</p>
+<p><strong>RabbitMQ 配置：</strong> 检查是否有 <code>CachingConnectionFactory</code> 的配置，是否开启了 <code>publisher-confirm-type: correlated</code>。</p>
+<p><strong>消费端幂等逻辑：</strong> 消费者写数据库前，有没有查一下这张通知表里是否已经存在相同的 <code>business_id</code>（如点赞记录 ID）？</p>
+<h3 id="-2"><a href="#-2" class="headerlink" title=" "></a> </h3><blockquote>
+<p>“在开发点赞和评论功能时，我发现这些操作属于核心高频路径，而‘发送通知’属于次要逻辑。如果同步执行，会增加主业务的响应耗时。</p>
+<p>此外，如果通知逻辑报错，不应该导致点赞失败。所以我决定通过 <strong>AOP 切面</strong> 将通知逻辑剥离，利用 <strong>RabbitMQ</strong> 实现异步化解耦。”</p>
+</blockquote>
+<h3 id="-3"><a href="#-3" class="headerlink" title=" "></a> </h3><blockquote>
+<p>“我自定义了一个注解，标记在需要触发通知的方法上。切面类通过 <code>@AfterReturning</code> 拦截这些请求，将用户信息、行为类型、目标 ID 封装成 JSON 消息，推送到 RabbitMQ 的交换机中。</p>
+<p>消费者服务独立运行，监听队列并根据消息类型异步写入 <code>notification</code> 表。这样主业务线程在点赞完成后立即返回，响应耗时大幅降低。”</p>
+</blockquote>
+<h3 id="-4"><a href="#-4" class="headerlink" title=" "></a> </h3><blockquote>
+<p>“为了确保消息不丢失，我开启了 RabbitMQ 的<strong>生产者确认机制</strong>。如果 MQ 宕机发送失败，我会捕获异常并进行本地日志记录或尝试重试。</p>
+<p>在消费端，我采用了<strong>手动 ACK 模式</strong>，确保消息真正写入数据库后才从队列移除。同时，为了防止重复通知，我在数据库层面设置了<strong>唯一索引</strong>或在代码中做了<strong>幂等校验</strong>，确保同一个行为不会产生重复通知。”</p>
+</blockquote>
+<h2 id="基于WebSocket-实现前端和后端之间的长连接通信通道，并结合DeepSeek大模型的StreamAPI实现"><a href="#基于WebSocket-实现前端和后端之间的长连接通信通道，并结合DeepSeek大模型的StreamAPI实现" class="headerlink" title="基于WebSocket 实现前端和后端之间的长连接通信通道，并结合DeepSeek大模型的StreamAPI实现"></a>基于WebSocket 实现前端和后端之间的长连接通信通道，并结合DeepSeek大模型的StreamAPI实现</h2><p>流式响应返回，只要后端有新的内容到达，前端就即时将文本逐步拼接显示。</p>
+<p>我利用 WebSocket 建立了前后端的双向长连接，主要为了解决大模型回复耗时较长、用户等待焦虑的问题。<br>具体的实现逻辑是：后端利用 WebClient 异步监听 DeepSeek 的响应流（SSE），并采用‘边收边发’的策略，将解析出的 <code>delta content</code> 立即通过 WebSocket Session 推送。<br>为了保证体验，我们还加入了无感 Token 刷新机制和异步线程池优化，确保即使在流式传输这种长生命周期请求中，用户的身份信息和系统稳定性也能得到保障。”</p>
+<ul>
+<li><strong>Q：如果 WebSocket 突然断了，AI 还在后台跑，怎么处理？</strong><ul>
+<li><strong>A</strong>：我们会通过 <code>WebSocketHandler</code> 的 <code>afterConnectionClosed</code> 回调，第一时间清理该 Session 对应的后台任务和 API 请求流，防止资源浪费。</li>
+</ul>
+</li>
+<li><strong>Q：流式传输对服务器内存压力大吗？</strong><ul>
+<li><strong>A</strong>：因为我们用了 <code>WebClient</code> 的响应式非阻塞模型，数据是‘流过’服务器而不是‘存在’服务器，所以对内存的占用极低。</li>
+</ul>
+</li>
+</ul>
+<p>“我设计这套方案的核心目标是<strong>高可用</strong>和<strong>一致性</strong>。</p>
+<p>针对大文件，我们采用 <strong>MD5 校验 + MinIO 分片上传</strong>，利用 <strong>Redis Bitmap</strong> 的位运算特性实现极低开销的断点续传。</p>
+<p>考虑到后续的 PDF 解析（Tika）和向量化（Embedding）是计算密集型任务，我引入了 <strong>Kafka 作为缓冲层</strong>。这样做不仅实现了文件上传与复杂处理逻辑的解耦，还利用 Kafka 的持久化机制保证了处理链路的可追溯和高容错。</p>
+<p>即使在处理过程中某个节点宕机，由于分片状态记录在 Redis、原始文件在 MinIO、处理任务在 Kafka，系统可以实现<strong>无损的任务恢复</strong>。”</p>
+<ul>
+<li><strong>Q：如果 Kafka 里的消息处理失败了，导致向量数据库里缺数据，你怎么办？</strong><ul>
+<li><strong>A</strong>：我们会利用 Kafka 的死信队列（DLN）记录失败任务，并配合定时任务对比 MinIO 文件库与向量库的数量，实现最终一致性。</li>
+</ul>
+</li>
+</ul>
+<p>“我实现了一套 <strong>‘关键词 + 语义’的双引擎搜索方案</strong>。</p>
+<p>首先，利用 <strong>IK 分词器</strong> 处理中文文档的细粒度拆解，保证了对专业术语的搜索精度。 其次，集成 <strong>阿里 Embedding 模型</strong>，利用 ES 的 <strong>KNN 向量检索</strong> 实现对模糊语义的捕捉。</p>
+<p>为了提升 RAG 的回答质量，我重点优化了<strong>检索召回率</strong>。通过在 ES 侧结合关键词过滤防止结果跑偏，并利用 <strong>BM25 算法进行重排序</strong>，将召回结果进行二次筛选。这种‘双路并行、加权融合’的方法，相比单一的向量检索，将知识库的回复准确率提升了约 <strong>30%</strong> 左右（这是一个参考数据，体现你的结果导向）。”</p>
+<ul>
+<li><strong>Q：ES 的向量搜索和专门的向量数据库（如 Milvus）相比有什么优缺点？</strong><ul>
+<li><strong>A</strong>：ES 的优势在于<strong>‘一站式解决方案’</strong>。它能极其方便地做‘混合查询’（在一个 DSL 语句里同时写 filter 和 knn），不需要跨数据库同步数据，维护成本低。对于我们这种百万级规模的知识库，ES 的性能完全足够。</li>
+</ul>
+</li>
+<li><strong>Q：切片（Chunking）大小你是怎么定的？</strong><ul>
+<li><strong>A</strong>：我们通常设在 <strong>500-800 Token</strong> 左右，并设置 10% 的<strong>重叠度（Overlap）</strong>，防止关键信息在切片处被切断。</li>
+</ul>
+</li>
+</ul>
+<p>当你在 <code>new TypeReference&lt;...&gt;()</code> 后面加上 <code>&#123;&#125;</code> 时，你实际上是写了一个<strong>继承自 <code>TypeReference</code> 的临时子类</strong>，只是这个子类没有名字。</p>
+<p><strong>匿名内部类方式</strong>：当你用 <code>&#123;&#125;</code> 创建子类时，Java 会把父类的泛型信息（即那个复杂的嵌套结构）保存在这个子类的 <strong>“字节码”</strong> 里。</p>
+<p><strong>Jackson 的骚操作</strong>：Jackson 进入这个匿名内部类，通过反射（Reflection）读取它父类的泛型参数，从而惊叹道：“喔！原来你要的是一个装满 Map 的 List 啊！”</p>
+<p><strong>这种技术在 Java 里有个专业名词：超级类型令牌 (Super Type Tokens)。</strong></p>
 <h1 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h1><h2 id="关于AOP"><a href="#关于AOP" class="headerlink" title="关于AOP"></a>关于AOP</h2><ol>
 <li><p>如果你在技术派的源码中搜 MdcUtil 的话，可以在 ReqRecordFilter 中找得到，顾名思义，该类是对请求的一个过滤器，会在每个请求中加上全链路的 traceid。</p>
 <p>项目中一整个MdcDot注解都被用来记录方法用时，那么reqrecord中的记录又是在干什么？他有一个.log文件的记录，同时还把这一次的请求时间输出了。</p>
@@ -651,6 +835,94 @@ p.spoiler {
 </blockquote>
 </li>
 </ol>
+<h1 id="why-cafeine-not-redis"><a href="#why-cafeine-not-redis" class="headerlink" title="why cafeine not redis"></a>why cafeine not redis</h1><p>你这个问题问得非常深刻，直戳<strong>架构设计</strong>的核心。</p>
+<p>通常我们认为“全局共享”的数据该放 Redis，“用户私有”的数据才放本地。但在这个 ChatGPT 场景下，作者使用 <strong>Caffeine（本地缓存）</strong> 而不是 <strong>Redis</strong>，其实是基于 <strong>“有状态的连接”</strong> 和 <strong>“内存对象”</strong> 这两个特殊原因。</p>
+<hr>
+<h2 id="1-为什么不能放-Redis？（核心：Redis-存不下“活的”对象）"><a href="#1-为什么不能放-Redis？（核心：Redis-存不下“活的”对象）" class="headerlink" title="1. 为什么不能放 Redis？（核心：Redis 存不下“活的”对象）"></a>1. 为什么不能放 Redis？（核心：Redis 存不下“活的”对象）</h2><p>这是最关键的技术限制。</p>
+<ul>
+<li><strong>Redis 存的是“死数据”</strong>：Redis 只能存字符串、数字、JSON。你可以把用户的聊天记录存进去。</li>
+<li><strong>ChatGPT 对象是“活的”</strong>：在代码里，<code>ChatGPT</code> 和 <code>ChatGPTStream</code> 是<strong>复杂的 Java 对象</strong>。它们内部包含了：<ul>
+<li>网络连接池（OkHttpClient）</li>
+<li>当前的代理配置（Proxy）</li>
+<li>底层的事件监听器（EventListener）</li>
+</ul>
+</li>
+</ul>
+<p><strong>问题所在</strong>：你没法把一个正在运行的 <code>OkHttpClient</code> 连接序列化成 JSON 存进 Redis，然后再从 Redis 读出来恢复成一个“活”的连接。</p>
+<p>所以，这些<strong>“工具类对象”</strong>必须保存在 JVM 进程的内存里，也就是 <strong>Caffeine</strong>。</p>
+<hr>
+<h2 id="2-这里的-cacheStream-到底存了什么？"><a href="#2-这里的-cacheStream-到底存了什么？" class="headerlink" title="2. 这里的 cacheStream 到底存了什么？"></a>2. 这里的 <code>cacheStream</code> 到底存了什么？</h2><p>看这段代码：</p>
+<p>Java</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">public LoadingCache&lt;ImmutablePair&lt;Long, AISourceEnum&gt;, ImmutablePair&lt;ChatGPT, ChatGPTStream&gt;&gt; cacheStream;</span><br></pre></td></tr></table></figure>
+<ul>
+<li><strong>Key</strong>：<code>用户ID + 模型类型</code></li>
+<li><strong>Value</strong>：<code>ChatGPT 对象 + 流式请求对象</code></li>
+</ul>
+<p><strong>它的逻辑是：</strong></p>
+<p>当用户 A 发起提问时，系统先去 Caffeine 找：“我之前给用户 A 创建过那个带代理、带 API Key 的 <strong>Client 对象</strong>吗？”</p>
+<ul>
+<li>如果有，直接复用这个对象发请求。</li>
+<li>如果没有，当场 <code>new</code> 一个，并根据用户 ID 绑定一个固定的代理，然后存入 Caffeine。</li>
+</ul>
+<hr>
+<h2 id="3-本地缓存-vs-Redis-的博弈"><a href="#3-本地缓存-vs-Redis-的博弈" class="headerlink" title="3. 本地缓存 vs Redis 的博弈"></a>3. 本地缓存 vs Redis 的博弈</h2><p>在这个特定的 AI 插件场景下，用本地缓存有几个好处：</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th><strong>维度</strong></th>
+<th><strong>本地缓存 (Caffeine)</strong></th>
+<th><strong>分布式缓存 (Redis)</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>存储内容</strong></td>
+<td><strong>Java 实例对象</strong> (包含连接池等)</td>
+<td><strong>序列化数据</strong> (JSON/Byte)</td>
+</tr>
+<tr>
+<td><strong>访问速度</strong></td>
+<td>极快（纳秒级，直接读内存）</td>
+<td>快（毫秒级，需要网络 IO）</td>
+</tr>
+<tr>
+<td><strong>一致性</strong></td>
+<td>弱（A 服务器创建的对象 B 看不见）</td>
+<td>强（全集群共享）</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>为什么这里不需要一致性？</strong></p>
+<p>即使你的论坛部署了 2 台服务器，用户第一题在 A 服务器问，第二题路由到了 B 服务器。</p>
+<ul>
+<li>在 B 服务器上，Caffeine 找不到记录，会重新为该用户 <code>new</code> 一个 Client。</li>
+<li>虽然多了一次 <code>new</code> 的开销，但对于 ChatGPT 这种长耗时的请求来说，这几毫秒的初始化开销根本不算什么。</li>
+</ul>
+<hr>
+<h2 id="4-这里的“用户本地”是个误解"><a href="#4-这里的“用户本地”是个误解" class="headerlink" title="4. 这里的“用户本地”是个误解"></a>4. 这里的“用户本地”是个误解</h2><p>我们要区分两个概念：</p>
+<ul>
+<li><strong>用户的浏览器本地</strong>：存 Cookie, LocalStorage。</li>
+<li><strong>服务器的进程本地</strong>：这就是 <strong>Caffeine</strong> 所在的地方。</li>
+</ul>
+<p>所以，这个缓存依然是在<strong>服务端</strong>的，只是它存在于<strong>运行程序的内存里</strong>，而不是独立的 Redis 数据库里。</p>
+<hr>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>作者这么写，是因为他需要缓存的是 <strong>“已经配置好的、可以直接发请求的工具对象”</strong>。</p>
+<ol>
+<li><strong>为了性能</strong>：不用每次请求都重新解析配置、重新构建 HTTP 客户端。</li>
+<li><strong>为了“代理粘滞”</strong>：通过固定用户与 Client 对象的对应关系，确保同一个用户的连续对话 IP 相对稳定。</li>
+</ol>
+<p><strong>一句话总结：</strong></p>
+<p>Redis 用来存<strong>“聊了什么”</strong>（消息内容），而 Caffeine 用来存<strong>“怎么去聊”</strong>（带代理和 Key 的连接对象）。</p>
+<p><strong>你想看看这个 <code>cacheStream</code> 的过期时间设置吗？</strong></p>
+<p>代码里写了 <code>expireAfterWrite(300, TimeUnit.SECONDS)</code>，这意味着如果一个用户 5 分钟没说话，这个带代理的连接对象就会被销毁，释放服务器内存。这种自动化管理也是选择 Caffeine 的原因之一。</p>
+<h2 id="3-为什么“只能靠-Cookie”？"><a href="#3-为什么“只能靠-Cookie”？" class="headerlink" title="3. 为什么“只能靠 Cookie”？"></a>3. 为什么“只能靠 Cookie”？</h2><p>因为 <strong>Cookie 是 HTTP 协议的一部分</strong>，它是跟着请求<strong>一起飞</strong>到服务器的；而 <code>localStorage</code> 是 <strong>浏览器端 JS 对象</strong>，它只能静静地躺在浏览器里，等 JS 去唤醒它。</p>
+<ul>
+<li><strong>如果用 localStorage</strong>： 服务器在渲染页面时，根本不知道你登录了没。它只能先给你一个“未登录”的静态页面，等页面到了浏览器、JS 跑起来了，再闪烁一下变成“已登录”。用户体验会很差（也就是常说的“白屏”或“闪烁”）。</li>
+<li><strong>如果用 Cookie</strong>： 服务器在发货前就识别了你的身份。你打开网页的一瞬间，看到的就是完整的、带有你头像和名字的私人定制页面。</li>
+</ul>
+<p><img src="D:\blog\source\images\temp\image-20260325203052156.png" alt="image-20260325203052156"></p>
 <h1 id="我草吓哭了"><a href="#我草吓哭了" class="headerlink" title="我草吓哭了"></a>我草吓哭了</h1><ul>
 <li>构建工具：后端（Maven、Gradle）、前端（Webpack、Vite）</li>
 <li>单元测试：<a target="_blank" rel="noopener" href="https://javabetter.cn/gongju/junit.html">Junit</a></li>
@@ -768,7 +1040,7 @@ p.spoiler {
                 <div class="toc-catalog">
                     <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
                 </div>
-                <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%97%AE%E9%A2%98"><span class="toc-number">1.</span> <span class="toc-text">问题</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%B3%E4%BA%8EAOP"><span class="toc-number">1.1.</span> <span class="toc-text">关于AOP</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#1-MdcDot-%E4%B8%8E-ReqRecord-%E7%9A%84%E5%8C%BA%E5%88%AB%EF%BC%9FtraceId-%E4%BC%9A%E4%B8%8D%E4%BC%9A%E4%BA%92%E7%9B%B8%E8%A6%86%E7%9B%96%EF%BC%9F"><span class="toc-number">2.</span> <span class="toc-text">1. MdcDot 与 ReqRecord 的区别？traceId 会不会互相覆盖？</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1%EF%BC%89MdcDot-%E7%94%A8%E6%9D%A5%E8%AE%B0%E5%BD%95%E6%96%B9%E6%B3%95%E6%89%A7%E8%A1%8C%E8%80%97%E6%97%B6"><span class="toc-number">2.1.</span> <span class="toc-text">1）MdcDot 用来记录方法执行耗时</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2%EF%BC%89ReqRecord%EF%BC%88%E4%BD%A0%E7%9C%8B%E5%88%B0%E7%9A%84-req-%E5%A4%84%E7%90%86%EF%BC%89%E6%98%AF-Filter-%E5%B1%82%E7%9A%84%E8%AF%B7%E6%B1%82%E7%BA%A7%E6%97%A5%E5%BF%97"><span class="toc-number">2.2.</span> <span class="toc-text">2）ReqRecord（你看到的 req 处理）是 Filter 层的请求级日志</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3%EF%BC%89%E4%B8%A4%E4%B8%AA%E9%83%BD%E7%94%A8-MdcUtil%EF%BC%8C%E4%BC%9A%E4%B8%8D%E4%BC%9A%E8%A6%86%E7%9B%96-traceId%EF%BC%9F"><span class="toc-number">2.3.</span> <span class="toc-text">3）两个都用 MdcUtil，会不会覆盖 traceId？</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-Repository-%E4%B8%8E-Service-%E7%9A%84%E5%8C%BA%E5%88%AB%EF%BC%9F%E4%BB%80%E4%B9%88%E6%97%B6%E5%80%99%E5%88%86%E5%B1%82%EF%BC%9F"><span class="toc-number">3.</span> <span class="toc-text">2. Repository 与 Service 的区别？什么时候分层？</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Repository%EF%BC%88DAO%EF%BC%89%E8%81%8C%E8%B4%A3"><span class="toc-number">3.1.</span> <span class="toc-text">Repository（DAO）职责</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Service-%E7%9A%84%E8%81%8C%E8%B4%A3"><span class="toc-number">3.2.</span> <span class="toc-text">Service 的职责</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%97%B6%E5%80%99%E9%9C%80%E8%A6%81%E5%88%86%EF%BC%9F"><span class="toc-number">3.3.</span> <span class="toc-text">什么时候需要分？</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-%E4%B8%BA%E4%BB%80%E4%B9%88-MyBatis-Plus-%E8%A6%81%E6%8F%90%E4%BE%9B-Service-CRUD%EF%BC%9F%E5%92%8C%E7%9B%B4%E6%8E%A5%E5%9C%A8-Service-%E8%B0%83-Mapper-%E6%9C%89%E4%BB%80%E4%B9%88%E5%8C%BA%E5%88%AB%EF%BC%9F"><span class="toc-number">4.</span> <span class="toc-text">3. 为什么 MyBatis-Plus 要提供 Service CRUD？和直接在 Service 调 Mapper 有什么区别？</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E2%91%A0-MyBatis-Plus-%E7%9A%84-Service-CRUD-%E6%98%AF%E9%80%9A%E7%94%A8%E4%B8%9A%E5%8A%A1%E6%9C%8D%E5%8A%A1%E5%B1%82%E7%9A%84%E6%A8%A1%E6%9D%BF"><span class="toc-number">4.1.</span> <span class="toc-text">① MyBatis-Plus 的 Service CRUD 是通用业务服务层的模板</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E2%91%A1-%E4%BD%A0%E5%AE%8C%E5%85%A8%E5%8F%AF%E4%BB%A5%E4%B8%8D%E7%BB%A7%E6%89%BF-IService%EF%BC%8C%E4%BD%86%E4%BD%A0%E4%BC%9A%E5%A4%9A%E5%86%99%E5%A4%A7%E9%87%8F%E9%87%8D%E5%A4%8D%E4%BB%A3%E7%A0%81"><span class="toc-number">4.2.</span> <span class="toc-text">② 你完全可以不继承 IService，但你会多写大量重复代码</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%83%85%E5%86%B51%EF%BC%9A%E7%BC%96%E8%AF%91%E5%99%A8%E4%BF%9D%E7%95%99%E4%BA%86%E5%8F%82%E6%95%B0%E5%90%8D%EF%BC%88%E9%BB%98%E8%AE%A4%E6%83%85%E5%86%B5%E8%87%AA-JDK8-%E5%90%8E%E5%A4%A7%E5%A4%9A%E6%95%B0-IDE-%E4%BC%9A%E5%BC%80%E5%90%AF%EF%BC%89"><span class="toc-number">4.2.1.</span> <span class="toc-text">情况1：编译器保留了参数名（默认情况自 JDK8 后大多数 IDE 会开启）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%83%85%E5%86%B52%EF%BC%9A%E9%A1%B9%E7%9B%AE%E6%B2%A1%E6%9C%89%E5%90%AF%E7%94%A8%E5%8F%82%E6%95%B0%E5%90%8D%E4%BF%9D%E7%95%99%E5%8A%9F%E8%83%BD%EF%BC%88%E6%9F%90%E4%BA%9B%E7%8E%AF%E5%A2%83%E6%9C%AA%E5%BC%80%E5%90%AF-parameters%EF%BC%89"><span class="toc-number">4.2.2.</span> <span class="toc-text">情况2：项目没有启用参数名保留功能（某些环境未开启 -parameters）</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#5-TableId-type-IdType-AUTO-%E4%B8%BA%E4%BD%95%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%8D%E5%BB%BA%E7%BA%A6%E6%9D%9F%EF%BC%9F"><span class="toc-number">5.</span> <span class="toc-text">5. @TableId(type &#x3D; IdType.AUTO) 为何数据库不建约束？</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1%EF%BC%89%E8%B7%A8%E6%95%B0%E6%8D%AE%E5%BA%93%E5%85%BC%E5%AE%B9"><span class="toc-number">5.1.</span> <span class="toc-text">1）跨数据库兼容</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2%EF%BC%89%E6%96%B9%E4%BE%BF%E8%BF%81%E7%A7%BB%EF%BC%88%E6%AF%94%E5%A6%82%E5%88%87%E6%8D%A2%E5%88%B0%E9%9B%AA%E8%8A%B1%E7%AE%97%E6%B3%95%EF%BC%89"><span class="toc-number">5.2.</span> <span class="toc-text">2）方便迁移（比如切换到雪花算法）</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%88%91%E8%8D%89%E5%90%93%E5%93%AD%E4%BA%86"><span class="toc-number">6.</span> <span class="toc-text">我草吓哭了</span></a></li></ol>
+                <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9C%A8%E7%99%BB%E5%BD%95%E6%8B%A6%E6%88%AA%E5%99%A8%E4%B8%AD%E5%B0%81%E8%A3%85%E5%85%A8%E5%B1%80%E4%B8%8A%E4%B8%8B%E6%96%87%EF%BC%8C%E5%9F%BA%E4%BA%8EThreadLocal%E5%AE%9E%E7%8E%B0%E7%BA%BF%E7%A8%8B%E7%BA%A7%E7%94%A8%E6%88%B7%E8%BA%AB%E4%BB%BD%E5%85%B1%E4%BA%AB%EF%BC%8C%E5%87%8F%E5%B0%91%E9%87%8D%E5%A4%8D%E6%9F%A5%E8%AF%A2"><span class="toc-number">1.</span> <span class="toc-text">在登录拦截器中封装全局上下文，基于ThreadLocal实现线程级用户身份共享，减少重复查询</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9E%84%E5%BB%BACaffeine-Redis-%E5%A4%9A%E7%BA%A7%E7%BC%93%E5%AD%98%E4%BD%93%E7%B3%BB%EF%BC%8C%E6%8F%90%E5%8D%87%E9%A6%96%E9%A1%B5%E6%B5%81%E5%AA%92%E4%BD%93%E3%80%81%E4%B8%93%E6%A0%8F%E7%AD%89%E9%AB%98%E9%A2%91%E7%83%AD%E7%82%B9%E6%95%B0%E6%8D%AE%E7%9A%84%E8%AE%BF%E9%97%AE%E5%90%9E%E5%90%90%E8%83%BD%E5%8A%9B%EF%BC%8C%E9%A6%96%E9%A1%B5%E5%93%8D-%E5%BA%94%E8%80%97%E6%97%B6%E9%99%8D%E4%BD%8E%E8%87%B380ms%E4%BB%A5%E5%86%85"><span class="toc-number">2.</span> <span class="toc-text">构建Caffeine+Redis 多级缓存体系，提升首页流媒体、专栏等高频热点数据的访问吞吐能力，首页响 应耗时降低至80ms以内</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%80%9A%E8%BF%87Redis-%E7%9A%84-zset-%E5%AE%9E%E7%8E%B0%E7%94%A8%E6%88%B7%E6%B4%BB%E8%B7%83%E5%BA%A6%E6%8E%92%E8%A1%8C%EF%BC%8C%E5%B9%B6%E9%80%9A%E8%BF%87%E5%B9%82%E7%AD%89%E9%98%B2%E6%AD%A2%E9%87%8D%E5%A4%8D%E6%B7%BB%E5%8A%A0%E6%B4%BB%E8%B7%83%E5%BA%A6%EF%BC%8C%E9%80%9A%E8%BF%87Spring%E7%9A%84Event%E5%92%8C-Listenter-%E6%9D%A5%E8%A7%A6%E5%8F%91%E6%B4%BB%E8%B7%83%E5%BA%A6%E6%9B%B4%E6%96%B0%E3%80%82"><span class="toc-number">3.</span> <span class="toc-text">通过Redis 的 zset 实现用户活跃度排行，并通过幂等防止重复添加活跃度，通过Spring的Event和 Listenter 来触发活跃度更新。</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A6%82%E6%9E%9C%E9%97%AE%EF%BC%9A%E4%B8%BA%E4%BB%80%E4%B9%88%E4%B8%8D%E7%94%A8-MySQL-%E6%8E%92%E8%A1%8C%EF%BC%9F"><span class="toc-number">3.1.</span> <span class="toc-text">如果问：为什么不用 MySQL 排行？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A6%82%E6%9E%9C%E9%97%AE%EF%BC%9A%E4%B8%BA%E4%BB%80%E4%B9%88%E8%BF%98%E8%A6%81-Hash%EF%BC%8C%E4%B8%8D%E7%9B%B4%E6%8E%A5-ZSet-%E5%B0%B1%E8%A1%8C%EF%BC%9F"><span class="toc-number">3.2.</span> <span class="toc-text">如果问：为什么还要 Hash，不直接 ZSet 就行？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A6%82%E6%9E%9C%E9%97%AE%EF%BC%9A%E4%B8%BA%E4%BB%80%E4%B9%88%E5%90%8C%E6%97%B6%E7%BB%B4%E6%8A%A4%E6%97%A5%E6%A6%9C%E5%92%8C%E6%9C%88%E6%A6%9C%EF%BC%8C%E4%B8%8D%E4%B8%B4%E6%97%B6%E8%81%9A%E5%90%88%EF%BC%9F"><span class="toc-number">3.3.</span> <span class="toc-text">如果问：为什么同时维护日榜和月榜，不临时聚合？</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%A9%E7%94%A8AOP%E5%88%87%E9%9D%A2%E7%9B%91%E5%90%AC%E7%82%B9%E8%B5%9E%E3%80%81%E8%AF%84%E8%AE%BA%E7%AD%89%E7%94%A8%E6%88%B7%E8%A1%8C%E4%B8%BA%E4%BA%8B%E4%BB%B6%EF%BC%8C%E5%BC%82%E6%AD%A5%E5%B0%86%E9%80%9A%E7%9F%A5%E6%B6%88%E6%81%AF%E5%86%99%E5%85%A5RabbitMQ%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%EF%BC%8C%E6%B6%88%E8%B4%B9%E8%80%85%E6%9C%8D-%E5%8A%A1%E5%86%8D%E5%B0%86%E9%80%9A%E7%9F%A5%E6%B6%88%E6%81%AF%E5%86%99%E5%85%A5"><span class="toc-number">4.</span> <span class="toc-text">利用AOP切面监听点赞、评论等用户行为事件，异步将通知消息写入RabbitMQ消息队列，消费者服 务再将通知消息写入</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">4.1.</span> <span class="toc-text"> </span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#-1"><span class="toc-number">4.2.</span> <span class="toc-text"> </span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#-2"><span class="toc-number">4.3.</span> <span class="toc-text"> </span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#-3"><span class="toc-number">4.4.</span> <span class="toc-text"> </span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#-4"><span class="toc-number">4.5.</span> <span class="toc-text"> </span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9F%BA%E4%BA%8EWebSocket-%E5%AE%9E%E7%8E%B0%E5%89%8D%E7%AB%AF%E5%92%8C%E5%90%8E%E7%AB%AF%E4%B9%8B%E9%97%B4%E7%9A%84%E9%95%BF%E8%BF%9E%E6%8E%A5%E9%80%9A%E4%BF%A1%E9%80%9A%E9%81%93%EF%BC%8C%E5%B9%B6%E7%BB%93%E5%90%88DeepSeek%E5%A4%A7%E6%A8%A1%E5%9E%8B%E7%9A%84StreamAPI%E5%AE%9E%E7%8E%B0"><span class="toc-number">5.</span> <span class="toc-text">基于WebSocket 实现前端和后端之间的长连接通信通道，并结合DeepSeek大模型的StreamAPI实现</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%97%AE%E9%A2%98"><span class="toc-number"></span> <span class="toc-text">问题</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%B3%E4%BA%8EAOP"><span class="toc-number">1.</span> <span class="toc-text">关于AOP</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#1-MdcDot-%E4%B8%8E-ReqRecord-%E7%9A%84%E5%8C%BA%E5%88%AB%EF%BC%9FtraceId-%E4%BC%9A%E4%B8%8D%E4%BC%9A%E4%BA%92%E7%9B%B8%E8%A6%86%E7%9B%96%EF%BC%9F"><span class="toc-number"></span> <span class="toc-text">1. MdcDot 与 ReqRecord 的区别？traceId 会不会互相覆盖？</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1%EF%BC%89MdcDot-%E7%94%A8%E6%9D%A5%E8%AE%B0%E5%BD%95%E6%96%B9%E6%B3%95%E6%89%A7%E8%A1%8C%E8%80%97%E6%97%B6"><span class="toc-number">1.</span> <span class="toc-text">1）MdcDot 用来记录方法执行耗时</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2%EF%BC%89ReqRecord%EF%BC%88%E4%BD%A0%E7%9C%8B%E5%88%B0%E7%9A%84-req-%E5%A4%84%E7%90%86%EF%BC%89%E6%98%AF-Filter-%E5%B1%82%E7%9A%84%E8%AF%B7%E6%B1%82%E7%BA%A7%E6%97%A5%E5%BF%97"><span class="toc-number">2.</span> <span class="toc-text">2）ReqRecord（你看到的 req 处理）是 Filter 层的请求级日志</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3%EF%BC%89%E4%B8%A4%E4%B8%AA%E9%83%BD%E7%94%A8-MdcUtil%EF%BC%8C%E4%BC%9A%E4%B8%8D%E4%BC%9A%E8%A6%86%E7%9B%96-traceId%EF%BC%9F"><span class="toc-number">3.</span> <span class="toc-text">3）两个都用 MdcUtil，会不会覆盖 traceId？</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-Repository-%E4%B8%8E-Service-%E7%9A%84%E5%8C%BA%E5%88%AB%EF%BC%9F%E4%BB%80%E4%B9%88%E6%97%B6%E5%80%99%E5%88%86%E5%B1%82%EF%BC%9F"><span class="toc-number"></span> <span class="toc-text">2. Repository 与 Service 的区别？什么时候分层？</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Repository%EF%BC%88DAO%EF%BC%89%E8%81%8C%E8%B4%A3"><span class="toc-number">1.</span> <span class="toc-text">Repository（DAO）职责</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Service-%E7%9A%84%E8%81%8C%E8%B4%A3"><span class="toc-number">2.</span> <span class="toc-text">Service 的职责</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%97%B6%E5%80%99%E9%9C%80%E8%A6%81%E5%88%86%EF%BC%9F"><span class="toc-number">3.</span> <span class="toc-text">什么时候需要分？</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-%E4%B8%BA%E4%BB%80%E4%B9%88-MyBatis-Plus-%E8%A6%81%E6%8F%90%E4%BE%9B-Service-CRUD%EF%BC%9F%E5%92%8C%E7%9B%B4%E6%8E%A5%E5%9C%A8-Service-%E8%B0%83-Mapper-%E6%9C%89%E4%BB%80%E4%B9%88%E5%8C%BA%E5%88%AB%EF%BC%9F"><span class="toc-number"></span> <span class="toc-text">3. 为什么 MyBatis-Plus 要提供 Service CRUD？和直接在 Service 调 Mapper 有什么区别？</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E2%91%A0-MyBatis-Plus-%E7%9A%84-Service-CRUD-%E6%98%AF%E9%80%9A%E7%94%A8%E4%B8%9A%E5%8A%A1%E6%9C%8D%E5%8A%A1%E5%B1%82%E7%9A%84%E6%A8%A1%E6%9D%BF"><span class="toc-number">1.</span> <span class="toc-text">① MyBatis-Plus 的 Service CRUD 是通用业务服务层的模板</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E2%91%A1-%E4%BD%A0%E5%AE%8C%E5%85%A8%E5%8F%AF%E4%BB%A5%E4%B8%8D%E7%BB%A7%E6%89%BF-IService%EF%BC%8C%E4%BD%86%E4%BD%A0%E4%BC%9A%E5%A4%9A%E5%86%99%E5%A4%A7%E9%87%8F%E9%87%8D%E5%A4%8D%E4%BB%A3%E7%A0%81"><span class="toc-number">2.</span> <span class="toc-text">② 你完全可以不继承 IService，但你会多写大量重复代码</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%83%85%E5%86%B51%EF%BC%9A%E7%BC%96%E8%AF%91%E5%99%A8%E4%BF%9D%E7%95%99%E4%BA%86%E5%8F%82%E6%95%B0%E5%90%8D%EF%BC%88%E9%BB%98%E8%AE%A4%E6%83%85%E5%86%B5%E8%87%AA-JDK8-%E5%90%8E%E5%A4%A7%E5%A4%9A%E6%95%B0-IDE-%E4%BC%9A%E5%BC%80%E5%90%AF%EF%BC%89"><span class="toc-number">2.1.</span> <span class="toc-text">情况1：编译器保留了参数名（默认情况自 JDK8 后大多数 IDE 会开启）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%83%85%E5%86%B52%EF%BC%9A%E9%A1%B9%E7%9B%AE%E6%B2%A1%E6%9C%89%E5%90%AF%E7%94%A8%E5%8F%82%E6%95%B0%E5%90%8D%E4%BF%9D%E7%95%99%E5%8A%9F%E8%83%BD%EF%BC%88%E6%9F%90%E4%BA%9B%E7%8E%AF%E5%A2%83%E6%9C%AA%E5%BC%80%E5%90%AF-parameters%EF%BC%89"><span class="toc-number">2.2.</span> <span class="toc-text">情况2：项目没有启用参数名保留功能（某些环境未开启 -parameters）</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#5-TableId-type-IdType-AUTO-%E4%B8%BA%E4%BD%95%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%8D%E5%BB%BA%E7%BA%A6%E6%9D%9F%EF%BC%9F"><span class="toc-number"></span> <span class="toc-text">5. @TableId(type &#x3D; IdType.AUTO) 为何数据库不建约束？</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1%EF%BC%89%E8%B7%A8%E6%95%B0%E6%8D%AE%E5%BA%93%E5%85%BC%E5%AE%B9"><span class="toc-number">1.</span> <span class="toc-text">1）跨数据库兼容</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2%EF%BC%89%E6%96%B9%E4%BE%BF%E8%BF%81%E7%A7%BB%EF%BC%88%E6%AF%94%E5%A6%82%E5%88%87%E6%8D%A2%E5%88%B0%E9%9B%AA%E8%8A%B1%E7%AE%97%E6%B3%95%EF%BC%89"><span class="toc-number">2.</span> <span class="toc-text">2）方便迁移（比如切换到雪花算法）</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#why-cafeine-not-redis"><span class="toc-number"></span> <span class="toc-text">why cafeine not redis</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E4%B8%BA%E4%BB%80%E4%B9%88%E4%B8%8D%E8%83%BD%E6%94%BE-Redis%EF%BC%9F%EF%BC%88%E6%A0%B8%E5%BF%83%EF%BC%9ARedis-%E5%AD%98%E4%B8%8D%E4%B8%8B%E2%80%9C%E6%B4%BB%E7%9A%84%E2%80%9D%E5%AF%B9%E8%B1%A1%EF%BC%89"><span class="toc-number">1.</span> <span class="toc-text">1. 为什么不能放 Redis？（核心：Redis 存不下“活的”对象）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E8%BF%99%E9%87%8C%E7%9A%84-cacheStream-%E5%88%B0%E5%BA%95%E5%AD%98%E4%BA%86%E4%BB%80%E4%B9%88%EF%BC%9F"><span class="toc-number">2.</span> <span class="toc-text">2. 这里的 cacheStream 到底存了什么？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E6%9C%AC%E5%9C%B0%E7%BC%93%E5%AD%98-vs-Redis-%E7%9A%84%E5%8D%9A%E5%BC%88"><span class="toc-number">3.</span> <span class="toc-text">3. 本地缓存 vs Redis 的博弈</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E8%BF%99%E9%87%8C%E7%9A%84%E2%80%9C%E7%94%A8%E6%88%B7%E6%9C%AC%E5%9C%B0%E2%80%9D%E6%98%AF%E4%B8%AA%E8%AF%AF%E8%A7%A3"><span class="toc-number">4.</span> <span class="toc-text">4. 这里的“用户本地”是个误解</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-number">5.</span> <span class="toc-text">总结</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E4%B8%BA%E4%BB%80%E4%B9%88%E2%80%9C%E5%8F%AA%E8%83%BD%E9%9D%A0-Cookie%E2%80%9D%EF%BC%9F"><span class="toc-number">6.</span> <span class="toc-text">3. 为什么“只能靠 Cookie”？</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%88%91%E8%8D%89%E5%90%93%E5%93%AD%E4%BA%86"><span class="toc-number"></span> <span class="toc-text">我草吓哭了</span></a>
             </div>
         <!-- sidebar -->
         <div class="sidebar sidebar-hide">
@@ -813,13 +1085,31 @@ p.spoiler {
         
         
         
+        
+        
+        
     <div class="total-and-search">
         <div class="total-archive">
-        Total : 33
+        Total : 36
         </div>
         <!-- search  -->
     </div>
     <div class="post-archive">
+            <div class="archive-year"> 2026 </div>
+            <ul class="year-list">
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/14</span>
+            <a class="archive-post-title" href="/posts/ad13f2a0.html">复盘</a>
+        </li>
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/13</span>
+            <a class="archive-post-title" href="/posts/d48132d3.html">ElasticSearch</a>
+        </li>
+        <li class="archive-post-item">
+            <span class="archive-post-date">03/15</span>
+            <a class="archive-post-title" href="/posts/9f62ea8d.html">AI相关</a>
+        </li>
+                </ul>
             <div class="archive-year"> 2025 </div>
             <ul class="year-list">
         <li class="archive-post-item">
@@ -852,7 +1142,7 @@ p.spoiler {
         </li>
         <li class="archive-post-item">
             <span class="archive-post-date">10/16</span>
-            <a class="archive-post-title" href="/posts/9a7d5a13.html">Kafka</a>
+            <a class="archive-post-title" href="/posts/9a7d5a13.html">Kafka & RabbitMQ</a>
         </li>
         <li class="archive-post-item">
             <span class="archive-post-date">09/28</span>

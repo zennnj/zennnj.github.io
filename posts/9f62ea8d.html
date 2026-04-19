@@ -2,7 +2,7 @@
 <html lang="zh-CN">
     <!-- title -->
 <!-- keywords -->
-<head>
+<head><!-- hexo injector head_begin start --><link href="https://fastly.jsdelivr.net/npm/hexo-tag-common@0.2.0/css/index.css" rel="stylesheet"/><!-- hexo injector head_begin end -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="author" content="">
@@ -10,16 +10,20 @@
     <meta name="copyright" content="">
         <meta name="keywords" content="hexo,hexo-theme,hexo-blog">
     <meta name="description" content="">
-    <meta property="og:type" content="website">
-<meta property="og:title" content="Hexo">
-<meta property="og:url" content="http://example.com/archives/2077/index.html">
+    <meta name="description" content="RAG什么是 RAG？ RAG (Retrieval-Augmented Generation，检索增强生成)RAG 是一种技术框架，旨在通过从外部知识库中检索实时、准确的信息，来增强大语言模型（LLM）的生成能力。  核心痛点： LLM 存在知识滞后（训练数据有截止日期）和幻觉（虚构事实）的问题。 解决方案： 既然模型不能记住所有东西，就在它回答之前，先帮它“翻书”查资料。  RAG 的核心工">
+<meta property="og:type" content="article">
+<meta property="og:title" content="AI相关">
+<meta property="og:url" content="http://example.com/posts/9f62ea8d.html">
 <meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="RAG什么是 RAG？ RAG (Retrieval-Augmented Generation，检索增强生成)RAG 是一种技术框架，旨在通过从外部知识库中检索实时、准确的信息，来增强大语言模型（LLM）的生成能力。  核心痛点： LLM 存在知识滞后（训练数据有截止日期）和幻觉（虚构事实）的问题。 解决方案： 既然模型不能记住所有东西，就在它回答之前，先帮它“翻书”查资料。  RAG 的核心工">
 <meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2026-03-15T12:17:11.000Z">
+<meta property="article:modified_time" content="2026-04-07T08:32:32.952Z">
 <meta name="twitter:card" content="summary">
     <meta http-equiv="Cache-control" content="no-cache">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <link rel="icon" href="/assets/my.ico">
-    <title>Terminal 4</title>
+    <title>AI相关 · Terminal 4</title>
     <!-- /*! loadCSS. [c]2017 Filament Group, Inc. MIT License */
 /* This file is meant as a standalone workflow for
 - testing support for link[rel=preload]
@@ -237,6 +241,7 @@ p.spoiler {
             document.write('<script src="/lib/jquery.min.js" />')
         }
     </script>
+        <body class="post-body">
         <!-- header -->
         <header class="header header-mobile">
     <!-- top read progress line -->
@@ -266,7 +271,7 @@ p.spoiler {
             <a href="/">Terminal 4.</a>
         </div>
         <div class="post-title header-element">
-            <a href="#" class="post-name"></a>
+            <a href="#" class="post-name">AI相关</a>
         </div>
     </div>
 </header>
@@ -274,6 +279,31 @@ p.spoiler {
         <!-- fixed footer -->
         <footer class="footer-fixed">
     <!-- donate button -->
+    <div class="donate-popup donate-popup--hidden">
+    <div class="donate-popup__title">Buy Me A Milktea!</div>
+    <div class="donate-popup__content">
+        <div class="donate-popup__content-description">If this post helped you, please consider buying the author a cup of milktea 🥤!(Actually,I prefer fruit tea.🥳)</div>
+        <img
+            class="donate-popup__content-qrCode"
+            title="Wechat"
+            alt="Wechat"
+            src="/assets/donate-wechat.png"
+        ></img>
+        <img
+            class="donate-popup__content-qrCode"
+            title="Alipay"
+            alt="Alipay"
+            src="/assets/donate-alipay.jpg"
+        ></img>
+    </div>
+</div>
+
+    <div
+        title="Donate to the author"
+        class="footer-fixed-btn footer-fixed-btn--hidden donate-btn"
+    >
+        <i class="fas fa-donate"></i>
+    </div>
 
     <!-- back to top button -->
     <div class="footer-fixed-btn footer-fixed-btn--hidden back-top">
@@ -283,20 +313,56 @@ p.spoiler {
 
         <!-- wrapper -->
         <div class="wrapper">
-            <div class="site-intro" style="">
+            <div class="site-intro" style="    height:50vh;
+">
     <!-- 主页  -->
+    <!-- 404页  -->
     <div class="site-intro-placeholder"></div>
-    <div class="site-intro-img" style="background-image: url(/)"></div>
+    <div class="site-intro-img" style="background-image: url(/intro/post-bg.jpg)"></div>
     <div class="site-intro-meta">
         <!-- 标题  -->
         <h1 class="intro-title">
             <!-- 主页  -->
+                AI相关
+            <!-- 404 -->
         </h1>
         <!-- 副标题 -->
         <p class="intro-subtitle">
             <!-- 主页副标题  -->
+            <!-- 404 -->
         </p>
         <!-- 文章页 meta -->
+            <div class="post-intros">
+                <!-- 文章页标签  -->
+                    <div class="post-intro-tags" >
+</div>
+
+                <!-- 文章字数统计 -->
+                <div class="post-intro-meta">
+                    <!-- 撰写日期 -->
+                    <span class="iconfont-archer post-intro-calander">&#xe676;</span>
+                    <span class="post-intro-time">2026/03/15</span>
+                    <!-- busuanzi -->
+                        <span id="busuanzi_container_page_pv" class="busuanzi-pv">
+                            <span class="iconfont-archer post-intro-busuanzi">&#xe602;</span>
+                            <span id="busuanzi_value_page_pv"></span>
+                        </span>
+                    <!-- 文章分享 -->
+                    <span class="share-wrapper">
+                        <span class="iconfont-archer share-icon">&#xe71d;</span>
+                        <span class="share-text">Share</span>
+                        <ul class="share-list">
+                            <li class="iconfont-archer share-qr" data-type="qr">&#xe75b;
+                                <div class="share-qrcode"></div>
+                            </li>
+                            <li class="iconfont-archer" data-type="weibo">&#xe619;</li>
+                            <li class="iconfont-archer" data-type="qzone">&#xe62e;</li>
+                            <li class="iconfont-archer" data-type="twitter">&#xe634;</li>
+                            <li class="iconfont-archer" data-type="facebook">&#xe67a;</li>
+                        </ul>
+                    </span>
+                </div>
+            </div>
     </div>
 </div>
 
@@ -425,26 +491,226 @@ p.spoiler {
 
             <img class="loading" src="/assets/loading.svg" style="display: block; margin: 6rem auto 0 auto; width: 6rem; height: 6rem;" alt="loading">
             <div class="container container-unloaded">
-                <main class="main index-page">
-        <article class="index-post">
-            <a class="abstract-title" href="/posts/8c0da805.html">
-                    <span class="iconfont-archer stick-top">&#xe63d;</span>
-                <span class="abstract-title-text">「置顶」</span>
-            </a>
-            <div class="abstract-content">
-                <p>本站是个人站，并没有提交到任何搜索引擎中，如果你不知道以何种方式误入了本站，很遗憾，你只能看见一个大学生在这里自言自语😗<br>
-            </div>
-            <!-- read more -->
-            <div class="abstract-post-meta">
-                <!-- date -->
-                <div class="abstract-date" title="Last updated: 2025/11/25">
-                    <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2077/01/01</span>
-                </div>
-                <!-- tags -->
-            </div>
-        </article>
-        <div class="index-post-divider"></div>
-    <!-- paginator  -->
+                <main class="main post-page">
+    <article class="article-entry">
+        <link rel="stylesheet" type="text&#x2F;css" href="https://cdn.jsdelivr.net/npm/hexo-tag-hint@0.3.1/dist/hexo-tag-hint.min.css"><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><hr>
+<h1 id="RAG"><a href="#RAG" class="headerlink" title="RAG"></a>RAG</h1><h2 id="什么是-RAG？"><a href="#什么是-RAG？" class="headerlink" title="什么是 RAG？"></a>什么是 RAG？</h2><p> <strong>RAG (Retrieval-Augmented Generation，检索增强生成)</strong><br><strong>RAG</strong> 是一种技术框架，旨在通过从外部知识库中检索实时、准确的信息，来增强大语言模型（LLM）的生成能力。</p>
+<ul>
+<li><strong>核心痛点：</strong> LLM 存在<strong>知识滞后</strong>（训练数据有截止日期）和<strong>幻觉</strong>（虚构事实）的问题。</li>
+<li><strong>解决方案：</strong> 既然模型不能记住所有东西，就在它回答之前，先帮它“翻书”查资料。</li>
+</ul>
+<h2 id="RAG-的核心工作流程"><a href="#RAG-的核心工作流程" class="headerlink" title="RAG 的核心工作流程"></a>RAG 的核心工作流程</h2><p>RAG 的过程通常被概括为 <strong>5 个阶段</strong>：</p>
+<h3 id="A-数据准备-Ingestion"><a href="#A-数据准备-Ingestion" class="headerlink" title="A. 数据准备 (Ingestion)"></a>A. 数据准备 (Ingestion)</h3><ol>
+<li><strong>载入 (Load)：</strong> 读取 PDF、HTML、数据库等原始数据。</li>
+<li><strong>切片 (Chunking)：</strong> 将长文档切分成小块（Chunks），因为 LLM 的上下文窗口有限。</li>
+<li><strong>向量化 (Embedding)：</strong> 使用 Embedding 模型将文本转化为数值向量。</li>
+<li><strong>存储 (Store)：</strong> 将向量和原始文本存入<strong>向量数据库</strong>（如 Pinecone, Milvus, Chroma）。</li>
+</ol>
+<h3 id="B-检索-Retrieval"><a href="#B-检索-Retrieval" class="headerlink" title="B. 检索 (Retrieval)"></a>B. 检索 (Retrieval)</h3><p>根据用户提问，计算提问向量与数据库中 Chunks 向量的<strong>余弦相似度</strong>，召回最相关的 Top-K 个文本块。</p>
+<h3 id="C-增强-Augmentation"><a href="#C-增强-Augmentation" class="headerlink" title="C. 增强 (Augmentation)"></a>C. 增强 (Augmentation)</h3><p>将用户的问题和检索到的文本块拼接进一个特定的 <strong>Prompt 模板</strong>中。</p>
+<h3 id="D-生成-Generation"><a href="#D-生成-Generation" class="headerlink" title="D. 生成 (Generation)"></a>D. 生成 (Generation)</h3><p>将拼接好的 Prompt 发送给 LLM，模型基于提供的参考资料生成回答。</p>
+<h2 id="RAG-vs-微调-Fine-tuning"><a href="#RAG-vs-微调-Fine-tuning" class="headerlink" title="RAG vs. 微调 (Fine-tuning)"></a>RAG vs. 微调 (Fine-tuning)</h2><div class="table-container">
+<table>
+<thead>
+<tr>
+<th><strong>特性</strong></th>
+<th><strong>RAG</strong></th>
+<th><strong>微调 (Fine-tuning)</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>知识更新</strong></td>
+<td>极快（只需更新数据库）</td>
+<td>慢（需要重新训练）</td>
+</tr>
+<tr>
+<td><strong>外部透明度</strong></td>
+<td>高（可以提供引用来源）</td>
+<td>低（黑盒，难以追溯）</td>
+</tr>
+<tr>
+<td><strong>幻觉控制</strong></td>
+<td>强（基于事实参考）</td>
+<td>弱（仍可能胡编乱造）</td>
+</tr>
+<tr>
+<td><strong>成本</strong></td>
+<td>低（主要是推理和存储费）</td>
+<td>高（算力成本昂贵）</td>
+</tr>
+<tr>
+<td><strong>擅长领域</strong></td>
+<td>事实性、实时性任务</td>
+<td>学习特定风格、语气或领域术语</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h2 id="RAG-的分类"><a href="#RAG-的分类" class="headerlink" title="RAG 的分类"></a>RAG 的分类</h2><div class="table-container">
+<table>
+<thead>
+<tr>
+<th><strong>类别</strong></th>
+<th><strong>核心特征</strong></th>
+<th><strong>适用场景</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Naive</strong></td>
+<td>简单的向量匹配</td>
+<td>内部文档问答、简单 FAQ</td>
+</tr>
+<tr>
+<td><strong>Advanced</strong></td>
+<td>引入 Rerank 和查询转换</td>
+<td>对准确率要求较高的企业知识库</td>
+</tr>
+<tr>
+<td><strong>Modular</strong></td>
+<td>组件化、插件化</td>
+<td>需要整合网页搜索、数据库等多种数据源</td>
+</tr>
+<tr>
+<td><strong>Agentic</strong></td>
+<td>自主规划、反思、迭代</td>
+<td>复杂的深度调研、逻辑推理任务</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h3 id="Naive-RAG-初级-RAG"><a href="#Naive-RAG-初级-RAG" class="headerlink" title="Naive RAG (初级 RAG)"></a>Naive RAG (初级 RAG)</h3><p>这是最基础的流程，遵循传统的“检索-增强-生成”模式。</p>
+<p>流程： 将文档切片（Chunking），通过 Embedding 模型存入向量数据库。用户提问时，匹配 Top-K 个相似切片，直接喂给 LLM 生成答案。<br>局限性： 检索精度低（容易断章取义）、缺乏上下文语义、容易在处理复杂问题时产生幻觉。</p>
+<h3 id="高级-RAG-优化技术-Advanced-RAG"><a href="#高级-RAG-优化技术-Advanced-RAG" class="headerlink" title="高级 RAG 优化技术 (Advanced RAG)"></a>高级 RAG 优化技术 (Advanced RAG)</h3><p>针对 Naive RAG 的痛点，在检索前后增加了精细化的处理。</p>
+<ul>
+<li>预检索策略 (Pre-Retrieval)： 包含查询重写（Query Rewriting）、子查询分解，以及更科学的分块策略。<ul>
+<li><strong>查询改写 (Query Rewriting)：</strong> 使用 LLM 将用户模糊的问题改写得更清晰，便于检索。</li>
+<li><strong>多查询生成 (Multi-Query)：</strong> 针对一个问题生成多个变体，分别检索再合并结果。</li>
+</ul>
+</li>
+<li>检索中优化 (Retrieval Optimization)<ul>
+<li><strong>混合搜索 (Hybrid Search)：</strong> 结合<strong>语义搜索</strong>（向量）和<strong>关键词搜索</strong>（BM25），解决专有名词搜不到的问题。</li>
+<li><strong>句子窗口检索 (Sentence Window Retrieval)：</strong> 检索单句，但喂给模型该句子周围的上下文。</li>
+</ul>
+</li>
+<li><p>后检索策略 (Post-Retrieval)： </p>
+<ul>
+<li>重排序 (Rerank)： 对初筛出来的文档进行二次精排，确保最相关的片段排在最前面。</li>
+<li><strong>Prompt 压缩：</strong> 去除冗余信息，节省 Token 并减少噪声。</li>
+</ul>
+</li>
+<li><p>上下文压缩 (Context Compression)： 剔除冗余信息，只保留精华。</p>
+</li>
+</ul>
+<h3 id="Modular-RAG-模块化-RAG"><a href="#Modular-RAG-模块化-RAG" class="headerlink" title="Modular RAG (模块化 RAG)"></a>Modular RAG (模块化 RAG)</h3><p>随着技术发展，RAG 不再是线性结构，而变成了可灵活组合的模块。</p>
+<p>核心理念： 引入了诸如“搜索模块”（接入 Web 搜索）、“内存模块”（利用用户对话历史）和“对齐模块”等。</p>
+<p>特点： 支持跨模态检索，且允许根据不同任务动态调整组件。</p>
+<h3 id="Agentic-RAG-智能体-RAG"><a href="#Agentic-RAG-智能体-RAG" class="headerlink" title="Agentic RAG (智能体 RAG)"></a>Agentic RAG (智能体 RAG)</h3><p>这是目前最前沿的方向，将 Agent 的决策能力引入 RAG 系统。</p>
+<p>自主决策： 模型不再是被动检索，而是像一个研究员一样，自主判断：</p>
+<p>“当前的知识够了吗？如果不够，我需要去哪里再搜一下？”</p>
+<p>“检索到的资料是否有冲突？我该如何筛选？”</p>
+<p>多步骤推理： 能够处理需要跨文档、跨领域推理的复杂长链路问题。</p>
+<h2 id="RAG召回"><a href="#RAG召回" class="headerlink" title="RAG召回"></a>RAG召回</h2><p>在面试中被问到“RAG 项目如何做召回（Retrieval）”，面试官实际考查的是你对<strong>检索质量控制</strong>、<strong>多路召回策略</strong>以及<strong>工程化落地</strong>的理解。</p>
+<p>你可以按照以下逻辑由浅入深地回答，展现你从基础选型到高级优化的全栈思路：</p>
+<hr>
+<h3 id="向量检索-Dense-Retrieval"><a href="#向量检索-Dense-Retrieval" class="headerlink" title="向量检索 (Dense Retrieval)"></a>向量检索 (Dense Retrieval)</h3><p>这是 RAG 的核心，利用 Embedding 模型将语义向量化。</p>
+<ul>
+<li><strong>模型选型：</strong> 提到的模型（如 <code>BGE</code>、<code>m3e</code> 或 <code>OpenAI-text-embedding-3</code>），解释为什么选它（长文本支持、多语言能力等）。</li>
+<li><strong>切片策略 (Chunking)：</strong>固定长度分块/<strong>语义分块</strong>（基于标点或段落）以及 <strong>重叠度 (Overlap)</strong>，防止语义在切割处断裂。（滑动窗口）</li>
+<li><strong>索引优化：</strong> 提及向量数据库（如 Milvus, Pinecone, FAISS）使用的索引算法（如 HNSW 或 IVF-PQ），以及如何平衡检索速度和召回率。</li>
+</ul>
+<h3 id="多路召回-Multi-way-Retrieval"><a href="#多路召回-Multi-way-Retrieval" class="headerlink" title="多路召回 (Multi-way Retrieval)"></a>多路召回 (Multi-way Retrieval)</h3><p>单一向量检索在处理“精确关键词匹配”（如：产品型号、人名、缩写）时效果很差。<strong>多路召回是企业级项目的标配。</strong></p>
+<ul>
+<li><strong>关键词召回 (Sparse Retrieval)：</strong> 使用传统的 BM25 算法。这能弥补向量模型对长尾词、专有名词不敏感的缺陷。</li>
+<li><strong>混合检索 (Hybrid Search)：</strong> 将向量检索和 BM25 结果结合。</li>
+<li><strong>RRF (Reciprocal Rank Fusion)/线性加权</strong>。</li>
+</ul>
+<h3 id="检索增强-Pre-Retrieval"><a href="#检索增强-Pre-Retrieval" class="headerlink" title="检索增强 (Pre-Retrieval)"></a>检索增强 (Pre-Retrieval)</h3><p>在正式检索前，先对用户的原始提问（Query）动手脚。</p>
+<ul>
+<li><strong>查询改写 (Query Rewriting)：</strong> 利用 LLM 把用户的口语化表达转为更利于检索的专业术语。</li>
+<li><strong>查询分解 (Multi-Query)：</strong> 将复杂问题拆解为多个子问题，分别检索后再汇总。</li>
+<li><strong>假设性文档生成 (HyDE)：</strong> 先让 LLM 根据问题生成一个“假答案”，用这个假答案去库里搜。因为“假答案”与“真文档”在语义空间更接近，召回率往往更高。</li>
+</ul>
+<h3 id="重排序-Rerank"><a href="#重排序-Rerank" class="headerlink" title="重排序 (Rerank)"></a>重排序 (Rerank)</h3><p><strong>召回是为了保证“全”，重排是为了保证“准”。</strong></p>
+<ul>
+<li><strong>Cross-Encoder 架构：</strong> 解释为什么检索阶段用向量（快），而重排阶段用 Rerank 模型（慢但极准）。</li>
+<li><strong>实战选型：</strong> 提到 BGE-Reranker 或 Cohere Rerank。</li>
+<li><strong>工程价值：</strong> 即使初路召回了 50 个片段，通过 Rerank 选出最相关的 Top-5，能显著减少 LLM 的上下文压力，降低幻觉。</li>
+</ul>
+<h2 id="常见的-RAG-技术栈"><a href="#常见的-RAG-技术栈" class="headerlink" title="常见的 RAG 技术栈"></a>常见的 RAG 技术栈</h2><ul>
+<li><strong>框架：</strong> LangChain, LlamaIndex (目前最流行)。</li>
+<li><strong>向量存储：</strong> Pinecone, Weaviate, Milvus, FAISS (本地)。</li>
+<li><strong>Embedding 模型：</strong> OpenAI <code>text-embedding-3-small</code>, HuggingFace 上的 BGE 系列。</li>
+<li><strong>LLM：</strong> GPT-4o, Claude 3.5, Llama 3。</li>
+</ul>
+<h2 id="RAG-的挑战与评价指标-RAGas"><a href="#RAG-的挑战与评价指标-RAGas" class="headerlink" title="RAG 的挑战与评价指标 (RAGas)"></a>RAG 的挑战与评价指标 (RAGas)</h2><p>评价 RAG 好坏通常看这三个维度（RAG 三元组）：</p>
+<ol>
+<li><strong>忠实度 (Faithfulness)：</strong> 回答是否完全来自检索到的上下文？</li>
+<li><strong>相关性 (Answer Relevance)：</strong> 回答是否直接解决了用户的问题？</li>
+<li><strong>上下文精度 (Context Precision)：</strong> 检索回来的内容是否真的有用？</li>
+</ol>
+<h2 id="语义漂移"><a href="#语义漂移" class="headerlink" title="语义漂移"></a>语义漂移</h2><p>向量空间的“坐标偏移” (Embedding Drift)</p>
+<h1 id="MCP-amp-Skills-amp-Agent"><a href="#MCP-amp-Skills-amp-Agent" class="headerlink" title="MCP &amp; Skills &amp; Agent"></a>MCP &amp; Skills &amp; Agent</h1><h2 id="MCP-Model-Context-Protocol"><a href="#MCP-Model-Context-Protocol" class="headerlink" title="MCP (Model Context Protocol)"></a>MCP (Model Context Protocol)</h2><p><strong>定位：标准化接口协议</strong> MCP 是由 Anthropic 推出的开放协议，旨在解决 AI 模型与外部数据源（如 GitHub、Google Drive、本地数据库）之间的连接标准。</p>
+<ul>
+<li><strong>本质：</strong> 一种“通用插座”。</li>
+<li><strong>作用：</strong> 允许模型通过统一的方式访问不同平台的上下文（Context）和工具，而无需为每个应用编写特定的集成代码。</li>
+<li><strong>层级：</strong> 基础设施层/通信协议层。</li>
+</ul>
+<h2 id="Skills"><a href="#Skills" class="headerlink" title="Skills"></a>Skills</h2><p><strong>定位：原子的功能函数 (Functions)</strong> Skills 通常指模型能够调用的具体工具（Tool Use/Function Calling）。</p>
+<ul>
+<li><strong>本质：</strong> 封装好的代码逻辑或 API 调用。</li>
+<li><strong>作用：</strong> 赋予模型执行特定任务的能力，例如“查询天气”、“发送邮件”或“执行一段 Python 代码”。</li>
+<li><strong>特点：</strong> 被动的、离散的。模型只有在识别到明确需求时才会触发特定的 Skill。</li>
+</ul>
+<h2 id="Agent-智能体"><a href="#Agent-智能体" class="headerlink" title="Agent (智能体)"></a>Agent (智能体)</h2><p><strong>定位：具备自主性的逻辑系统</strong> Agent 是利用 LLM 作为核心控制器，结合规划、记忆和工具调用来完成复杂目标的系统。</p>
+<ul>
+<li><strong>本质：</strong> “大脑 + 躯干 + 技能”的组合体。</li>
+<li><strong>作用：</strong> 给定一个模糊的目标（如“帮我写一份调研报告并同步到飞书”），Agent 会自行规划步骤：<ol>
+<li>搜索资料（利用 <strong>Skills</strong>）；</li>
+<li>整理内容（利用模型推理）；</li>
+<li>上传文档（利用 <strong>MCP</strong> 协议连接的存储服务）。</li>
+</ol>
+</li>
+<li><strong>特点：</strong> 主动性、多步循环、具备自我修正能力。</li>
+</ul>
+<link rel="stylesheet" href="/css/folder.css" type="text/css"><script src="/js/folder.js" type="text/javascript" async></script>
+    </article>
+    <!-- license -->
+    <!-- paginator -->
+    <ul class="post-paginator">
+        <li class="next">
+                <div class="nextSlogan">Next Post</div>
+                <a href="/posts/d48132d3.html" title="ElasticSearch">
+                    <div class="nextTitle">ElasticSearch</div>
+                </a>
+        </li>
+        <li class="previous">
+                <div class="prevSlogan">Previous Post</div>
+                <a href="/posts/808644e3.html" title="Cache">
+                    <div class="prevTitle">Cache</div>
+                </a>
+        </li>
+    </ul>
+    <!-- comment -->
+        <div class="post-comment">
+            <!-- 来必力 City 版安装代码 -->
+
+            
+            
+            
+            <!-- utteranc评论 -->
+
+            <!-- partial('_partial/comment/changyan') -->
+            <!--PC版-->
+
+            
+            
+            
+        </div>
+    <!-- timeliness note -->
+    <!-- idea from: https://hexo.fluid-dev.com/posts/hexo-injector/#%E6%96%87%E7%AB%A0%E6%97%B6%E6%95%88%E6%80%A7%E6%8F%90%E7%A4%BA -->
+    <!-- Mathjax -->
 </main>
 
                 <!-- profile -->
@@ -470,6 +736,13 @@ p.spoiler {
 
         </div>
         <!-- toc -->
+            <div class="toc-wrapper toc-wrapper-loding" style=    top:50vh;
+>
+                <div class="toc-catalog">
+                    <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
+                </div>
+                <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#RAG"><span class="toc-number">1.</span> <span class="toc-text">RAG</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF-RAG%EF%BC%9F"><span class="toc-number">1.1.</span> <span class="toc-text">什么是 RAG？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#RAG-%E7%9A%84%E6%A0%B8%E5%BF%83%E5%B7%A5%E4%BD%9C%E6%B5%81%E7%A8%8B"><span class="toc-number">1.2.</span> <span class="toc-text">RAG 的核心工作流程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#A-%E6%95%B0%E6%8D%AE%E5%87%86%E5%A4%87-Ingestion"><span class="toc-number">1.2.1.</span> <span class="toc-text">A. 数据准备 (Ingestion)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#B-%E6%A3%80%E7%B4%A2-Retrieval"><span class="toc-number">1.2.2.</span> <span class="toc-text">B. 检索 (Retrieval)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#C-%E5%A2%9E%E5%BC%BA-Augmentation"><span class="toc-number">1.2.3.</span> <span class="toc-text">C. 增强 (Augmentation)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#D-%E7%94%9F%E6%88%90-Generation"><span class="toc-number">1.2.4.</span> <span class="toc-text">D. 生成 (Generation)</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#RAG-vs-%E5%BE%AE%E8%B0%83-Fine-tuning"><span class="toc-number">1.3.</span> <span class="toc-text">RAG vs. 微调 (Fine-tuning)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#RAG-%E7%9A%84%E5%88%86%E7%B1%BB"><span class="toc-number">1.4.</span> <span class="toc-text">RAG 的分类</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Naive-RAG-%E5%88%9D%E7%BA%A7-RAG"><span class="toc-number">1.4.1.</span> <span class="toc-text">Naive RAG (初级 RAG)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%AB%98%E7%BA%A7-RAG-%E4%BC%98%E5%8C%96%E6%8A%80%E6%9C%AF-Advanced-RAG"><span class="toc-number">1.4.2.</span> <span class="toc-text">高级 RAG 优化技术 (Advanced RAG)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Modular-RAG-%E6%A8%A1%E5%9D%97%E5%8C%96-RAG"><span class="toc-number">1.4.3.</span> <span class="toc-text">Modular RAG (模块化 RAG)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Agentic-RAG-%E6%99%BA%E8%83%BD%E4%BD%93-RAG"><span class="toc-number">1.4.4.</span> <span class="toc-text">Agentic RAG (智能体 RAG)</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#RAG%E5%8F%AC%E5%9B%9E"><span class="toc-number">1.5.</span> <span class="toc-text">RAG召回</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%90%91%E9%87%8F%E6%A3%80%E7%B4%A2-Dense-Retrieval"><span class="toc-number">1.5.1.</span> <span class="toc-text">向量检索 (Dense Retrieval)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A4%9A%E8%B7%AF%E5%8F%AC%E5%9B%9E-Multi-way-Retrieval"><span class="toc-number">1.5.2.</span> <span class="toc-text">多路召回 (Multi-way Retrieval)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A3%80%E7%B4%A2%E5%A2%9E%E5%BC%BA-Pre-Retrieval"><span class="toc-number">1.5.3.</span> <span class="toc-text">检索增强 (Pre-Retrieval)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%87%8D%E6%8E%92%E5%BA%8F-Rerank"><span class="toc-number">1.5.4.</span> <span class="toc-text">重排序 (Rerank)</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B8%B8%E8%A7%81%E7%9A%84-RAG-%E6%8A%80%E6%9C%AF%E6%A0%88"><span class="toc-number">1.6.</span> <span class="toc-text">常见的 RAG 技术栈</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#RAG-%E7%9A%84%E6%8C%91%E6%88%98%E4%B8%8E%E8%AF%84%E4%BB%B7%E6%8C%87%E6%A0%87-RAGas"><span class="toc-number">1.7.</span> <span class="toc-text">RAG 的挑战与评价指标 (RAGas)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AF%AD%E4%B9%89%E6%BC%82%E7%A7%BB"><span class="toc-number">1.8.</span> <span class="toc-text">语义漂移</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#MCP-amp-Skills-amp-Agent"><span class="toc-number">2.</span> <span class="toc-text">MCP &amp; Skills &amp; Agent</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#MCP-Model-Context-Protocol"><span class="toc-number">2.1.</span> <span class="toc-text">MCP (Model Context Protocol)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Skills"><span class="toc-number">2.2.</span> <span class="toc-text">Skills</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Agent-%E6%99%BA%E8%83%BD%E4%BD%93"><span class="toc-number">2.3.</span> <span class="toc-text">Agent (智能体)</span></a></li></ol></li></ol>
+            </div>
         <!-- sidebar -->
         <div class="sidebar sidebar-hide">
     <ul class="sidebar-tabs sidebar-tabs-active-0">
@@ -783,6 +1056,7 @@ p.spoiler {
         <!-- busuanzi -->
             <script src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script>
         <!-- async load share.js -->
+            <script src="/scripts/share.js" async></script>
         <!-- mermaid -->
-    </body>
+    <!-- hexo injector body_end start --><script src="https://fastly.jsdelivr.net/npm/hexo-tag-common@0.2.0/js/index.js"></script><!-- hexo injector body_end end --></body>
 </html>
