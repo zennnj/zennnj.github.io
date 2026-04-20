@@ -10,21 +10,18 @@
     <meta name="copyright" content="">
         <meta name="keywords" content="hexo,hexo-theme,hexo-blog">
     <meta name="description" content="">
-    <meta name="description" content="Mybatis · Terminal 4">
-<meta property="og:type" content="article">
-<meta property="og:title" content="Mybatis-Plus">
-<meta property="og:url" content="http://example.com/posts/5d2bcff8.html">
+    <meta property="og:type" content="article">
+<meta property="og:title" content="Hexo">
+<meta property="og:url" content="http://example.com/posts/0.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="Mybatis · Terminal 4">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2025-12-11T09:49:50.000Z">
-<meta property="article:modified_time" content="2025-12-12T10:23:56.866Z">
-<meta property="article:tag" content="learn">
+<meta property="article:published_time" content="2026-04-20T13:37:06.636Z">
+<meta property="article:modified_time" content="2026-04-20T14:32:32.799Z">
 <meta name="twitter:card" content="summary">
     <meta http-equiv="Cache-control" content="no-cache">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <link rel="icon" href="/assets/my.ico">
-    <title>Mybatis-Plus · Terminal 4</title>
+    <title>Terminal 4</title>
     <!-- /*! loadCSS. [c]2017 Filament Group, Inc. MIT License */
 /* This file is meant as a standalone workflow for
 - testing support for link[rel=preload]
@@ -272,7 +269,7 @@ p.spoiler {
             <a href="/">Terminal 4.</a>
         </div>
         <div class="post-title header-element">
-            <a href="#" class="post-name">Mybatis-Plus</a>
+            <a href="#" class="post-name"></a>
         </div>
     </div>
 </header>
@@ -324,7 +321,7 @@ p.spoiler {
         <!-- 标题  -->
         <h1 class="intro-title">
             <!-- 主页  -->
-                Mybatis-Plus
+                [Untitled Post]
             <!-- 404 -->
         </h1>
         <!-- 副标题 -->
@@ -336,14 +333,13 @@ p.spoiler {
             <div class="post-intros">
                 <!-- 文章页标签  -->
                     <div class="post-intro-tags" >
-        <a class="post-tag" href="javascript:void(0);" data-tags="learn">learn</a>
 </div>
 
                 <!-- 文章字数统计 -->
                 <div class="post-intro-meta">
                     <!-- 撰写日期 -->
                     <span class="iconfont-archer post-intro-calander">&#xe676;</span>
-                    <span class="post-intro-time">2025/12/11</span>
+                    <span class="post-intro-time">2026/04/20</span>
                     <!-- busuanzi -->
                         <span id="busuanzi_container_page_pv" class="busuanzi-pv">
                             <span class="iconfont-archer post-intro-busuanzi">&#xe602;</span>
@@ -495,120 +491,17 @@ p.spoiler {
             <div class="container container-unloaded">
                 <main class="main post-page">
     <article class="article-entry">
-        <link rel="stylesheet" type="text&#x2F;css" href="https://cdn.jsdelivr.net/npm/hexo-tag-hint@0.3.1/dist/hexo-tag-hint.min.css"><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><p><a target="_blank" rel="noopener" href="https://zennnj.github.io/posts/da3e1361.html">Mybatis · Terminal 4</a></p>
-<span id="more"></span>
-<h1 id="开始"><a href="#开始" class="headerlink" title="开始"></a>开始</h1><ol>
-<li><p>引入依赖</p>
-</li>
-<li><p>使用 @MapperScan 注解扫描 mapper 文件。</p>
-<blockquote>
-<p>和在所有类上加@Mapper相比比较方便！</p>
-</blockquote>
-</li>
-<li><p>application.yml 文件中增加MyBatis-Plus 的统一配置。</p>
- <figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># mybatis 相关统一配置</span></span><br><span class="line"><span class="attr">mybatis-plus:</span></span><br><span class="line">  <span class="attr">configuration:</span></span><br><span class="line">    <span class="comment">#开启下划线转驼峰</span></span><br><span class="line">    <span class="attr">map-underscore-to-camel-case:</span> <span class="literal">true</span></span><br></pre></td></tr></table></figure>
-</li>
-</ol>
-<h1 id="基本使用"><a href="#基本使用" class="headerlink" title="基本使用"></a>基本使用</h1><p>MyBatis-Plus 在 MyBatis 的基础上提供了<strong>通用 CRUD</strong> 能力。<br> 在实体类上使用注解（如 @TableName、@TableId），<br> 在 Mapper 接口上继承 BaseMapper，即可获得大量内置方法：</p>
-<ul>
-<li>selectById</li>
-<li>selectList</li>
-<li>insert</li>
-<li>updateById</li>
-<li>deleteById</li>
-</ul>
-<p>在 Service 层通常注入 Mapper，通过这些方法快速完成常见 CRUD 操作。</p>
-<h2 id="Service-CRUD"><a href="#Service-CRUD" class="headerlink" title="Service CRUD"></a>Service CRUD</h2><p>ServiceImpl<TagMapper, TagDO>：</p>
-<p>ServiceImpl 是 MyBatis-Plus 提供的一个抽象类，提供了通用的 CRUD 方法。泛型参数 <TagMapper, TagDO> 意味着 TagDao 类主要用于处理 TagDO 数据对象的数据库操作，并使用 TagMapper 接口定义的方法进行操作。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * IService 实现类（ 泛型：M 是 mapper 对象，T 是实体 ）</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> hubin</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@since</span> 2018-06-23</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@SuppressWarnings(&quot;unchecked&quot;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">ServiceImpl</span>&lt;M <span class="keyword">extends</span> <span class="title class_">BaseMapper</span>&lt;T&gt;, T&gt; <span class="keyword">implements</span> <span class="title class_">IService</span>&lt;T&gt; &#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>放进去的mapper需要extends BaseMapper</p>
-</blockquote>
-<hr>
-<h1 id="条件查询方法"><a href="#条件查询方法" class="headerlink" title="条件查询方法"></a>条件查询方法</h1><p>MP 提供两类条件构造器：</p>
-<h2 id="QueryWrapper"><a href="#QueryWrapper" class="headerlink" title="QueryWrapper"></a>QueryWrapper</h2><p>传统 QueryWrapper 写字段名是<strong>字符串</strong>：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">QueryWrapper&lt;User&gt; qw = <span class="keyword">new</span> <span class="title class_">QueryWrapper</span>&lt;&gt;();</span><br><span class="line">qw.eq(<span class="string">&quot;status&quot;</span>, <span class="number">1</span>).like(<span class="string">&quot;username&quot;</span>, <span class="string">&quot;jack&quot;</span>);</span><br></pre></td></tr></table></figure>
-<p> <strong>缺点：</strong></p>
-<ul>
-<li>字段名写错不会报错（编译期无法校验）</li>
-<li>字段名变更时不会更新</li>
-</ul>
-<h2 id="LambdaQueryWrapper"><a href="#LambdaQueryWrapper" class="headerlink" title="LambdaQueryWrapper"></a>LambdaQueryWrapper</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">LambdaQueryWrapper&lt;User&gt; qw = <span class="keyword">new</span> <span class="title class_">LambdaQueryWrapper</span>&lt;&gt;();</span><br><span class="line">qw.eq(User::getStatus, <span class="number">1</span>).like(User::getUsername, <span class="string">&quot;jack&quot;</span>);</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>“::” 是 Java 8 引入的功能，叫做<strong>方法引用</strong>（method reference）。</p>
-<p>比如：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">User::getUsername</span><br></pre></td></tr></table></figure><br>它的含义是：<br>把 User 对象里的 getUsername 方法引用传递给框架，而不是让你调用它。<br>MP 根据 “User::getUsername” <strong>自动推断数据库字段名</strong>（user_name）。</p>
-<p>所以你写：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">lambdaWrapper.eq(User::getUsername, <span class="string">&quot;jack&quot;</span>);</span><br></pre></td></tr></table></figure>
-<p>MP 会自动解析为：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">where</span> <span class="variable">user_name</span> <span class="operator">=</span> <span class="string">&#x27;jack&#x27;</span></span><br></pre></td></tr></table></figure>
-<p> MP 会：</p>
-<ol>
-<li>根据 getter 方法名字 → 找到 Java 字段名</li>
-<li>Java 字段名 → 根据驼峰规则转成下划线字段名（unless @TableField 定制）</li>
-<li>最终得到数据库字段名</li>
-</ol>
-<p>所以 LambdaQueryWrapper 是：</p>
-<ul>
-<li>类型安全</li>
-<li>字段名自动推断</li>
-<li>字段重构安全</li>
-<li>IDE 自动提示字段名</li>
-</ul>
-</blockquote>
-<h2 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 获取已上线 Tags 列表（分页）</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> List&lt;TagDTO&gt; <span class="title function_">listOnlineTag</span><span class="params">(String key, PageParam pageParam)</span> &#123;</span><br><span class="line">    LambdaQueryWrapper&lt;TagDO&gt; query = Wrappers.lambdaQuery();</span><br><span class="line">    query.eq(TagDO::getStatus, PushStatusEnum.ONLINE.getCode())</span><br><span class="line">            .eq(TagDO::getDeleted, YesOrNoEnum.NO.getCode())</span><br><span class="line">            .and(StringUtils.isNotBlank(key), v -&gt; v.like(TagDO::getTagName, key))</span><br><span class="line">            .orderByDesc(TagDO::getId);</span><br><span class="line">    <span class="keyword">if</span> (pageParam != <span class="literal">null</span>) &#123;</span><br><span class="line">        query.last(PageParam.getLimitSql(pageParam));</span><br><span class="line">    &#125;</span><br><span class="line">    List&lt;TagDO&gt; list = baseMapper.selectList(query);</span><br><span class="line">    <span class="keyword">return</span> ArticleConverter.toDtoList(list);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>子表达式 lambda：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">.and(StringUtils.isNotBlank(key), v -&gt; v.like(TagDO::getTagName, key))：</span><br></pre></td></tr></table></figure>
-<p>a. <strong><code>StringUtils.isNotBlank(key)</code> 是条件开关</strong></p>
-<p>如果 key 为空，不执行 .and() 内部任何内容<br> 如果 key 不为空，则加入：</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">AND</span> (tag_name <span class="keyword">LIKE</span> <span class="string">&#x27;%xxx%&#x27;</span>)</span><br></pre></td></tr></table></figure>
-<p>b. <strong>v -&gt; v.like(…) 是一个“子表达式 lambda”</strong></p>
-<p><code>.and(boolean condition, Consumer&lt;Wrapper&gt;)</code> 的逻辑：</p>
-<ul>
-<li>condition 为真 → 执行 lambda（构造 AND (…)）</li>
-<li>condition 为假 → 跳过，不加入 AND</li>
-</ul>
-<p><code>v -&gt; v.like(TagDO::getTagName, key)</code> 表示：</p>
-<ul>
-<li>v 是一个临时包装器（一个新的 wrapper）</li>
-<li>在这个 wrapper 里加条件：<code>like TagDO.tagName &#39;%key%&#39;</code></li>
-<li>整个表达式会被加上括号</li>
-</ul>
-<hr>
-<h1 id="自定义-SQL"><a href="#自定义-SQL" class="headerlink" title="自定义 SQL"></a>自定义 SQL</h1><p>如果通用方法无法满足需求，可以使用自定义 SQL。</p>
-<h2 id="方式-1：注解写-SQL"><a href="#方式-1：注解写-SQL" class="headerlink" title="方式 1：注解写 SQL"></a>方式 1：注解写 SQL</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Select(&quot;select * from user where third_account_id = #&#123;id&#125;&quot;)</span></span><br><span class="line">User <span class="title function_">getByThirdAccountId</span><span class="params">(<span class="meta">@Param(&quot;id&quot;)</span> String id)</span>;</span><br></pre></td></tr></table></figure>
-<h2 id="方式-2：XML-文件写-SQL"><a href="#方式-2：XML-文件写-SQL" class="headerlink" title="方式 2：XML 文件写 SQL"></a>方式 2：XML 文件写 SQL</h2><p>在与 Mapper 名称相同的 XML 中编写复杂查询。</p>
-<hr>
-<h1 id="更新与逻辑删除"><a href="#更新与逻辑删除" class="headerlink" title="更新与逻辑删除"></a>更新与逻辑删除</h1><h2 id="更新"><a href="#更新" class="headerlink" title="更新"></a>更新</h2><ul>
-<li>updateById</li>
-<li>update(entity, wrapper)</li>
-<li>根据条件批量更新</li>
-</ul>
-<h2 id="逻辑删除"><a href="#逻辑删除" class="headerlink" title="逻辑删除"></a>逻辑删除</h2><p>实体类加 @TableLogic，数据库保留 deleted 字段<br> MP 会自动将删除操作转化为更新 deleted 字段，而不是物理删除。</p>
-<hr>
-<h1 id="主键策略"><a href="#主键策略" class="headerlink" title="主键策略"></a>主键策略</h1><p>通过 @TableId 配置主键策略：</p>
-<ul>
-<li>AUTO：数据库自增</li>
-<li>INPUT：用户手动输入</li>
-<li>ASSIGN_ID：雪花算法（MP 自带）</li>
-<li>ASSIGN_UUID：UUID</li>
-</ul>
-<p>在无需改动数据库字段的前提下，可以随时更换主键生成方式。</p>
-<p>简单总结一下，这篇文章我们主要讲了技术派中整合 MyBatis-Plus 的基本使用：</p>
-<link rel="stylesheet" href="/css/folder.css" type="text/css"><script src="/js/folder.js" type="text/javascript" async></script>
+        <link rel="stylesheet" type="text&#x2F;css" href="https://cdn.jsdelivr.net/npm/hexo-tag-hint@0.3.1/dist/hexo-tag-hint.min.css"><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><link rel="stylesheet" href="/css/folder.css" type="text/css"><script src="/js/folder.js" type="text/javascript" async></script>
     </article>
     <!-- license -->
     <!-- paginator -->
     <ul class="post-paginator">
         <li class="next">
-                <div class="nextSlogan">Next Post</div>
-                <a href="/posts/808644e3.html" title="Cache">
-                    <div class="nextTitle">Cache</div>
-                </a>
         </li>
         <li class="previous">
                 <div class="prevSlogan">Previous Post</div>
-                <a href="/posts/a477be03.html" title="nginx">
-                    <div class="prevTitle">nginx</div>
+                <a href="/posts/ad13f2a0.html" title="复盘">
+                    <div class="prevTitle">复盘</div>
                 </a>
         </li>
     </ul>
@@ -661,7 +554,7 @@ p.spoiler {
                 <div class="toc-catalog">
                     <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
                 </div>
-                <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%BC%80%E5%A7%8B"><span class="toc-number">1.</span> <span class="toc-text">开始</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8"><span class="toc-number">2.</span> <span class="toc-text">基本使用</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Service-CRUD"><span class="toc-number">2.1.</span> <span class="toc-text">Service CRUD</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%9D%A1%E4%BB%B6%E6%9F%A5%E8%AF%A2%E6%96%B9%E6%B3%95"><span class="toc-number">3.</span> <span class="toc-text">条件查询方法</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#QueryWrapper"><span class="toc-number">3.1.</span> <span class="toc-text">QueryWrapper</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#LambdaQueryWrapper"><span class="toc-number">3.2.</span> <span class="toc-text">LambdaQueryWrapper</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%A4%BA%E4%BE%8B"><span class="toc-number">3.3.</span> <span class="toc-text">示例</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%87%AA%E5%AE%9A%E4%B9%89-SQL"><span class="toc-number">4.</span> <span class="toc-text">自定义 SQL</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%96%B9%E5%BC%8F-1%EF%BC%9A%E6%B3%A8%E8%A7%A3%E5%86%99-SQL"><span class="toc-number">4.1.</span> <span class="toc-text">方式 1：注解写 SQL</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%96%B9%E5%BC%8F-2%EF%BC%9AXML-%E6%96%87%E4%BB%B6%E5%86%99-SQL"><span class="toc-number">4.2.</span> <span class="toc-text">方式 2：XML 文件写 SQL</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%9B%B4%E6%96%B0%E4%B8%8E%E9%80%BB%E8%BE%91%E5%88%A0%E9%99%A4"><span class="toc-number">5.</span> <span class="toc-text">更新与逻辑删除</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9B%B4%E6%96%B0"><span class="toc-number">5.1.</span> <span class="toc-text">更新</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%80%BB%E8%BE%91%E5%88%A0%E9%99%A4"><span class="toc-number">5.2.</span> <span class="toc-text">逻辑删除</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%BB%E9%94%AE%E7%AD%96%E7%95%A5"><span class="toc-number">6.</span> <span class="toc-text">主键策略</span></a></li></ol>
+                
             </div>
         <!-- sidebar -->
         <div class="sidebar sidebar-hide">

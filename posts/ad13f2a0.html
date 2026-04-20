@@ -18,7 +18,7 @@
 <meta property="og:description" content="2026&#x2F;4&#x2F;14校招聘会复盘SAP 外企，需要网上投递 海鼎， 没有技术交流 化工数字化，没有技术交流，说是学长学姐创立的公司（i can see from name 兴业数金，金融业，感觉是kpi！但是复盘。。。  问项目里的threadlocal的生命周期，什么时候删除？为什么要删除？  讲一下IO和NIO。（我不记得了！  (B)IO是传统的 IO，是阻塞式的(Blocking)，对于每个">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2026-04-14T10:51:39.000Z">
-<meta property="article:modified_time" content="2026-04-19T03:38:08.472Z">
+<meta property="article:modified_time" content="2026-04-20T14:54:48.307Z">
 <meta name="twitter:card" content="summary">
     <meta http-equiv="Cache-control" content="no-cache">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
@@ -538,6 +538,40 @@ p.spoiler {
 <p>DeepSeek 的流式响应底层基于 <strong>SSE 协议</strong>。</p>
 <p>在我的项目中，我通过 Spring WebFlux 的 <strong>WebClient</strong> 异步消费这个流。之所以这么设计，是因为 AI 推理是一个长耗时过程，流式输出能将 <strong>TTFT（首字到达时间）</strong> 缩短到毫秒级，显著提升用户体验。</p>
 <p>具体的实现细节是：后端以<strong>响应式非阻塞</strong>的方式接收数据片，并实时转发给前端。这种‘随收随发’的模式避免了在 JVM 堆内存中缓存大段文本，保证了系统在高并发场景下的内存稳定性。同时，我也通过异步线程池和异常处理机制，确保了即使流式连接意外断开，后台资源也能被正确释放。</p>
+<h3 id="1-协议层面：基于-HTTP-的-SSE-Server-Sent-Events"><a href="#1-协议层面：基于-HTTP-的-SSE-Server-Sent-Events" class="headerlink" title="1. 协议层面：基于 HTTP 的 SSE (Server-Sent Events)"></a>1. 协议层面：基于 HTTP 的 SSE (Server-Sent Events)</h3><p>首先要点出 DeepSeek API 的本质：</p>
+<blockquote>
+<p>“DeepSeek 的流式响应遵循标准 <strong>SSE 协议</strong>。在请求体中，我们将 <code>stream</code> 参数设为 <code>true</code>，此时服务器不再一次性返回完整的 JSON，而是保持长连接，分段推送以 <code>data:</code> 开头的消息块，直到返回 <code>[DONE]</code> 标记。”</p>
+</blockquote>
+<h3 id="2-框架层面：为什么用-Spring-WebClient？"><a href="#2-框架层面：为什么用-Spring-WebClient？" class="headerlink" title="2. 框架层面：为什么用 Spring WebClient？"></a>2. 框架层面：为什么用 Spring WebClient？</h3><p>这是代码的核心亮点。面试官会看你为什么不用 RestTemplate 或 HttpClient。</p>
+<blockquote>
+<p>“在实现上，我选择了 Spring WebFlux 中的 <strong>WebClient</strong>。</p>
+<ul>
+<li><strong>非阻塞（Non-blocking）</strong>：传统的 RestTemplate 是阻塞的，必须等结果全部回来。而 WebClient 基于 Reactor 框架，支持非阻塞 I/O。</li>
+<li><strong>Flux 流处理</strong>：通过 <code>.bodyToFlux(String.class)</code>，我们将后端的响应流直接映射为一个异步序列（Flux）。只要网络缓冲区收到一个新的 Data Chunk，Flux 就会立即触发下游处理，而不需要等待整个响应结束。”</li>
+</ul>
+</blockquote>
+<h3 id="3-数据处理：Chunk-的解析逻辑"><a href="#3-数据处理：Chunk-的解析逻辑" class="headerlink" title="3. 数据处理：Chunk 的解析逻辑"></a>3. 数据处理：Chunk 的解析逻辑</h3><p>结合你的 <code>processChunk</code> 方法，描述你是如何把“原始数据”变成“用户文字”的：</p>
+<blockquote>
+<p>“在处理流的过程中，我会订阅这个 Flux。每当有 Chunk 到达：</p>
+<ol>
+<li><strong>过滤结束符</strong>：首先判断字符串是否为 <code>[DONE]</code>。</li>
+<li><strong>增量解析（Delta）</strong>：LLM 返回的流式数据是 JSON 格式的 <code>delta</code> 片段。我使用 <code>ObjectMapper</code> 解析 JSON 路径 <code>choices[0].delta.content</code>。</li>
+<li><strong>回调推送</strong>：解析出文字后，立即通过 <code>Consumer&lt;String&gt; onChunk</code> 回调给上层（通常是推送到 WebSocket），实现前端的‘打字机’效果。”</li>
+</ol>
+</blockquote>
+<hr>
+<h3 id="4-深度追问补丁：面试官可能会挖的坑"><a href="#4-深度追问补丁：面试官可能会挖的坑" class="headerlink" title="4. 深度追问补丁：面试官可能会挖的坑"></a>4. 深度追问补丁：面试官可能会挖的坑</h3><h4 id="坑-1：如果网络卡顿，Chunk-断开了怎么办？"><a href="#坑-1：如果网络卡顿，Chunk-断开了怎么办？" class="headerlink" title="坑 1：如果网络卡顿，Chunk 断开了怎么办？"></a><strong>坑 1：如果网络卡顿，Chunk 断开了怎么办？</strong></h4><p><strong>回答：</strong> “WebClient 的 Flux 提供了丰富的异常处理机制。我在代码中通过 <code>.subscribe()</code> 的第二个参数 <code>onError</code> 捕获异常。在生产环境下，还可以配合 <code>.retry()</code> 进行自动重试，或者在前端利用 WebSocket 的心跳机制感知断连。”</p>
+<h4 id="坑-2：解析-JSON-时，如果一个-JSON-被拆成了两个-Chunk-怎么办？"><a href="#坑-2：解析-JSON-时，如果一个-JSON-被拆成了两个-Chunk-怎么办？" class="headerlink" title="坑 2：解析 JSON 时，如果一个 JSON 被拆成了两个 Chunk 怎么办？"></a><strong>坑 2：解析 JSON 时，如果一个 JSON 被拆成了两个 Chunk 怎么办？</strong></h4><p><strong>回答：</strong> “这是一个非常细的点。标准的 WebClient 在处理 <code>MediaType.TEXT_EVENT_STREAM</code> 时，会自动根据换行符（<code>data:</code>）进行分帧。即便底层的 TCP 包被拆分了，WebClient 也会帮我们组装好完整的 SSE 行再交给 <code>bodyToFlux</code>。这比直接操作 InputStream 要安全得多。”</p>
+<hr>
+<h3 id="总结：你的“满分回答”模板"><a href="#总结：你的“满分回答”模板" class="headerlink" title="总结：你的“满分回答”模板"></a>总结：你的“满分回答”模板</h3><blockquote>
+<p>“在我们的 SmartPai 项目中，DeepSeek 的流式交互是这样实现的：</p>
+<ol>
+<li><strong>请求构造</strong>：我们在请求体中封装了用户问题、知识库检索到的上下文（Context）以及历史对话，并将 <code>stream</code> 设置为 <code>true</code>。</li>
+<li><strong>响应式获取</strong>：我们使用了 <strong>Spring WebClient</strong>。通过其响应式操作符，我们将 API 的 SSE 流转化为一个 <strong>Flux 序列</strong>。这样可以实现真正的异步非阻塞，不会阻塞业务线程池。</li>
+<li><strong>流式消费</strong>：通过订阅 Flux，我们将每一个到达的 JSON 块解析出 <code>delta.content</code>。只要解析出文字，就立即触发回调。</li>
+<li><strong>前端协同</strong>：这个回调会衔接我们之前的 <strong>WebSocket</strong> 通道，将文字逐字推送到前端，从而解决了大模型首字响应慢（TTFT）的痛点，提供了流畅的用户体验。”</li>
+</ol>
+</blockquote>
 </blockquote>
 </li>
 <li><p>llm有没有本地部署？（答：只是用了api！</p>
@@ -633,6 +667,10 @@ p.spoiler {
     <!-- paginator -->
     <ul class="post-paginator">
         <li class="next">
+                <div class="nextSlogan">Next Post</div>
+                <a href="/posts/0.html" title="">
+                    <div class="nextTitle">[Untitled Post]</div>
+                </a>
         </li>
         <li class="previous">
                 <div class="prevSlogan">Previous Post</div>
@@ -690,7 +728,7 @@ p.spoiler {
                 <div class="toc-catalog">
                     <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
                 </div>
-                <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#2026-4-14%E6%A0%A1%E6%8B%9B%E8%81%98%E4%BC%9A%E5%A4%8D%E7%9B%98"><span class="toc-number">1.</span> <span class="toc-text">2026&#x2F;4&#x2F;14校招聘会复盘</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%BE%8E%E7%9A%84%E7%AC%94%E8%AF%95%E5%A4%8D%E7%9B%98"><span class="toc-number"></span> <span class="toc-text">美的笔试复盘</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BC%96%E7%A8%8B%E9%A2%98"><span class="toc-number">1.</span> <span class="toc-text">编程题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%80%89%E6%8B%A9%E9%A2%98"><span class="toc-number">2.</span> <span class="toc-text">选择题</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%AC%AC%E4%B8%80%E6%AD%A5%EF%BC%9A%E5%B0%86%E6%8E%A9%E7%A0%81%E8%BD%AC%E6%8D%A2%E4%B8%BA%E4%BA%8C%E8%BF%9B%E5%88%B6"><span class="toc-number">2.0.1.</span> <span class="toc-text">第一步：将掩码转换为二进制</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%AC%AC%E4%BA%8C%E6%AD%A5%EF%BC%9A%E7%A1%AE%E5%AE%9A%E4%B8%BB%E6%9C%BA%E4%BD%8D%EF%BC%88Host-Bits%EF%BC%89"><span class="toc-number">2.0.2.</span> <span class="toc-text">第二步：确定主机位（Host Bits）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%AC%AC%E4%B8%89%E6%AD%A5%EF%BC%9A%E5%A5%97%E7%94%A8%E5%85%AC%E5%BC%8F%E8%AE%A1%E7%AE%97"><span class="toc-number">2.0.3.</span> <span class="toc-text">第三步：套用公式计算</span></a></li></ol></li></ol></li></ol>
+                <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#2026-4-14%E6%A0%A1%E6%8B%9B%E8%81%98%E4%BC%9A%E5%A4%8D%E7%9B%98"><span class="toc-number">1.</span> <span class="toc-text">2026&#x2F;4&#x2F;14校招聘会复盘</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E5%8D%8F%E8%AE%AE%E5%B1%82%E9%9D%A2%EF%BC%9A%E5%9F%BA%E4%BA%8E-HTTP-%E7%9A%84-SSE-Server-Sent-Events"><span class="toc-number">1.1.</span> <span class="toc-text">1. 协议层面：基于 HTTP 的 SSE (Server-Sent Events)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E6%A1%86%E6%9E%B6%E5%B1%82%E9%9D%A2%EF%BC%9A%E4%B8%BA%E4%BB%80%E4%B9%88%E7%94%A8-Spring-WebClient%EF%BC%9F"><span class="toc-number">1.2.</span> <span class="toc-text">2. 框架层面：为什么用 Spring WebClient？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86%EF%BC%9AChunk-%E7%9A%84%E8%A7%A3%E6%9E%90%E9%80%BB%E8%BE%91"><span class="toc-number">1.3.</span> <span class="toc-text">3. 数据处理：Chunk 的解析逻辑</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-%E6%B7%B1%E5%BA%A6%E8%BF%BD%E9%97%AE%E8%A1%A5%E4%B8%81%EF%BC%9A%E9%9D%A2%E8%AF%95%E5%AE%98%E5%8F%AF%E8%83%BD%E4%BC%9A%E6%8C%96%E7%9A%84%E5%9D%91"><span class="toc-number">1.4.</span> <span class="toc-text">4. 深度追问补丁：面试官可能会挖的坑</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%9D%91-1%EF%BC%9A%E5%A6%82%E6%9E%9C%E7%BD%91%E7%BB%9C%E5%8D%A1%E9%A1%BF%EF%BC%8CChunk-%E6%96%AD%E5%BC%80%E4%BA%86%E6%80%8E%E4%B9%88%E5%8A%9E%EF%BC%9F"><span class="toc-number">1.4.1.</span> <span class="toc-text">坑 1：如果网络卡顿，Chunk 断开了怎么办？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%9D%91-2%EF%BC%9A%E8%A7%A3%E6%9E%90-JSON-%E6%97%B6%EF%BC%8C%E5%A6%82%E6%9E%9C%E4%B8%80%E4%B8%AA-JSON-%E8%A2%AB%E6%8B%86%E6%88%90%E4%BA%86%E4%B8%A4%E4%B8%AA-Chunk-%E6%80%8E%E4%B9%88%E5%8A%9E%EF%BC%9F"><span class="toc-number">1.4.2.</span> <span class="toc-text">坑 2：解析 JSON 时，如果一个 JSON 被拆成了两个 Chunk 怎么办？</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%80%BB%E7%BB%93%EF%BC%9A%E4%BD%A0%E7%9A%84%E2%80%9C%E6%BB%A1%E5%88%86%E5%9B%9E%E7%AD%94%E2%80%9D%E6%A8%A1%E6%9D%BF"><span class="toc-number">1.5.</span> <span class="toc-text">总结：你的“满分回答”模板</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%BE%8E%E7%9A%84%E7%AC%94%E8%AF%95%E5%A4%8D%E7%9B%98"><span class="toc-number"></span> <span class="toc-text">美的笔试复盘</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BC%96%E7%A8%8B%E9%A2%98"><span class="toc-number">1.</span> <span class="toc-text">编程题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%80%89%E6%8B%A9%E9%A2%98"><span class="toc-number">2.</span> <span class="toc-text">选择题</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%AC%AC%E4%B8%80%E6%AD%A5%EF%BC%9A%E5%B0%86%E6%8E%A9%E7%A0%81%E8%BD%AC%E6%8D%A2%E4%B8%BA%E4%BA%8C%E8%BF%9B%E5%88%B6"><span class="toc-number">2.0.1.</span> <span class="toc-text">第一步：将掩码转换为二进制</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%AC%AC%E4%BA%8C%E6%AD%A5%EF%BC%9A%E7%A1%AE%E5%AE%9A%E4%B8%BB%E6%9C%BA%E4%BD%8D%EF%BC%88Host-Bits%EF%BC%89"><span class="toc-number">2.0.2.</span> <span class="toc-text">第二步：确定主机位（Host Bits）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%AC%AC%E4%B8%89%E6%AD%A5%EF%BC%9A%E5%A5%97%E7%94%A8%E5%85%AC%E5%BC%8F%E8%AE%A1%E7%AE%97"><span class="toc-number">2.0.3.</span> <span class="toc-text">第三步：套用公式计算</span></a></li></ol></li></ol></li></ol>
             </div>
         <!-- sidebar -->
         <div class="sidebar sidebar-hide">
@@ -738,9 +776,10 @@ p.spoiler {
         
         
         
+        
     <div class="total-and-search">
         <div class="total-archive">
-        Total : 36
+        Total : 37
         </div>
         <!-- search  -->
     </div>
@@ -896,6 +935,13 @@ p.spoiler {
         <li class="archive-post-item">
             <span class="archive-post-date">07/24</span>
             <a class="archive-post-title" href="/posts/37559.html">个人用使用指南</a>
+        </li>
+                </ul>
+            <div class="archive-year"> Invalid date </div>
+            <ul class="year-list">
+        <li class="archive-post-item">
+            <span class="archive-post-date">Invalid date</span>
+            <a class="archive-post-title" href="/posts/0.html">[Untitled Post]</a>
         </li>
             </ul>
     </div>
